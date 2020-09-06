@@ -1,0 +1,96 @@
+{
+	"ImageName" : "Ubuntu_20_04",
+	"Guest_MD5Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/MD5SUMS",
+	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/",
+	"Guest_Image"   : "ubuntu-base-20.04-base-amd64.tar.gz",
+
+	"Host_MD5Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/MD5SUMS",
+	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
+	"Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
+
+	"PackagesToAdd" : [
+		"apt-utils",
+		"libc-bin",
+		"dbus",
+		"systemd",
+		"pulseaudio",
+		"libgles1",
+		"libgles2",
+		"libglx-mesa0",
+		"libgl1-mesa-dri",
+		"libgl1-mesa-glx",
+		"libglu1-mesa",
+		"mesa-utils",
+		"mesa-utils-extra",
+		"libunwind8",
+		"libsdl2-dev"
+	],
+	"RemoveFiles_Stage1": [
+		"/etc/hosts",
+		"/etc/resolv.conf"
+	],
+	"RemoveDirs_Stage1": [
+	],
+
+	"Commands_Stage1": [
+		"export ROOTFS=./RootFS",
+		"mount -t proc /proc $ROOTFS/proc/",
+		"mount --rbind --make-rslave /sys $ROOTFS/sys/",
+		"mount --rbind --make-rslave /dev $ROOTFS/dev/",
+		"mount --rbind --make-rslave /dev/pts $ROOTFS/dev/pts/",
+		"export DEBIAN_FRONTEND=noninteractive",
+		"apt-get update",
+		"apt-get install -y coreutils"
+	],
+
+	"Commands_InChroot": [
+		"echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
+		"echo \"US/Eastern\" >/etc/timezone",
+		"ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime",
+		"export DEBIAN_FRONTEND=noninteractive",
+		"apt-get update",
+		"apt-get clean"
+	],
+
+	"Commands_Stage2": [
+		"export ROOTFS=./RootFS",
+		"umount $ROOTFS/proc/",
+		"umount -R $ROOTFS/sys/",
+		"umount -R $ROOTFS/dev/pts/",
+		"umount -R $ROOTFS/dev/"
+	],
+
+	"RemoveFiles_Stage2": [
+		"/etc/hosts",
+		"/etc/resolv.conf",
+		"/etc/timezone",
+		"/etc/localtime"
+	],
+
+	"RemoveDirs_Stage2": [
+		"/boot",
+		"/dev",
+		"/home",
+		"/media",
+		"/mnt",
+		"/proc",
+		"/root",
+		"/srv",
+		"/tmp",
+		"/var/cache/apt",
+		"/var/lib/apt",
+		"/sys",
+		"/opt"
+	],
+
+	"Commands_Stage3": [
+		"ln -s -f ../usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 lib64/"
+	],
+
+	"BinariesToInstall": [
+		"Binaries/mesa_20_1_6.tar.gz",
+		"Binaries/libstdc++_10_2_0.tar.gz"
+	],
+
+	"PKGInstallCMD" : "apt-get install -y "
+}
