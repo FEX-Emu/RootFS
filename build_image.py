@@ -157,13 +157,13 @@ def Stage0(CacheDir, RootFSDir, config_json):
     CreateGuestVMImage (RootFSDir, LinuxImage)
 
 def Stage1(CacheDir, RootFSDir, config_json):
-    os.system("killall -9 qemu-system-x86_64")
+    os.system("killall -9 %s" % (config_json["QEmu"]))
 
 # Need to wait for some of the previous applications to give up their deferred locks
     time.sleep(5)
 
     QEmuCommand = [
-        'qemu-system-x86_64',
+        config_json["QEmu"],
         '-drive',
         'file=' + RootFSDir + '/Host.img' + ',format=qcow2',
         '-drive',

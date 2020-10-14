@@ -7,6 +7,7 @@
 	"Host_MD5Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/MD5SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
 	"Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
+	"QEmu" : "qemu-system-x86_64",
 
 	"PackagesToAdd" : [
 		"apt-utils",
@@ -23,7 +24,15 @@
 		"mesa-utils",
 		"mesa-utils-extra",
 		"libunwind8",
-		"libsdl2-dev"
+		"libsdl2-dev",
+		"libgles1:i386",
+		"libgles2:i386",
+		"libglx-mesa0:i386",
+		"libgl1-mesa-dri:i386",
+		"libgl1-mesa-glx:i386",
+		"libglu1-mesa:i386",
+		"libunwind8:i386",
+		"libsdl2-dev:i386"
 	],
 	"RemoveFiles_Stage1": [
 		"/etc/hosts",
@@ -49,7 +58,10 @@
 		"ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime",
 		"export DEBIAN_FRONTEND=noninteractive",
 		"apt-get update",
-		"apt-get clean"
+		"apt-get clean",
+		"dpkg --add-architecture i386",
+		"apt-get update",
+		"apt-get dist-upgrade -y"
 	],
 
 	"Commands_Stage2": [
