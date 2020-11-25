@@ -1,10 +1,10 @@
 {
-	"ImageName" : "Ubuntu_20_04",
-	"Guest_MD5Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/MD5SUMS",
+	"ImageName" : "Ubuntu_20_04_1",
+	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/SHA256SUMS",
 	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/",
-	"Guest_Image"   : "ubuntu-base-20.04-base-amd64.tar.gz",
+	"Guest_Image"   : "ubuntu-base-20.04.1-base-amd64.tar.gz",
 
-	"Host_MD5Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/MD5SUMS",
+	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
 	"Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
 	"QEmu" : "qemu-system-x86_64",
@@ -25,6 +25,10 @@
 		"mesa-utils-extra",
 		"libunwind8",
 		"libsdl2-dev",
+		"protobuf-compiler",
+		"libprotobuf-c-dev",
+		"libprotobuf-lite17",
+		"libopenal1",
 		"libgles1:i386",
 		"libgles2:i386",
 		"libglx-mesa0:i386",
@@ -32,7 +36,9 @@
 		"libgl1-mesa-glx:i386",
 		"libglu1-mesa:i386",
 		"libunwind8:i386",
-		"libsdl2-dev:i386"
+		"libsdl2-dev:i386",
+		"libpulse0:i368",
+		"libasound2-plugins:i386"
 	],
 	"RemoveFiles_Stage1": [
 		"/etc/hosts",
@@ -100,7 +106,7 @@
 	],
 
 	"BinariesToInstall": [
-		"Binaries/mesa_20_1_6.tar.gz",
+		"Binaries/mesa_20_2_3.tar.gz",
 		"Binaries/libstdc++_10_2_0.tar.gz"
 	],
 

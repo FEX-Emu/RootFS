@@ -27,42 +27,42 @@ def CreateDirTree(Dir):
             raise
 
 
-def DownloadImage(CacheDir, MD5Sums, BaseURL, Image):
-    with requests.get(MD5Sums, stream = True) as r:
-        with open(CacheDir + "/MD5SUMS", "wb") as MD5SumFile:
-            shutil.copyfileobj(r.raw, MD5SumFile)
+def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
+    with requests.get(SHA256Sums, stream = True) as r:
+        with open(CacheDir + "/SHA256SUMS", "wb") as SHA256SumFile:
+            shutil.copyfileobj(r.raw, SHA256SumFile)
 
-    # Open the MD5Sum file we just downloaded
-    MD5Sum_file = open(CacheDir + "/MD5SUMS", "r")
-    MD5Sum = MD5Sum_file.read()
-    MD5Sum_file.close()
+    # Open the SHA256Sum file we just downloaded
+    SHA256Sum_file = open(CacheDir + "/SHA256SUMS", "r")
+    SHA256Sum = SHA256Sum_file.read()
+    SHA256Sum_file.close()
 
     FoundImage = False
-    ExpectedMD5Sum = ""
-    for line in MD5Sum.splitlines():
+    ExpectedSHA256Sum = ""
+    for line in SHA256Sum.splitlines():
         Split = line.split(" ")
-        CurrentMD5Sum = Split[0]
+        CurrentSHA256Sum = Split[0]
         CurrentImageName = Split[1][1:]
         if CurrentImageName == Image:
             FoundImage = True
-            ExpectedMD5Sum = CurrentMD5Sum
+            ExpectedSHA256Sum = CurrentSHA256Sum
             break
 
     if FoundImage == False:
-        raise Exception("Couldn't find image md5sum")
+        raise Exception("Couldn't find image sda256sum")
 
-    CalculatedMD5Sum = ""
-    # Found an image, if it exists then md5sum it, else download it again
+    CalculatedSHA256Sum = ""
+    # Found an image, if it exists then sha256sum it, else download it again
     if os.path.exists(CacheDir + "/" + Image):
-        md5Hash = hashlib.md5()
+        sha256Hash = hashlib.sha256()
         Image_file = open(CacheDir + "/" + Image, "rb")
         Image_data = Image_file.read()
         Image_file.close()
-        md5Hash.update(Image_data)
-        CalculatedMD5Sum = md5Hash.hexdigest()
+        sha256Hash.update(Image_data)
+        CalculatedSHA256Sum = sha256Hash.hexdigest()
 
-    if CalculatedMD5Sum != ExpectedMD5Sum:
-        # Calculated MD5Sum isn't the same as expected
+    if CalculatedSHA256Sum != ExpectedSHA256Sum:
+        # Calculated SHA256Sum isn't the same as expected
         # Download the new image
         with requests.get(BaseURL + Image, stream = True) as r:
             with open(CacheDir + "/" + Image, "wb") as ImageFile:
@@ -134,10 +134,10 @@ def Stage0(CacheDir, RootFSDir, config_json):
     CreateDirTree(Host_CacheDir)
 
     print("Downloading Guest")
-    DownloadImage(Guest_CacheDir, config_json["Guest_MD5Sums"], config_json["Guest_BaseURL"], config_json["Guest_Image"])
+    DownloadImage(Guest_CacheDir, config_json["Guest_SHA256Sums"], config_json["Guest_BaseURL"], config_json["Guest_Image"])
 
     print("Downloading Host")
-    DownloadImage(Host_CacheDir, config_json["Host_MD5Sums"], config_json["Host_BaseURL"], config_json["Host_Image"])
+    DownloadImage(Host_CacheDir, config_json["Host_SHA256Sums"], config_json["Host_BaseURL"], config_json["Host_Image"])
 
 # We will have an image in our cache directory at this point
     LinuxImage = Guest_CacheDir + "/" + config_json["Guest_Image"]
