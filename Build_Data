@@ -1,0 +1,50 @@
+Host-packages
+binutils-hppa64-linux-gnu dejagnu docbook-xsl-ns doxygen expect g++-9-multilib g++-multilib gcc-9-multilib gcc-multilib gnat-9 graphviz lib32gcc-9-dev lib32stdc++-9-dev libann0 libcdt5 libcgraph6 libgc-dev libgnat-9 libgnatvsn9 libgts-0.7-5 libgvc6 libgvpr2 libisl-dev liblab-gamut1 libmpc-dev libmpfr-dev libpathplan4 libx32gcc-9-dev libx32stdc++-9-dev libx32z1 libx32z1-dev
+  locales-all nvptx-tools systemtap-sdt-dev tcl-expect
+
+git checkout releases/gcc-10.2.0
+mkdir Build; cd Build
+../configure --enable-languages=c,c++ --without-multilib --prefix="$(pwd)/install"
+
+# Modify the hash files
+libstdc++-v3/include/bits/hashtable_policy.h
+libstdc++-v3/src/c++11/hashtable_c++0x.cc
+
+make bootstrap all-target-libstdc++-v3 -j`nproc`
+make install-target-libstdc++-v3 -j`nproc`
+mkdir -p install/usr/lib/x86_64-linux-gnu/
+cp install/lib64/* install/usr/lib/x86_64-linux-gnu/
+
+cd install; tar -czf ../libstdc++_10_2_0.tar.gz *; cd ..
+
+# Bootstrap time
+37 minutes
+
+# Make libstdc++-v3
+
+
+# Mesa building
+git checkout mesa-20.0.8
+mkdir Build; cd Build
+
+export DESTDIR=$(pwd)/install
+meson -Dprefix=/usr \
+-Dbuildtype=release \
+-Db_ndebug=false \
+-Ddri-drivers=i915,i965,r100,r200,nouveau \
+-Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast \
+-Dvulkan-drivers=amd,intel \
+-Dplatforms=x11,wayland \
+..
+
+ninja; ninja install;
+
+cd install; tar -czf ../mesa_20_1.6.tar.gz *; cd ..
+# 2m52s
+
+time ../build_image.py ../Configs/Ubuntu.json Cache/ RootFS/
+
+
+## Errors
+virt-format may fail.
+	- Workaround- sudo chmod +r /boot/vmlinuz-`uname -r`
