@@ -251,9 +251,13 @@ def Stage1(CacheDir, RootFSDir, config_json):
     ExecuteCommandAndWait(tn, "mount /dev/sdc1 Mount")
     ExecuteCommandAndWait(tn, "cd Mount")
 
+    print("Commands_Stage1_0")
+    for command in config_json["Commands_Stage1_0"]:
+        ExecuteCommandAndWait(tn, command)
+
     print("Output rootfs now")
     ExecuteCommandAndWait(tn, "mkdir RootFS")
-    ExecuteCommandAndWait(tn, "tar -C RootFS -xf " + config_json["Guest_Image"])
+    ExecuteCommandAndWait(tn, "tar -I pigz -C RootFS -xf " + config_json["Guest_Image"])
 
     print("RemoveFiles_Stage1")
     for file in config_json["RemoveFiles_Stage1"]:
@@ -290,7 +294,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
         ExecuteCommandAndWait(tn, "rm -Rf ./RootFS/" + dir)
 
     ExecuteCommandAndWait(tn, "cd RootFS/")
-    ExecuteCommandAndWait(tn, "tar -czf ../Stage1_" + config_json["Guest_Image"] + " *")
+    ExecuteCommandAndWait(tn, "tar -I pigz -cf ../Stage1_" + config_json["Guest_Image"] + " *")
     ExecuteCommandAndWait(tn, "cd ..")
 
     ExecuteCommand(tn, "shutdown now")
@@ -321,7 +325,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     # Extract the stage1 rootfs
     # Copy the rootfs image over to the VM image
-    if os.system("tar -xf " + VMMountDir + "/Stage1_" + config_json["Guest_Image"] + " -C " + Stage1_RootFS) != 0:
+    if os.system("tar -I pigz -xf " + VMMountDir + "/Stage1_" + config_json["Guest_Image"] + " -C " + Stage1_RootFS) != 0:
         raise Exception("copy failed")
 
     if os.system("guestunmount " + VMMountDir) != 0:
@@ -338,7 +342,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
     print("Installing binaries")
     for Binary in config_json["BinariesToInstall"]:
         BinaryPath = GitRoot + "/" + Binary
-        if os.system("tar -xf " + BinaryPath + " -C " + Stage1_RootFS) != 0:
+        if os.system("tar -I pigz -xf " + BinaryPath + " -C " + Stage1_RootFS) != 0:
             raise Exception("Binary install failure")
 
     os.chdir(Stage1_RootFS);
@@ -348,7 +352,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
         os.system(command)
 
     print("Repackaging image")
-    if os.system("tar -czf ../Stage2_" + config_json["Guest_Image"] + " *") != 0:
+    if os.system("tar -I pigz -cf ../Stage2_" + config_json["Guest_Image"] + " *") != 0:
         raise Exception("tar failure")
 
     os.chdir("..");

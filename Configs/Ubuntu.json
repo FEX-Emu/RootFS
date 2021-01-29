@@ -1,8 +1,8 @@
 {
-	"ImageName" : "Ubuntu_20_04_1",
-	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/SHA256SUMS",
-	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/",
-	"Guest_Image"   : "ubuntu-base-20.04.1-base-amd64.tar.gz",
+	"ImageName" : "Ubuntu_20_10",
+	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.10/release/SHA256SUMS",
+	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.10/release/",
+	"Guest_Image"   : "ubuntu-base-20.10-base-amd64.tar.gz",
 
 	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -38,7 +38,36 @@
 		"libunwind8:i386",
 		"libsdl2-dev:i386",
 		"libpulse0:i368",
-		"libasound2-plugins:i386"
+		"libasound2-plugins:i386",
+		"usbutils",
+		"pciutils",
+		"libglew-dev",
+		"libxcb-dri2-0",
+		"libxcb-dri3-0",
+		"libxcb-glx0",
+		"libxcb-shm0",
+		"libxcb-damage0",
+		"libxcb-shape0",
+		"libxcb-dri2-0:i386",
+		"libxcb-dri3-0:i386",
+		"libxcb-glx0:i386",
+		"libxcb-shm0:i386",
+		"libxcb-damage0:i386",
+		"libxcb-shape0:i386",
+		"libwayland-client0:i386",
+		"libwayland-dev:i386",
+		"libwayland-egl-backend-dev:i386",
+		"libx11-dev:i386",
+		"libxext-dev:i386",
+		"libxdamage-dev:i386",
+		"libx11-xcb-dev:i386",
+		"libxcb-present0:i386",
+		"libxshmfence1:i386",
+		"libxxf86vm1:i386",
+		"libxrandr2:i386",
+		"libllvm11:i386",
+		"libopenal1",
+		"libopenal1:i386"
 	],
 	"RemoveFiles_Stage1": [
 		"/etc/hosts",
@@ -47,21 +76,25 @@
 	"RemoveDirs_Stage1": [
 	],
 
+	"Commands_Stage1_0": [
+		"export DEBIAN_FRONTEND=noninteractive",
+		"apt-get update",
+		"apt-get install -y coreutils pigz"
+	],
+
 	"Commands_Stage1": [
 		"export ROOTFS=./RootFS",
 		"mount -t proc /proc $ROOTFS/proc/",
 		"mount --rbind --make-rslave /sys $ROOTFS/sys/",
 		"mount --rbind --make-rslave /dev $ROOTFS/dev/",
-		"mount --rbind --make-rslave /dev/pts $ROOTFS/dev/pts/",
-		"export DEBIAN_FRONTEND=noninteractive",
-		"apt-get update",
-		"apt-get install -y coreutils"
+		"mount --rbind --make-rslave /dev/pts $ROOTFS/dev/pts/"
 	],
 
 	"Commands_InChroot": [
 		"echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
 		"echo \"US/Eastern\" >/etc/timezone",
 		"ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime",
+		"chmod 1777 /tmp",
 		"export DEBIAN_FRONTEND=noninteractive",
 		"apt-get update",
 		"apt-get clean",
@@ -82,7 +115,8 @@
 		"/etc/hosts",
 		"/etc/resolv.conf",
 		"/etc/timezone",
-		"/etc/localtime"
+		"/etc/localtime",
+		"/etc/pasdwd"
 	],
 
 	"RemoveDirs_Stage2": [
@@ -102,11 +136,14 @@
 	],
 
 	"Commands_Stage3": [
-		"ln -s -f ../usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 lib64/"
+		"ln -s -f ../usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 lib64/",
+		"rm bin/pidof",
+		"ln -s ../sbin/killall5 bin/pidof"
 	],
 
 	"BinariesToInstall": [
-		"Binaries/mesa_20_2_3.tar.gz",
+		"Binaries/mesa_20_3_2.tar.gz",
+		"Binaries/mesa_20_3_2_x86.tar.gz",
 		"Binaries/libstdc++_10_2_0.tar.gz"
 	],
 
