@@ -24,23 +24,22 @@ cd install; tar -czf ../libstdc++_10_2_0.tar.gz *; cd ..
 
 
 # Mesa building
-git checkout mesa-20.3.2
+git checkout mesa-21.0.0
 mkdir Build; cd Build
 
 export DESTDIR=$(pwd)/install
-meson -Dprefix=/usr \
+meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
 -Ddri-drivers=i915,i965,r100,r200,nouveau \
--Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,swr \
--Dvulkan-drivers=amd,intel \
+-Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
+-Dvulkan-drivers=amd,intel,freedreno,swrast \
 -Dplatforms=x11,wayland \
 ..
 
 ninja; ninja install;
 
-cd install; tar -czf ../mesa_20_3_2.tar.gz *; cd ..
-
+cd install; tar -czf ../mesa_21_0.tar.gz *; cd ..
 
 #Cross mesa
 export DESTDIR=$(pwd)/install
@@ -48,14 +47,14 @@ meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
 -Ddri-drivers=i915,i965,r100,r200,nouveau \
--Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,swr \
--Dvulkan-drivers=amd,intel,freedreno \
+-Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
+-Dvulkan-drivers=amd,intel,freedreno,swrast \
 -Dplatforms=x11,wayland \
 --cross-file cross_x86 \
 ..
 
 ninja; ninja install;
-cd install; tar -czf ../mesa_20_3_2_x86.tar.gz *; cd ..
+cd install; tar -czf ../mesa_21_0_x86.tar.gz *; cd ..
 
 
 # 2m52s
@@ -66,3 +65,7 @@ time ../build_image.py ../Configs/Ubuntu.json Cache/ RootFS/
 ## Errors
 virt-format may fail.
 	- Workaround- sudo chmod +r /boot/vmlinuz-`uname -r`
+
+# Main
+cd install; tar -czf ../mesa_main_`git describe --dirty`.tar.gz *; cd ..
+cd install; tar -czf ../mesa_main_`git describe --dirty`_x86.tar.gz *; cd ..

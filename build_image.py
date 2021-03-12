@@ -107,6 +107,9 @@ def CreateHostVMImage(RootFSDir, LinuxImage):
     if os.system("cp " + LinuxImage + " " + RootFSDir + "/Host.img") != 0:
         raise Exception("copy host image failed")
 
+    if os.system("qemu-img resize " + RootFSDir + "/Host.img +10G") != 0:
+        raise Exception("Couldn't resize host image")
+
     cloud_config_file = open(RootFSDir + "/cloud_config.txt", "w")
     cloud_config_file.write("#cloud-config\n")
     cloud_config_file.write("password: ubuntu\n")
@@ -276,8 +279,22 @@ def Stage1(CacheDir, RootFSDir, config_json):
     for command in config_json["Commands_InChroot"]:
         ExecuteCommandAndWait(tn, command)
 
+    Command = "for pkg in "
+    Send = False
     for app in config_json["PackagesToAdd"]:
-        ExecuteCommandAndWait(tn, config_json["PKGInstallCMD"] + " " + app)
+        Command = Command + " " + app
+        if len(Command) > 256:
+            Command = Command + "; do " + config_json["PKGInstallCMD"] + "$pkg; done"
+            ExecuteCommandAndWait(tn, Command)
+            Command = "for pkg in "
+
+    # Finish the remaining installs
+    Command = Command + "; do " + config_json["PKGInstallCMD"] + "$pkg; done"
+    ExecuteCommandAndWait(tn, Command)
+
+    print("Commands_InChroot2")
+    for command in config_json["Commands_InChroot2"]:
+        ExecuteCommandAndWait(tn, command)
 
     ExecuteCommand(tn, "exit")
 
