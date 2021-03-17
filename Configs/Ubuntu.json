@@ -167,7 +167,7 @@
 		"/etc/resolv.conf",
 		"/etc/timezone",
 		"/etc/localtime",
-		"/etc/pasdwd"
+		"/etc/passwd"
 	],
 
 	"RemoveDirs_Stage2": [
