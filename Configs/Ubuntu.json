@@ -12,6 +12,7 @@
 	"PackagesToAdd" : [
 		"apt-utils",
 		"libc-bin",
+		"libc6:i386",
 		"dbus",
 		"systemd",
 		"pulseaudio",
@@ -187,9 +188,11 @@
 	],
 
 	"Commands_Stage3": [
-		"ln -s -f ../../usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 lib64/",
 		"rm bin/pidof",
 		"ln -s ../sbin/killall5 bin/pidof"
+	],
+
+	"Commands_PreInstall": [
 	],
 
 	"BinariesToInstall": [

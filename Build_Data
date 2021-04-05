@@ -59,8 +59,8 @@ cd install; tar -czf ../mesa_21_0_x86.tar.gz *; cd ..
 
 # 2m52s
 
-time ../build_image.py ../Configs/Ubuntu.json Cache/ RootFS/
-
+time ../build_image.py ../Configs/Ubuntu.json Cache/ RootFS_Ubuntu_21_10_21_0/
+time ../build_image.py ../Configs/Ubuntu_main.json Cache/ RootFS_Ubuntu_21_10_main/
 
 ## Errors
 virt-format may fail.

@@ -354,15 +354,25 @@ def Stage2(CacheDir, RootFSDir, config_json):
     if os.system("sync") != 0:
         raise Exception("sync failure")
 
+    OldDir = os.getcwd()
+    os.chdir(Stage1_RootFS);
+
+    print("Commands_PreInstall")
+    for command in config_json["Commands_PreInstall"]:
+        os.system(command)
+
+    os.chdir(OldDir)
+
     GitRoot = subprocess.run(["git" , "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).stdout.decode().rstrip()
 
     print("Installing binaries")
     for Binary in config_json["BinariesToInstall"]:
         BinaryPath = GitRoot + "/" + Binary
-        if os.system("tar -I pigz -xf " + BinaryPath + " -C " + Stage1_RootFS) != 0:
+        if os.system("tar -h --overwrite -I pigz -xf " + BinaryPath + " -C " + Stage1_RootFS) != 0:
             raise Exception("Binary install failure")
 
-    os.chdir(Stage1_RootFS);
+    OldDir = os.getcwd()
+    os.chdir(Stage1_RootFS)
 
     print("Commands_Stage3")
     for command in config_json["Commands_Stage3"]:
@@ -372,7 +382,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
     if os.system("tar -I pigz -cf ../Stage2_" + config_json["Guest_Image"] + " *") != 0:
         raise Exception("tar failure")
 
-    os.chdir("..");
+    os.chdir(OldDir)
 
     print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
 
