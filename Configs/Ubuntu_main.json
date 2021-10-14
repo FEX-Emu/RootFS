@@ -11,6 +11,7 @@
 
 	"PackagesToAdd" : [
 		"apt-utils",
+		"lsb-release",
 		"libc-bin",
 		"libc6:i386",
 		"dbus",
@@ -196,8 +197,6 @@
 	],
 
 	"BinariesToInstall": [
-		"Binaries/mesa_main_21.0-branchpoint-2895-g684f97de80b-dirty.tar.gz",
-		"Binaries/mesa_main_21.0-branchpoint-2895-g684f97de80b-dirty_x86.tar.gz"
 	],
 
 	"PKGInstallCMD" : "apt-get install -y "

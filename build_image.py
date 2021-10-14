@@ -27,6 +27,9 @@ def CreateDirTree(Dir):
             raise
 
 
+def GetGitRoot():
+    return subprocess.run(["git" , "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).stdout.decode().rstrip()
+
 def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
     with requests.get(SHA256Sums, stream = True) as r:
         with open(CacheDir + "/SHA256SUMS", "wb") as SHA256SumFile:
@@ -68,7 +71,7 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
             with open(CacheDir + "/" + Image, "wb") as ImageFile:
                 shutil.copyfileobj(r.raw, ImageFile)
 
-def CreateGuestVMImage(RootFSDir, LinuxImage):
+def CreateGuestVMImage(RootFSDir, LinuxImage, config_json):
     if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 30G") != 0:
         raise Exception("qemu-img create failure")
 
@@ -91,7 +94,21 @@ def CreateGuestVMImage(RootFSDir, LinuxImage):
     if os.system("cp " + LinuxImage + " " + VMMountDir) != 0:
         raise Exception("copy failed")
 
+    GitRoot = GetGitRoot()
+
+    # Copy over things from the git root when specified
+    print("CopyFiles_Stage0")
+    if ("CopyFiles_Stage0" in config_json):
+        if os.system("mkdir " + VMMountDir + "/FilesCopy/") != 0:
+            raise Exception("copyFiles folder failed")
+
+        for file in config_json["CopyFiles_Stage0"]:
+            BinaryPath = GitRoot + "/" + file
+            # Copy in to our temporary path
+            os.system("cp -rv " + BinaryPath + " " + VMMountDir + "/FilesCopy/")
+
     # Ensure that the guest mount has picked up the copies
+    # This sometimes still falls on its face. I'm not sure how to work around it.
     time.sleep(5)
 
     if os.system("sync") != 0:
@@ -157,13 +174,15 @@ def Stage0(CacheDir, RootFSDir, config_json):
     CreateHostVMImage (RootFSDir, Host_LinuxImage)
 
     print("Creating VM Guest")
-    CreateGuestVMImage (RootFSDir, LinuxImage)
+    CreateGuestVMImage (RootFSDir, LinuxImage, config_json)
 
 def Stage1(CacheDir, RootFSDir, config_json):
     os.system("killall -9 %s" % (config_json["QEmu"]))
 
 # Need to wait for some of the previous applications to give up their deferred locks
     time.sleep(5)
+
+    NumCores = subprocess.run(["nproc"], stdout=subprocess.PIPE).stdout.decode().rstrip()
 
     QEmuCommand = [
         config_json["QEmu"],
@@ -174,9 +193,9 @@ def Stage1(CacheDir, RootFSDir, config_json):
         '-drive',
         'file=' + RootFSDir + '/VMData.img' + ',format=qcow2',
         '-m',
-        '4G',
+        '16G',
         '-smp',
-        '4',
+        NumCores,
         '-enable-kvm',
         '-nographic',
         '-nic',
@@ -272,6 +291,15 @@ def Stage1(CacheDir, RootFSDir, config_json):
     for command in config_json["Commands_Stage1"]:
         ExecuteCommandAndWait(tn, command)
 
+    # Copy over things from the git root when specified
+    print("CopyFiles_Stage1")
+    if ("CopyFiles_Stage1" in config_json):
+        ExecuteCommandAndWait(tn, "ls -l .")
+        for file in config_json["CopyFiles_Stage1"]:
+            BinaryPath = "./FilesCopy/" + file[0]
+            # Copy in to our temporary path
+            ExecuteCommandAndWait(tn, "cp -rv " + BinaryPath + " ./RootFS/" + file[1])
+
     print("Time to chroot!")
     ExecuteCommand(tn, "chroot RootFS")
 
@@ -283,7 +311,10 @@ def Stage1(CacheDir, RootFSDir, config_json):
     Send = False
     for app in config_json["PackagesToAdd"]:
         Command = Command + " " + app
-        if len(Command) > 256:
+        # Maximum argument size from `getconf ARG_MAX` is 2097152
+        # Lets not go right up against the limit to be safe, but get close
+        MAX_COMMAND_LENGTH = 2048000
+        if len(Command) > MAX_COMMAND_LENGTH:
             Command = Command + "; do " + config_json["PKGInstallCMD"] + "$pkg; done"
             ExecuteCommandAndWait(tn, Command)
             Command = "for pkg in "
@@ -336,6 +367,8 @@ def Stage2(CacheDir, RootFSDir, config_json):
         raise Exception("sync failure")
 
     Stage1_RootFS = RootFSDir + "/Stage1_RootFS/"
+    SquashFSTarget = RootFSDir + "/" + config_json["ImageName"] + ".sqsh"
+
     CreateDir(Stage1_RootFS)
 
     print("Extracting Stage1 Image")
@@ -363,7 +396,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     os.chdir(OldDir)
 
-    GitRoot = subprocess.run(["git" , "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).stdout.decode().rstrip()
+    GitRoot = GetGitRoot()
 
     print("Installing binaries")
     for Binary in config_json["BinariesToInstall"]:
@@ -376,6 +409,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     print("Commands_Stage3")
     for command in config_json["Commands_Stage3"]:
+        os.chdir(Stage1_RootFS)
         os.system(command)
 
     print("Repackaging image")
@@ -384,7 +418,13 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     os.chdir(OldDir)
 
+    print("Repackaging image to SquashsFS")
+    if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd") != 0:
+        raise Exception("mksquashfs failure")
+
     print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
+    print("Completed squashfs image now at %s" % (config_json["ImageName"] + ".sqsh"))
+
 
 CacheDir = sys.argv[2]
 RootFSDir = sys.argv[3]

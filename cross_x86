@@ -1,9 +1,9 @@
 [binaries]
-c = '/usr/bin/gcc'
-cpp = '/usr/bin/g++'
-ar = '/usr/bin/gcc-ar'
-strip = '/usr/bin/strip'
-pkgconfig = '/usr/bin/pkg-config'
+c = '/usr/bin/i686-linux-gnu-gcc'
+cpp = '/usr/bin/i686-linux-gnu-g++'
+ar = '/usr/bin/i686-linux-gnu-gcc-ar'
+strip = '/usr/bin/i686-linux-gnu-strip'
+pkgconfig = '/usr/bin/i686-linux-gnu-pkg-config'
 llvm-config = '/usr/bin/llvm-config'
 
 [properties]
