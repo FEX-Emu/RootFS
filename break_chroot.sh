@@ -12,6 +12,14 @@ BACKUPPATH="$SCRIPTPATH/chroot/"
 # Make the backup path
 mkdir "$BACKUPPATH"
 
+# Remove and unmount aarch64 mounts
+echo "Unmounting aarch64 mounts"
+sudo umount -R "$SCRIPTPATH/lib/ld-linux-aarch64.so.1"
+sudo umount -R "$SCRIPTPATH/lib/aarch64-linux-gnu"
+
+rmdir $SCRIPTPATH/lib/aarch64-linux-gnu
+rm $SCRIPTPATH/lib/ld-linux-aarch64.so.1
+
 # Unmount and delete mount points
 echo "Unmounting container mounts"
 
@@ -40,7 +48,8 @@ mv "$SCRIPTPATH/boot" "$BACKUPPATH"
 mv "$SCRIPTPATH/home" "$BACKUPPATH"
 mv "$SCRIPTPATH/media" "$BACKUPPATH"
 mv "$SCRIPTPATH/mnt" "$BACKUPPATH"
-mv "$SCRIPTPATH/root" "$BACKUPPATH"
+rsync -a "$SCRIPTPATH/root" "$BACKUPPATH"
+rm -Rf "$SCRIPTPATH/root"
 mv "$SCRIPTPATH/srv" "$BACKUPPATH"
 mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
 mv "$SCRIPTPATH/opt" "$BACKUPPATH"

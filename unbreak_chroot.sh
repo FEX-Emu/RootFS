@@ -25,7 +25,8 @@ mv "$BACKUPPATH/boot" "$SCRIPTPATH"
 mv "$BACKUPPATH/home" "$SCRIPTPATH"
 mv "$BACKUPPATH/media" "$SCRIPTPATH"
 mv "$BACKUPPATH/mnt" "$SCRIPTPATH"
-mv "$BACKUPPATH/root" "$SCRIPTPATH"
+rsync -a "$BACKUPPATH/root" "$SCRIPTPATH"
+rm -Rf "$BACKUPPATH/root"
 mv "$BACKUPPATH/srv" "$SCRIPTPATH"
 mv "$BACKUPPATH/tmp" "$SCRIPTPATH"
 mv "$BACKUPPATH/opt" "$SCRIPTPATH"
@@ -55,6 +56,13 @@ sudo mount -t proc /proc $SCRIPTPATH/proc/
 sudo mount --rbind --make-rslave /sys $SCRIPTPATH/sys/
 sudo mount --rbind --make-rslave /dev $SCRIPTPATH/dev/
 sudo mount --rbind --make-rslave /dev/pts $SCRIPTPATH/dev/pts/
+
+echo "Mounting aarch64 paths"
+
+mkdir $SCRIPTPATH/lib/aarch64-linux-gnu
+touch $SCRIPTPATH/lib/ld-linux-aarch64.so.1
+sudo mount --rbind /lib/ld-linux-aarch64.so.1 $SCRIPTPATH/lib/ld-linux-aarch64.so.1
+sudo mount --rbind /lib/aarch64-linux-gnu $SCRIPTPATH/lib/aarch64-linux-gnu
 
 echo "Chrooting into container"
 echo "!!! Make sure to execute break_chroot.sh after leaving !!!"

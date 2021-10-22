@@ -1,4 +1,3 @@
-#!/bin/sh
 
 # Add source packages
 sed -i -e "s/^# deb/deb/g" /etc/apt/sources.list
@@ -27,7 +26,7 @@ apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland
 
 apt-get build-dep -y mesa
 
-git clone --branch mesa-21.3.0-fex-pre-rc1 --depth=1 https://gitlab.freedesktop.org/sonicadvance1/mesa.git
+git clone --branch mesa-21.3.0-fex-rc2 --depth=1 https://gitlab.freedesktop.org/sonicadvance1/mesa.git
 
 cd mesa
 mkdir Build
