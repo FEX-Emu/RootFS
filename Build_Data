@@ -35,8 +35,6 @@ meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
 -Dplatforms=x11,wayland \
--Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
--Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 ..
 
 ninja; ninja install;
@@ -52,8 +50,6 @@ meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
 -Dplatforms=x11,wayland \
--Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
--Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 --cross-file cross_x86 \
 ..
 
@@ -65,6 +61,7 @@ cd install; tar -czf ../mesa_21_1_x86.tar.gz *; cd ..
 
 time ../build_image.py ../Configs/Ubuntu.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_10_21_0/
 time ../build_image.py ../Configs/Ubuntu_21_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_04_main/
+time ../build_image.py ../Configs/Ubuntu_21_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/
 time ../build_image.py ../Configs/Ubuntu_main.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_10_main/
 
 ## Errors
