@@ -29,7 +29,6 @@ rsync -a "$BACKUPPATH/root" "$SCRIPTPATH"
 rm -Rf "$BACKUPPATH/root"
 mv "$BACKUPPATH/srv" "$SCRIPTPATH"
 mv "$BACKUPPATH/tmp" "$SCRIPTPATH"
-mv "$BACKUPPATH/opt" "$SCRIPTPATH"
 
 echo "Moving rootfs apt folders back to original location"
 mv "$BACKUPPATH/var/cache/apt" "$SCRIPTPATH/var/cache/"

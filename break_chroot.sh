@@ -52,7 +52,6 @@ rsync -a "$SCRIPTPATH/root" "$BACKUPPATH"
 rm -Rf "$SCRIPTPATH/root"
 mv "$SCRIPTPATH/srv" "$BACKUPPATH"
 mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
-mv "$SCRIPTPATH/opt" "$BACKUPPATH"
 
 # Copy over the apt folders
 mkdir -p "$BACKUPPATH/var/cache/"
