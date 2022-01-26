@@ -13,7 +13,7 @@
 		"The package command used to install packages"
 	],
 
-	"PKGInstallCMD" : "apt-get install -y ",
+	"PKGInstallCMD" : "/root/mega_install_packages.sh ",
 
 	"PackagesToAdd_CMT": [
 		"Which package names to install",
@@ -24,6 +24,7 @@
 
 	"PackagesToAdd" : [
 		"sudo",
+		"rsync",
 		"apt-utils",
 		"lsb-release",
 		"libc-bin",
@@ -169,6 +170,7 @@
 	"CopyFiles_Stage0": [
 		"cross_x86",
 		"build_install_mesa.sh",
+		"mega_install_packages.sh",
 		"break_chroot.sh",
 		"unbreak_chroot.sh"
 	],
@@ -182,6 +184,7 @@
 	"CopyFiles_Stage1": [
 		["cross_x86", "root/"],
 		["build_install_mesa.sh", "root/"],
+		["mega_install_packages.sh", "root/"],
 		["break_chroot.sh", "/"],
 		["unbreak_chroot.sh", "/"]
 	],

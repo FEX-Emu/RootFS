@@ -307,7 +307,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
     for command in config_json["Commands_InChroot"]:
         ExecuteCommandAndWait(tn, command)
 
-    Command = "for pkg in "
+    Command = config_json["PKGInstallCMD"]
     Send = False
     for app in config_json["PackagesToAdd"]:
         Command = Command + " " + app
@@ -315,12 +315,10 @@ def Stage1(CacheDir, RootFSDir, config_json):
         # Lets not go right up against the limit to be safe, but get close
         MAX_COMMAND_LENGTH = 2048000
         if len(Command) > MAX_COMMAND_LENGTH:
-            Command = Command + "; do " + config_json["PKGInstallCMD"] + "$pkg; done"
             ExecuteCommandAndWait(tn, Command)
-            Command = "for pkg in "
+            Command = config_json["PKGInstallCMD"]
 
     # Finish the remaining installs
-    Command = Command + "; do " + config_json["PKGInstallCMD"] + "$pkg; done"
     ExecuteCommandAndWait(tn, Command)
 
     print("Commands_InChroot2")
