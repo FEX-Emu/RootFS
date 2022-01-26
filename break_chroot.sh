@@ -53,6 +53,9 @@ rm -Rf "$SCRIPTPATH/root"
 mv "$SCRIPTPATH/srv" "$BACKUPPATH"
 mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
 
+# Only move opt if it is empty
+[ "$(ls -A $SCRIPTPATH/opt)" ] && true || mv "$SCRIPTPATH/opt" "$BACKUPPATH"
+
 # Copy over the apt folders
 mkdir -p "$BACKUPPATH/var/cache/"
 mkdir -p "$BACKUPPATH/var/lib/"

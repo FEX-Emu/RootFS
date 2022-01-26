@@ -30,6 +30,9 @@ rm -Rf "$BACKUPPATH/root"
 mv "$BACKUPPATH/srv" "$SCRIPTPATH"
 mv "$BACKUPPATH/tmp" "$SCRIPTPATH"
 
+# Only move opt if it is empty
+[ "$(ls -A $BACKUPPATH/opt)" ] && true || mv "$BACKUPPATH/opt" "$SCRIPTPATH"
+
 echo "Moving rootfs apt folders back to original location"
 mv "$BACKUPPATH/var/cache/apt" "$SCRIPTPATH/var/cache/"
 mv "$BACKUPPATH/var/lib/apt" "$SCRIPTPATH/var/lib/"
