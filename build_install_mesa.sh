@@ -5,8 +5,11 @@ apt-get update
 
 cd /root
 export DEBIAN_FRONTEND=noninteractive
-apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu llvm-dev libvulkan-dev
+apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
+	llvm-dev libvulkan-dev libpciaccess-dev
+
 apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
+	libpciaccess-dev:i386 \
 	libx11-dev:i386 \
 	libx11-xcb-dev:i386 \
 	libxcb-dri3-dev:i386 \
@@ -26,24 +29,21 @@ apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland
 
 apt-get build-dep -y mesa
 
-git clone --branch mesa-21.3.0-fex-rc2 --depth=1 https://gitlab.freedesktop.org/sonicadvance1/mesa.git
+# Move to /root/
+cd /root
 
-cd mesa
+# Build and install DRM
+git clone --depth=1 --branch libdrm-2.4.109 https://gitlab.freedesktop.org/mesa/drm.git
+cd drm
+
 mkdir Build
 mkdir Build_x86
-
-export DRI_DRIVERS="i915,i965,r100,r200,nouveau"
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi"
-export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom"
 
 cd Build
 meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 	-Dbuildtype=release \
 	-Db_ndebug=true \
-	-Ddri-drivers=$DRI_DRIVERS \
-	-Dgallium-drivers=$GALLIUM_DRIVERS \
-	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11,wayland \
+	-Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
 	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	..
@@ -57,10 +57,51 @@ cd Build_x86
 meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 	-Dbuildtype=release \
 	-Db_ndebug=true \
-	-Ddri-drivers=$DRI_DRIVERS \
+	-Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
+	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+	--cross-file /root/cross_x86 \
+	..
+
+ninja
+ninja install
+
+# Move to /root/
+cd /root
+
+# Build and install mesa
+git clone --branch mesa-22.0.0-rc1 --depth=1 https://gitlab.freedesktop.org/mesa/mesa.git
+
+cd mesa
+mkdir Build
+mkdir Build_x86
+
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi"
+export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom"
+
+cd Build
+meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
+	-Dbuildtype=release \
+	-Db_ndebug=true \
 	-Dgallium-drivers=$GALLIUM_DRIVERS \
 	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11,wayland \
+	-Dplatforms=x11 \
+	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+	..
+
+ninja
+ninja install
+
+cd ../
+cd Build_x86
+
+meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
+	-Dbuildtype=release \
+	-Db_ndebug=true \
+	-Dgallium-drivers=$GALLIUM_DRIVERS \
+	-Dvulkan-drivers=$VULKAN_DRIVERS \
+	-Dplatforms=x11 \
 	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	--cross-file /root/cross_x86 \
