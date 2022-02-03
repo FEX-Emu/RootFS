@@ -244,9 +244,13 @@
 
 	"Commands_InChroot2": [
 		"sh /root/build_install_mesa.sh",
+		"apt-get purge -y lib*-dev",
+		"apt-get purge -y lib*-dev:i386",
+		"apt autoremove -y --purge",
 		"apt-get clean",
 		"rm -Rf /usr/local",
 		"ln -s . usr/local",
+		"rm -Rf /root/*",
 		"sh ./break_chroot.sh"
 	],
 
@@ -264,8 +268,7 @@
 		"rmdir $ROOTFS/proc",
 		"rmdir $ROOTFS/dev/pts",
 		"rmdir $ROOTFS/dev",
-		"rmdir $ROOTFS/sys",
-		"rm -Rf $ROOTFS/root/"
+		"rmdir $ROOTFS/sys"
 	],
 
 	"RemoveFiles_Stage2": [
