@@ -11,6 +11,7 @@ import tarfile
 import telnetlib
 import time
 import json
+from pathlib import Path
 
 def CreateDir(Dir):
     try:
@@ -177,13 +178,28 @@ def Stage0(CacheDir, RootFSDir, config_json):
     CreateGuestVMImage (RootFSDir, LinuxImage, config_json)
 
 def Stage1(CacheDir, RootFSDir, config_json):
-    os.system("killall -9 %s" % (config_json["QEmu"]))
-
 # Need to wait for some of the previous applications to give up their deferred locks
     time.sleep(5)
 
     NumCores = subprocess.run(["nproc"], stdout=subprocess.PIPE).stdout.decode().rstrip()
+    TelnetPort = 4321
+    TelnetFile = "/tmp/FEX_ROOTFS_{}".format(TelnetPort)
 
+    for Port in range(4321, 4400):
+        try:
+            TelnetPort = Port
+            TelnetFile = "/tmp/FEX_ROOTFS_{}".format(TelnetPort)
+            Path(TelnetFile).touch(exist_ok=False)
+        except FileExistsError:
+            # Try again
+            continue
+        except:
+            raise
+
+        # Made a temporary file
+        break;
+
+    print("Telnet port {}".format(TelnetPort))
     QEmuCommand = [
         config_json["QEmu"],
         '-drive',
@@ -201,7 +217,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
         '-nic',
         'user,model=virtio-net-pci',
         '-serial',
-        'telnet:localhost:4321,server'
+        'telnet:localhost:{},server'.format(TelnetPort)
     ]
 
     process = subprocess.Popen(QEmuCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin = subprocess.PIPE)
@@ -210,7 +226,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
         if line.decode().find("QEMU waiting for connection") != -1:
             break
 
-    tn = telnetlib.Telnet("localhost", 4321)
+    tn = telnetlib.Telnet("localhost", TelnetPort)
     print("Connected via telnet. Waiting for login")
 
     PrevLine = b""
@@ -348,6 +364,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
     print("Done with Stage1 Image!")
 
     tn.close()
+    os.remove(TelnetFile)
 
     process.wait()
 
