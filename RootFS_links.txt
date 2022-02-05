@@ -1,8 +1,8 @@
 ubuntu
 21.10
 Ubuntu 21.10
-https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_10/2022-02-02/Ubuntu_21_10.sqsh
-d59413f90ee6648a
+https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_10/2022-02-05/Ubuntu_21_10.sqsh
+6fe5c6d8aed3f68a
 ubuntu
 21.04
 Ubuntu 21.04
