@@ -42,16 +42,29 @@ mv "$SCRIPTPATH/etc/resolv.conf" "$BACKUPPATH/etc/"
 mv "$SCRIPTPATH/etc/timezone" "$BACKUPPATH/etc/"
 mv "$SCRIPTPATH/etc/localtime" "$BACKUPPATH/etc/"
 mv "$SCRIPTPATH/etc/passwd" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/passwd-" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/group" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/group-" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/shadow" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/shadow-" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/gshadow" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/gshadow-" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/fstab" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/hostname" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/mtab" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/subuid" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/subgid" "$BACKUPPATH/etc/"
+mv "$SCRIPTPATH/etc/machine-id" "$BACKUPPATH/etc/"
 
 # Move various folders
 mv "$SCRIPTPATH/boot" "$BACKUPPATH"
 mv "$SCRIPTPATH/home" "$BACKUPPATH"
 mv "$SCRIPTPATH/media" "$BACKUPPATH"
 mv "$SCRIPTPATH/mnt" "$BACKUPPATH"
-rsync -a "$SCRIPTPATH/root" "$BACKUPPATH"
-rm -Rf "$SCRIPTPATH/root"
+mv "$SCRIPTPATH/root" "$BACKUPPATH"
 mv "$SCRIPTPATH/srv" "$BACKUPPATH"
 mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
+mv "$SCRIPTPATH/run" "$BACKUPPATH"
 
 # Only move opt if it is empty
 [ "$(ls -A $SCRIPTPATH/opt)" ] && true || mv "$SCRIPTPATH/opt" "$BACKUPPATH"
@@ -59,9 +72,14 @@ mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
 # Copy over the apt folders
 mkdir -p "$BACKUPPATH/var/cache/"
 mkdir -p "$BACKUPPATH/var/lib/"
+mkdir -p "$BACKUPPATH/var/lib/dbus/"
 
 mv "$SCRIPTPATH/var/cache/apt" "$BACKUPPATH/var/cache/"
 mv "$SCRIPTPATH/var/lib/apt" "$BACKUPPATH/var/lib/"
+mv "$SCRIPTPATH/var/tmp" "$BACKUPPATH/var/"
+mv "$SCRIPTPATH/var/run" "$BACKUPPATH/var/"
+mv "$SCRIPTPATH/var/lock" "$BACKUPPATH/var/"
+mv "$SCRIPTPATH/var/lib/dbus/machine-id" "$BACKUPPATH/var/lib/dbus/"
 
 # If user was tinkering the the chroot then likely there are things that are set to root ownership
 # Change ownership to fix this
