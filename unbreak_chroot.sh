@@ -72,10 +72,10 @@ mkdir "$SCRIPTPATH/dev/pts"
 mkdir "$SCRIPTPATH/proc"
 
 echo "Mounting rootfs paths"
-sudo mount -t proc /proc $SCRIPTPATH/proc/
-sudo mount --rbind --make-rslave /sys $SCRIPTPATH/sys/
-sudo mount --rbind --make-rslave /dev $SCRIPTPATH/dev/
-sudo mount --rbind --make-rslave /dev/pts $SCRIPTPATH/dev/pts/
+sudo mount -t proc proc $SCRIPTPATH/proc/
+sudo mount -t sysfs sysfs $SCRIPTPATH/sys/
+sudo mount -t devtmpfs udev $SCRIPTPATH/dev/
+sudo mount -t devpts devpts $SCRIPTPATH/dev/pts/
 
 echo "Mounting aarch64 paths"
 
