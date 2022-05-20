@@ -37,6 +37,8 @@
 		"libglx-mesa0",
 		"libgl1-mesa-dri",
 		"libgl1-mesa-glx",
+		"libglvnd-dev",
+		"libglvnd-dev:i386",
 		"libglu1-mesa",
 		"mesa-utils",
 		"mesa-utils-extra",
@@ -164,7 +166,7 @@
 	],
 	"CopyFiles_Stage0": [
 		"cross_x86",
-		"build_install_mesa.sh",
+		"build_install_mesa_21_10.sh",
 		"mega_install_packages.sh",
 		"break_chroot.sh",
 		"unbreak_chroot.sh"
@@ -178,7 +180,7 @@
 
 	"CopyFiles_Stage1": [
 		["cross_x86", "root/"],
-		["build_install_mesa.sh", "root/"],
+		["build_install_mesa_21_10.sh", "root/"],
 		["mega_install_packages.sh", "root/"],
 		["break_chroot.sh", "/"],
 		["unbreak_chroot.sh", "/"]
@@ -240,7 +242,7 @@
 	],
 
 	"Commands_InChroot2": [
-		"sh /root/build_install_mesa.sh",
+		"sh /root/build_install_mesa_21_10.sh",
 		"apt-get purge -y lib*-dev",
 		"apt-get purge -y lib*-dev:i386",
 		"apt autoremove -y --purge",
