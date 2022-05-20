@@ -33,7 +33,7 @@ apt-get build-dep -y mesa
 cd /root
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.109 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.110 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -70,14 +70,14 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --branch mesa-22.0.0-rc1 --depth=1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --branch 22.1 --depth=1 https://gitlab.freedesktop.org/mesa/mesa.git
 
 cd mesa
 mkdir Build
 mkdir Build_x86
 
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi"
-export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom"
+export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost"
 
 cd Build
 meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
