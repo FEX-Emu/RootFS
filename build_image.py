@@ -12,6 +12,18 @@ import telnetlib
 import time
 import json
 from pathlib import Path
+from shutil import which
+
+NeededApplications = [
+        "git",
+        "qemu-img",
+        "virt-format",
+        "guestmount",
+        "guestunmount",
+        "cloud-localds",
+        "pigz",
+        "mksquashfs",
+    ]
 
 def CreateDir(Dir):
     try:
@@ -442,6 +454,16 @@ def Stage2(CacheDir, RootFSDir, config_json):
     print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
     print("Completed squashfs image now at %s" % (config_json["ImageName"] + ".sqsh"))
 
+def CheckPrograms():
+    Missing = False
+    for Binary in NeededApplications:
+        if which(Binary) is None:
+            print("Missing necessary application '{}'".format(Binary))
+            Missing = True
+    return not Missing
+
+if CheckPrograms() == False:
+    sys.exit(1)
 
 CacheDir = sys.argv[2]
 RootFSDir = sys.argv[3]
