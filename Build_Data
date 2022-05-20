@@ -66,6 +66,10 @@ b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_04
 b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.sqsh Ubuntu_21_10/`date +%Y-%m-%d`/Ubuntu_21_10.sqsh
 b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.sqsh
 
+# Hashes
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.sqsh
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh
+
 # Modify RootFS_links.txt and upload to b2
 b2 upload-file fex-rootfs RootFS_links.txt RootFS_links.txt
 

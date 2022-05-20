@@ -1,13 +1,13 @@
 ubuntu
 22.04
 Ubuntu 22.04
-https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_22_04/2022-05-19/Ubuntu_22_04.sqsh
-1e3fb910a2c96cca
+https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_22_04/2022-05-20/Ubuntu_22_04.sqsh
+87e76e3fe74e23eb
 ubuntu
 21.10
 Ubuntu 21.10
-https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_10/2022-05-19/Ubuntu_21_10.sqsh
-fd71cf0f1941482e
+https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_10/2022-05-20/Ubuntu_21_10.sqsh
+a2fa68cf3b26aaa2
 ubuntu
 21.04
 Ubuntu 21.04
