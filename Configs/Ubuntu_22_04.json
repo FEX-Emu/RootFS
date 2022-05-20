@@ -1,8 +1,8 @@
 {
-	"ImageName" : "Ubuntu_21_10",
-	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/21.10/release/SHA256SUMS",
-	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/21.10/release/",
-	"Guest_Image"   : "ubuntu-base-21.10-base-amd64.tar.gz",
+	"ImageName" : "Ubuntu_22_04",
+	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/SHA256SUMS",
+	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/",
+	"Guest_Image"   : "ubuntu-base-22.04-base-amd64.tar.gz",
 
 	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
