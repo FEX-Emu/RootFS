@@ -1,4 +1,3 @@
-
 # Add source packages
 sed -i -e "s/^# deb/deb/g" /etc/apt/sources.list
 apt-get update
@@ -85,7 +84,7 @@ meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 	-Db_ndebug=true \
 	-Dgallium-drivers=$GALLIUM_DRIVERS \
 	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11,wayland \
+	-Dplatforms=x11 \
 	-Dglvnd=true \
 	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
@@ -102,7 +101,7 @@ meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 	-Db_ndebug=true \
 	-Dgallium-drivers=$GALLIUM_DRIVERS \
 	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11,wayland \
+	-Dplatforms=x11 \
 	-Dglvnd=true \
 	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
 	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
