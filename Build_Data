@@ -31,7 +31,6 @@ export DESTDIR=$(pwd)/install
 meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
--Ddri-drivers=i915,i965,r100,r200,nouveau \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
 -Dplatforms=x11,wayland \
@@ -46,7 +45,6 @@ export DESTDIR=$(pwd)/install
 meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
--Ddri-drivers=i915,i965,r100,r200,nouveau \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
 -Dplatforms=x11,wayland \
@@ -59,10 +57,17 @@ cd install; tar -czf ../mesa_21_1_x86.tar.gz *; cd ..
 
 # 2m52s
 
-time ../build_image.py ../Configs/Ubuntu.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_10_21_0/
 time ../build_image.py ../Configs/Ubuntu_21_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_04_main/
 time ../build_image.py ../Configs/Ubuntu_21_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/
-time ../build_image.py ../Configs/Ubuntu_main.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_10_main/
+time ../build_image.py ../Configs/Ubuntu_22_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/
+
+# Upload to b2
+b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_04_main/Ubuntu_21_04.sqsh Ubuntu_21_04/`date +%Y-%m-%d`/Ubuntu_21_04.sqsh
+b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.sqsh Ubuntu_21_10/`date +%Y-%m-%d`/Ubuntu_21_10.sqsh
+b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.sqsh
+
+# Modify RootFS_links.txt and upload to b2
+b2 upload-file fex-rootfs RootFS_links.txt RootFS_links.txt
 
 ## Errors
 virt-format may fail.
@@ -77,6 +82,6 @@ CC=clang CXX=clang++ meson -Dprefix=/usr  -Dlibdir=/usr/lib/aarch64-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
 -Dgallium-drivers=swrast,kmsro,v3d,vc4,freedreno,virgl,lima,panfrost,swrast,zink \
--Dvulkan-drivers=freedreno,swrast,broadcom \
+-Dvulkan-drivers=freedreno,broadcom \
 -Dplatforms=x11,wayland \
 ..
