@@ -71,6 +71,8 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
         with requests.get(BaseURL + Image, stream = True) as r:
             with open(CacheDir + "/" + Image, "wb") as ImageFile:
                 shutil.copyfileobj(r.raw, ImageFile)
+    else:
+        print("\tFile hash matched. Skipping Download");
 
 def CreateGuestVMImage(RootFSDir, LinuxImage, config_json):
     if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 30G") != 0:
