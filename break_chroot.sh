@@ -23,6 +23,7 @@ rm $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 # Unmount and delete mount points
 echo "Unmounting container mounts"
 
+sudo umount -R "$SCRIPTPATH/tmp"
 sudo umount "$SCRIPTPATH/proc/"
 sudo umount -R "$SCRIPTPATH/sys/"
 sudo umount -R "$SCRIPTPATH/dev/pts/"
@@ -83,5 +84,15 @@ mv "$SCRIPTPATH/var/lib/dbus/machine-id" "$BACKUPPATH/var/lib/dbus/"
 
 # If user was tinkering the the chroot then likely there are things that are set to root ownership
 # Change ownership to fix this
+# Explicitly avoiding the mount folders. Avoids warning from dangling mounts.
 echo "Fixing any potential permission issues"
-sudo chown -R $USER:$GROUP "$SCRIPTPATH/"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/bin"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/chroot"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/etc"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/lib"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/lib32"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/lib64"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/libx32"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/sbin"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/usr"
+sudo chown -R $USER:$GROUP "$SCRIPTPATH/var"

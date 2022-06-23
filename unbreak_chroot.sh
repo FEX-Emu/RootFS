@@ -72,10 +72,12 @@ mkdir "$SCRIPTPATH/dev/pts"
 mkdir "$SCRIPTPATH/proc"
 
 echo "Mounting rootfs paths"
+
 sudo mount -t proc proc $SCRIPTPATH/proc/
 sudo mount -t sysfs sysfs $SCRIPTPATH/sys/
 sudo mount -t devtmpfs udev $SCRIPTPATH/dev/
 sudo mount -t devpts devpts $SCRIPTPATH/dev/pts/
+sudo mount --rbind /tmp $SCRIPTPATH/tmp
 
 echo "Mounting aarch64 paths"
 
@@ -85,5 +87,7 @@ sudo mount --rbind /lib/ld-linux-aarch64.so.1 $SCRIPTPATH/lib/ld-linux-aarch64.s
 sudo mount --rbind /lib/aarch64-linux-gnu $SCRIPTPATH/lib/aarch64-linux-gnu
 
 echo "Chrooting into container"
-echo "!!! Make sure to execute break_chroot.sh after leaving !!!"
 sudo chroot .
+
+echo "Cleaning up chroot"
+$SCRIPTPATH/break_chroot.sh
