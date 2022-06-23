@@ -86,6 +86,17 @@ touch $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 sudo mount --rbind /lib/ld-linux-aarch64.so.1 $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 sudo mount --rbind /lib/aarch64-linux-gnu $SCRIPTPATH/lib/aarch64-linux-gnu
 
+# Overwrite the current rootfs because we're going in to a chroot
+export FEX_ROOTFS=""
+
+if command -v FEXServer>/dev/null; then
+	echo "Starting FEXServer"
+	# Start FEXServer with a 30 second timeout
+	FEXServer -p 30
+fi
+
+exit
+
 echo "Chrooting into container"
 sudo chroot .
 
