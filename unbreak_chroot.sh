@@ -95,8 +95,6 @@ if command -v FEXServer>/dev/null; then
 	FEXServer -p 30
 fi
 
-exit
-
 echo "Chrooting into container"
 sudo chroot .
 
