@@ -92,7 +92,7 @@ export FEX_ROOTFS=""
 if command -v FEXServer>/dev/null; then
 	echo "Starting FEXServer"
 	# Start FEXServer with a 30 second timeout
-	FEXServer -p 30
+	sudo FEXServer -p 30
 fi
 
 echo "Chrooting into container"
