@@ -1,0 +1,32 @@
+{
+  "v1": {
+    "Ubuntu 22.04 (EroFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "22.04",
+      "URL": "https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_22_04/2022-05-20/Ubuntu_22_04.ero",
+      "Hash": "adc64a91f3392ed5",
+      "Type": "erofs"
+    },
+    "Ubuntu 22.04 (SquashFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "22.04",
+      "URL": "https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_22_04/2022-05-20/Ubuntu_22_04.sqsh",
+      "Hash": "f3b76902d5794000",
+      "Type": "squashfs"
+    },
+    "Ubuntu 21.10 (SquashFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "21.10",
+      "URL": "https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_10/2022-05-20/Ubuntu_21_10.sqsh",
+      "Hash": "209060ff340d4e92",
+      "Type": "squashfs"
+    },
+    "Ubuntu 21.04 (SquashFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "21.04",
+      "URL": "https://rootfs.fex-emu.org/file/fex-rootfs/Ubuntu_21_04/2022-02-02/Ubuntu_21_04.sqsh",
+      "Hash": "6d24d174140db63b",
+      "Type": "squashfs"
+    }
+  }
+}
