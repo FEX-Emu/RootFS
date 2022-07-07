@@ -77,7 +77,7 @@ FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_2
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero
 
 # Modify RootFS_links.txt and upload to b2
-b2 upload-file fex-rootfs RootFS_links.txt RootFS_links.txt
+b2 upload-file fex-rootfs RootFS_links.json RootFS_links.json
 
 ## Errors
 virt-format may fail.
