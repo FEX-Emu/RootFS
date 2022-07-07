@@ -250,7 +250,6 @@
 		"apt autoremove -y --purge",
 		"apt-get clean",
 		"rm -Rf /usr/local",
-		"ln -s . usr/local",
 		"rm -Rf /root/*",
 		"sh ./break_chroot.sh"
 	],
