@@ -23,6 +23,7 @@ NeededApplications = [
         "cloud-localds",
         "pigz",
         "mksquashfs",
+        "mkfs.erofs",
     ]
 
 def CreateDir(Dir):
@@ -369,6 +370,9 @@ def Stage1(CacheDir, RootFSDir, config_json):
     for dir in config_json["RemoveDirs_Stage2"]:
         ExecuteCommandAndWait(tn, "rm -Rf ./RootFS/" + dir)
 
+    # Reset the terminal to make it sane
+    ExecuteCommandAndWait(tn, "reset")
+
     ExecuteCommandAndWait(tn, "cd RootFS/")
     ExecuteCommandAndWait(tn, "tar -I pigz -cf ../Stage1_" + config_json["Guest_Image"] + " *")
     ExecuteCommandAndWait(tn, "cd ..")
@@ -397,6 +401,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     Stage1_RootFS = RootFSDir + "/Stage1_RootFS/"
     SquashFSTarget = RootFSDir + "/" + config_json["ImageName"] + ".sqsh"
+    EroFSTarget = RootFSDir + "/" + config_json["ImageName"] + ".ero"
 
     CreateDir(Stage1_RootFS)
 
@@ -451,8 +456,13 @@ def Stage2(CacheDir, RootFSDir, config_json):
     if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd") != 0:
         raise Exception("mksquashfs failure")
 
+    print("Repackaging image to EroFS. Using LZ4HC compression level 12. Might take a while!")
+    if os.system("mkfs.erofs -x-1 -zlz4hc,12 " + EroFSTarget + " " + Stage1_RootFS) != 0:
+        raise Exception("mkfs.erofs failure")
+
     print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
     print("Completed squashfs image now at %s" % (config_json["ImageName"] + ".sqsh"))
+    print("Completed EroFS image now at %s" % (config_json["ImageName"] + ".ero"))
 
 def CheckPrograms():
     Missing = False
