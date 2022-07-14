@@ -5,7 +5,7 @@ apt-get update
 cd /root
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
-	llvm-dev libvulkan-dev libpciaccess-dev
+	llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev
 
 apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
 	libpciaccess-dev:i386 \
@@ -24,7 +24,8 @@ apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland
 	libxfixes-dev:i386 \
 	libxrandr-dev:i386 \
 	libxshmfence-dev:i386 \
-	libxxf86vm-dev:i386
+	libxxf86vm-dev:i386 \
+	libglvnd-dev:i386
 
 apt-get build-dep -y mesa
 
