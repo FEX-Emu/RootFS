@@ -236,6 +236,8 @@
 		"sh /root/build_install_mesa.sh",
 		"apt-get purge -y lib*-dev",
 		"apt-get purge -y lib*-dev:i386",
+		"apt-get purge -y *-cross",
+		"apt-get purge -y cpp-*",
 		"SUDO_FORCE_REMOVE=yes apt-get remove -y sudo",
 		"apt autoremove -y --purge",
 		"apt-get clean",
