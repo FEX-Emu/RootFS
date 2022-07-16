@@ -1,3 +1,4 @@
+#!/bin/sh
 
 # Add source packages
 sed -i -e "s/^# deb/deb/g" /etc/apt/sources.list

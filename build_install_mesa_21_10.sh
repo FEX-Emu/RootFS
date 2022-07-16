@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Add source packages
 sed -i -e "s/^# deb/deb/g" /etc/apt/sources.list
 apt-get update
@@ -113,3 +115,5 @@ ninja
 ninja install
 
 cd /
+rm -Rf /root/mesa
+rm -Rf /root/drm
