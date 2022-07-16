@@ -61,6 +61,7 @@ cd install; tar -czf ../mesa_21_1_x86.tar.gz *; cd ..
 
 time ../build_image.py ../Configs/Ubuntu_21_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/
 time ../build_image.py ../Configs/Ubuntu_22_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/
+time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
 
 # Upload to b2
 b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.sqsh Ubuntu_21_10/`date +%Y-%m-%d`/Ubuntu_21_10.sqsh
@@ -69,12 +70,20 @@ b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10
 b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.sqsh
 b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.ero
 
+b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04_Minimal.sqsh
+b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04_Minimal.ero
+
+
 # Hashes
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_21_10_main/Ubuntu_21_10.ero
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero
+
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero
+
 
 # Modify RootFS_links.txt and upload to b2
 b2 upload-file fex-rootfs RootFS_links.json RootFS_links.json
