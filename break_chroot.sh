@@ -35,6 +35,9 @@ rmdir "$SCRIPTPATH/dev/pts/"
 rmdir "$SCRIPTPATH/dev"
 rmdir "$SCRIPTPATH/proc"
 
+# Remove FEXConfig directory
+rm -Rf $SCRIPTPATH/usr/share/fex-emu
+
 # Move files from etc that we need to remove
 echo "Backing up chroot files"
 mkdir -p "$BACKUPPATH/etc/"
