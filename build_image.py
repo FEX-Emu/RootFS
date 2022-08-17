@@ -453,7 +453,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
     os.chdir(OldDir)
 
     print("Repackaging image to SquashsFS")
-    if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd") != 0:
+    if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd -no-xattrs") != 0:
         raise Exception("mksquashfs failure")
 
     print("Repackaging image to EroFS. Using LZ4HC compression level 12. Might take a while!")
