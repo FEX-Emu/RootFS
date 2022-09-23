@@ -66,7 +66,7 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
             break
 
     if FoundImage == False:
-        raise Exception("Couldn't find image sda256sum")
+        raise Exception("Couldn't find image sha256sum")
 
     CalculatedSHA256Sum = ""
     # Found an image, if it exists then sha256sum it, else download it again
