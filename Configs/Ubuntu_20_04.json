@@ -1,8 +1,8 @@
 {
-	"ImageName" : "Ubuntu_21_10",
-	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/21.10/release/SHA256SUMS",
-	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/21.10/release/",
-	"Guest_Image"   : "ubuntu-base-21.10-base-amd64.tar.gz",
+	"ImageName" : "Ubuntu_20_04",
+	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/SHA256SUMS",
+	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/",
+	"Guest_Image"   : "ubuntu-base-20.04.1-base-amd64.tar.gz",
 
 	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -163,7 +163,7 @@
 	],
 	"CopyFiles_Stage0": [
 		"cross_x86",
-		"build_install_mesa_21_10.sh",
+		"build_install_mesa_20_04.sh",
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
 		"mega_install_packages.sh",
@@ -179,7 +179,7 @@
 
 	"CopyFiles_Stage1": [
 		["cross_x86", "root/"],
-		["build_install_mesa_21_10.sh", "root/"],
+		["build_install_mesa_20_04.sh", "root/"],
 		["build_install_renderdoc.sh", "root/"],
 		["build_install_gfxreconstruct.sh", "root/"],
 		["mega_install_packages.sh", "root/"],
@@ -243,7 +243,7 @@
 	],
 
 	"Commands_InChroot2": [
-		"sh /root/build_install_mesa_21_10.sh",
+		"sh /root/build_install_mesa_20_04.sh",
 		"sh /root/build_install_renderdoc.sh",
 		"sh /root/build_install_gfxreconstruct.sh",
 		"apt-get purge -y lib*-dev",
