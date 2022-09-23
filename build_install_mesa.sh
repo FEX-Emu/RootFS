@@ -72,7 +72,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --branch 22.1 --depth=1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-22.2.0-fex https://gitlab.freedesktop.org/sonicadvance1/mesa.git
 
 cd mesa
 mkdir Build
