@@ -3,36 +3,29 @@
     "Ubuntu 22.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-07-07/Ubuntu_22_04.ero",
-      "Hash": "5d2401d25704a7ae",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-09-22/Ubuntu_22_04.ero",
+      "Hash": "8b936e86154f0be4",
       "Type": "erofs"
     },
     "Ubuntu 22.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-07-07/Ubuntu_22_04.sqsh",
-      "Hash": "ed3f050b272b1cb7",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-09-22/Ubuntu_22_04.sqsh",
+      "Hash": "76b9c6bd9f74fff6",
       "Type": "squashfs"
     },
-    "Ubuntu 21.10 (EroFS)": {
+    "Ubuntu 20.04 (EroFS)": {
       "DistroMatch": "ubuntu",
-      "DistroVersion": "21.10",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_21_10/2022-07-07/Ubuntu_21_10.ero",
-      "Hash": "6a8bfd73b949a152",
+      "DistroVersion": "20.04",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-09-22/Ubuntu_20_04.ero",
+      "Hash": "8e8a82535f5e1839",
       "Type": "erofs"
     },
-    "Ubuntu 21.10 (SquashFS)": {
+    "Ubuntu 20.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
-      "DistroVersion": "21.10",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_21_10/2022-07-07/Ubuntu_21_10.sqsh",
-      "Hash": "d511dfa168f79d0",
-      "Type": "squashfs"
-    },
-    "Ubuntu 21.04 (SquashFS)": {
-      "DistroMatch": "ubuntu",
-      "DistroVersion": "21.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_21_04/2022-02-02/Ubuntu_21_04.sqsh",
-      "Hash": "6d24d174140db63b",
+      "DistroVersion": "20.04",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-09-22/Ubuntu_20_04.sqsh",
+      "Hash": "68069a8c68062649",
       "Type": "squashfs"
     }
   }
