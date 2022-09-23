@@ -19,7 +19,12 @@ apt-get install -y \
 	qt5-qmake \
 	libqt5svg5-dev \
 	libqt5x11extras5-dev \
-	cmake
+	cmake \
+	git
+
+apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
+	llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev
+
 
 # Just in case we missed some
 apt-get build-dep -y renderdoc
