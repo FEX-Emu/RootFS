@@ -3,15 +3,15 @@
     "Ubuntu 22.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-09-22/Ubuntu_22_04.ero",
-      "Hash": "8b936e86154f0be4",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-10-12/Ubuntu_22_04.ero",
+      "Hash": "fe8bc4e94cba29db",
       "Type": "erofs"
     },
     "Ubuntu 22.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-09-22/Ubuntu_22_04.sqsh",
-      "Hash": "76b9c6bd9f74fff6",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-10-12/Ubuntu_22_04.sqsh",
+      "Hash": "f1570212aaecb48b",
       "Type": "squashfs"
     },
     "Ubuntu 20.04 (EroFS)": {
