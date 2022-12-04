@@ -3,43 +3,43 @@
     "Ubuntu 22.10 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.10",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_10/2022-11-08/Ubuntu_22_10.ero",
-      "Hash": "89170f16548543c2",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_10/2022-12-04/Ubuntu_22_10.ero",
+      "Hash": "e9d8f608c164f1e4",
       "Type": "erofs"
     },
     "Ubuntu 22.10 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.10",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_10/2022-11-08/Ubuntu_22_10.sqsh",
-      "Hash": "fc12522971d1d3cb",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_10/2022-12-04/Ubuntu_22_10.sqsh",
+      "Hash": "b0084e2bb9a455c4",
       "Type": "squashfs"
     },
     "Ubuntu 22.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-10-12/Ubuntu_22_04.ero",
-      "Hash": "fe8bc4e94cba29db",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-12-04/Ubuntu_22_04.ero",
+      "Hash": "8c4f8c60a7627190",
       "Type": "erofs"
     },
     "Ubuntu 22.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-10-12/Ubuntu_22_04.sqsh",
-      "Hash": "f1570212aaecb48b",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_22_04/2022-12-04/Ubuntu_22_04.sqsh",
+      "Hash": "7cc5c1c4adb5dc0",
       "Type": "squashfs"
     },
     "Ubuntu 20.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "20.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-09-22/Ubuntu_20_04.ero",
-      "Hash": "8e8a82535f5e1839",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-12-04/Ubuntu_20_04.ero",
+      "Hash": "de2dcf4fc9d3a583",
       "Type": "erofs"
     },
     "Ubuntu 20.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "20.04",
-      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-09-22/Ubuntu_20_04.sqsh",
-      "Hash": "68069a8c68062649",
+      "URL": "https://rootfs.fex-emu.com/file/fex-rootfs/Ubuntu_20_04/2022-12-04/Ubuntu_20_04.sqsh",
+      "Hash": "e422da237571fcaf",
       "Type": "squashfs"
     }
   }
