@@ -9,7 +9,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
 	llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev
 
-apt-get install -y libvulkan-dev:i386 libdrm-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
+apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
 	libpciaccess-dev:i386 \
 	libx11-dev:i386 \
 	libx11-xcb-dev:i386 \
@@ -75,10 +75,9 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-22.3.0 https://gitlab.freedesktop.org/mesa/mesa.git
 
 cd mesa
-git checkout f8f4648cac19b5d3e67596f1b8c155c61f4f1c32
 mkdir Build
 mkdir Build_x86
 
