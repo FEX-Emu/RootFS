@@ -168,6 +168,7 @@
 	"CopyFiles_Stage0": [
 		"cross_x86",
 		"build_install_mesa.sh",
+		"build_libsegfault.sh",
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
 		"mega_install_packages.sh",
@@ -184,6 +185,7 @@
 	"CopyFiles_Stage1": [
 		["cross_x86", "root/"],
 		["build_install_mesa.sh", "root/"],
+		["build_libsegfault.sh", "root/"],
 		["build_install_renderdoc.sh", "root/"],
 		["build_install_gfxreconstruct.sh", "root/"],
 		["mega_install_packages.sh", "root/"],
@@ -250,6 +252,7 @@
 		"sh /root/build_install_mesa.sh",
 		"sh /root/build_install_renderdoc.sh",
 		"sh /root/build_install_gfxreconstruct.sh",
+		"sh /root/build_libsegfault.sh",
 		"apt-get purge -y lib*-dev",
 		"apt-get purge -y lib*-dev:i386",
 		"apt-get purge -y *-cross",
