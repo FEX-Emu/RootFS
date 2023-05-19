@@ -144,6 +144,8 @@
 		"libnspr4",
 		"python3",
 		"python3-apt",
+		"libssl3",
+		"libssl3:i386",
 		"curl",
 		"xterm",
 		"zenity",
