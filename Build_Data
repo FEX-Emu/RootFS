@@ -59,28 +59,15 @@ cd install; tar -czf ../mesa_21_1_x86.tar.gz *; cd ..
 
 # 2m52s
 
-time ../build_image.py ../Configs/Ubuntu_20_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_04/
 time ../build_image.py ../Configs/Ubuntu_22_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/
 time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
 time ../build_image.py ../Configs/Ubuntu_22_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/
+time ../build_image.py ../Configs/Ubuntu_23_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/
 
-# Upload to b2
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_04/Ubuntu_20_04.sqsh Ubuntu_20_04/`date +%Y-%m-%d`/Ubuntu_20_04.sqsh
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_04/Ubuntu_20_04.ero Ubuntu_20_04/`date +%Y-%m-%d`/Ubuntu_20_04.ero
-
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.sqsh
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04.ero
-
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04_Minimal.sqsh
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero Ubuntu_22_04/`date +%Y-%m-%d`/Ubuntu_22_04_Minimal.ero
-
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.sqsh Ubuntu_22_10/`date +%Y-%m-%d`/Ubuntu_22_10.sqsh
-b2 upload-file fex-rootfs /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.ero Ubuntu_22_10/`date +%Y-%m-%d`/Ubuntu_22_10.ero
+# Upload to CDN
+# WebGUI atm
 
 # Hashes
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_04/Ubuntu_20_04.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_20_04/Ubuntu_20_04.ero
-
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero
 
@@ -90,8 +77,11 @@ FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.ero
 
-# Modify RootFS_links.txt and upload to b2
-b2 upload-file fex-rootfs RootFS_links.json RootFS_links.json
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/Ubuntu_23_04.sqsh
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/Ubuntu_23_04.ero
+
+# Modify RootFS_links.txt and upload to CDN
+# WebGUI atm
 
 ## Errors
 virt-format may fail.
