@@ -45,12 +45,16 @@ def GetGitRoot():
     return subprocess.run(["git" , "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).stdout.decode().rstrip()
 
 def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
+    SHAURLSplit = SHA256Sums.split('/')
+    SHAFileName = SHAURLSplit[len(SHAURLSplit) - 1]
+    CacheSHAName = CacheDir + "/" + SHAFileName
     with requests.get(SHA256Sums, stream = True) as r:
-        with open(CacheDir + "/SHA256SUMS", "wb") as SHA256SumFile:
-            shutil.copyfileobj(r.raw, SHA256SumFile)
+        with open(CacheSHAName, "wb") as SHA256SumFile:
+            for chunk in r.iter_content():
+                SHA256SumFile.write(chunk)
 
     # Open the SHA256Sum file we just downloaded
-    SHA256Sum_file = open(CacheDir + "/SHA256SUMS", "r")
+    SHA256Sum_file = open(CacheSHAName, "r")
     SHA256Sum = SHA256Sum_file.read()
     SHA256Sum_file.close()
 
@@ -59,8 +63,7 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
     for line in SHA256Sum.splitlines():
         Split = line.split(" ")
         CurrentSHA256Sum = Split[0]
-        CurrentImageName = Split[1][1:]
-        if CurrentImageName == Image:
+        if line.endswith(Image):
             FoundImage = True
             ExpectedSHA256Sum = CurrentSHA256Sum
             break
