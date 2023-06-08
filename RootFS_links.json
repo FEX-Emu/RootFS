@@ -1,5 +1,19 @@
 {
   "v1": {
+    "ArchLinux (EroFS)": {
+      "DistroMatch": "arch",
+      "DistroVersion": "rolling",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-06-07/ArchLinux.ero",
+      "Hash": "e4c2dcde1d218b81",
+      "Type": "erofs"
+    },
+    "ArchLinux (SquashFS)": {
+      "DistroMatch": "arch",
+      "DistroVersion": "rolling",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-06-07/ArchLinux.sqsh",
+      "Hash": "1bfcf28fc15d6c06",
+      "Type": "squashfs"
+    },
     "Ubuntu 23.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "23.04",
