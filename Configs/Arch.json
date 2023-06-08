@@ -1,0 +1,256 @@
+{
+  "ImageName" : "ArchLinux",
+  "Guest_SHA256Sums" : "https://geo.mirror.pkgbuild.com/iso/latest/sha256sums.txt",
+  "Guest_BaseURL" : "https://geo.mirror.pkgbuild.com/iso/latest/",
+  "Guest_Image"   : "archlinux-bootstrap-x86_64.tar.gz",
+
+  "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
+  "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
+  "Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
+  "QEmu" : "qemu-system-x86_64",
+
+  "PKGInstallCMD_CMT": [
+    "The package command used to install packages"
+  ],
+
+  "PKGInstallCMD" : "/root/mega_install_packages.sh ",
+
+  "PackagesToAdd_CMT": [
+    "Which package names to install",
+    "Package installation happens just after the `Commands_InChroot` step",
+    "Package installation will install packages one by one",
+    "Uses the PKGInstallCMD and iterates over the list individually"
+  ],
+
+  "PackagesToAdd" : [
+    "sudo",
+    "rsync",
+    "lsb-release",
+    "dbus",
+    "systemd",
+    "pulseaudio",
+    "mesa",
+    "libglvnd",
+    "lib32-libglvnd",
+    "glu",
+    "lib32-glu",
+    "mesa-utils",
+    "libunwind",
+    "lib32-libunwind",
+    "sdl12-compat",
+    "sdl2",
+    "lib32-sdl12-compat",
+    "lib32-sdl2",
+    "protobuf",
+    "protobuf-c",
+    "openal",
+    "lib32-openal",
+    "speex",
+    "lib32-speex",
+    "libvorbis",
+    "lib32-libvorbis",
+    "alsa-lib",
+    "lib32-alsa-lib",
+    "usbutils",
+    "pciutils",
+    "libpciaccess",
+    "lib32-libpciaccess",
+    "glew",
+    "lib32-glew",
+    "libxcb",
+    "lib32-libxcb",
+    "libxkbcommon-x11",
+    "lib32-libxkbcommon-x11",
+    "wayland",
+    "lib32-wayland",
+    "libx11",
+    "lib32-libx11",
+    "libxext",
+    "lib32-libxext",
+    "libxdamage",
+    "lib32-libxdamage",
+    "libxshmfence",
+    "lib32-libxshmfence",
+    "libxxf86vm",
+    "lib32-libxxf86vm",
+    "libxrandr",
+    "lib32-libxrandr",
+    "llvm-libs",
+    "lib32-llvm-libs",
+    "libva",
+    "lib32-libva",
+    "harfbuzz",
+    "lib32-harfbuzz",
+    "libvdpau",
+    "lib32-libvdpau",
+    "mesa-vdpau",
+    "fuse2",
+    "fuse3",
+    "libibus",
+    "mangohud",
+    "lib32-mangohud",
+    "libnss_nis",
+    "nspr",
+    "lib32-nspr",
+    "python",
+    "openssl",
+    "lib32-openssl",
+    "curl",
+    "xterm",
+    "zenity",
+    "xdg-desktop-portal",
+    "xdg-desktop-portal-gtk",
+    "wine",
+    "vulkan-tools",
+    "pkgconf",
+    "clinfo"
+  ],
+
+  "CopyFiles_Stage0_CMT": [
+    "This stage copies files in to a temporary mount directory",
+    "This ties in to the Stage1 to allow you to copy files from git repo to rootfs",
+    "The filename here is the path relative to git repo base",
+    "File is copied over to temp folder with same name"
+  ],
+
+  "CopyFiles_Stage0": [
+    "Scripts/Arch/cross_x86",
+    "Scripts/Arch/mega_install_packages.sh",
+    "Scripts/Arch/build_install_mesa.sh",
+    "Scripts/Arch/break_chroot.sh",
+    "Scripts/Arch/unbreak_chroot.sh"
+  ],
+
+  "CopyFiles_Stage1_CMT": [
+    "This copies the files from the stage0 mount location with to a location in the rootfs",
+    "First argument is the filename to copy from the temp folder",
+    "Second argument is the location inside the rootfs where to copy to"
+  ],
+
+  "CopyFiles_Stage1": [
+    ["cross_x86", "root/"],
+    ["mega_install_packages.sh", "root/"],
+    ["build_install_mesa.sh", "root/"],
+    ["break_chroot.sh", "/"],
+    ["unbreak_chroot.sh", "/"]
+  ],
+
+  "Commands_Stage1_0_CMT": [
+    "This stage runs commands inside the qemu VM",
+    "Allows you to install packages that the VM requires and the rootfs doesn't"
+  ],
+
+  "Commands_Stage1_0": [
+    "export DEBIAN_FRONTEND=noninteractive",
+    "apt-get update",
+    "apt-get install -y coreutils pigz"
+  ],
+
+  "RemoveFiles_Stage1_CMT": [
+    "Removes files from the rootfs prior to chrooting",
+    "Some files are preconfiguring in the rootfs and need to be changed"
+  ],
+
+  "RemoveFiles_Stage1": [
+    "/etc/hosts",
+    "/etc/resolv.conf"
+  ],
+
+  "Commands_Stage1_CMT": [
+    "Executes commands in the VM prior to chrooting",
+    "Necessary to set up mounts that the rootfs needs"
+  ],
+
+  "Commands_Stage1": [
+    "chmod +w ./RootFS/root.x86_64/proc/",
+    "chmod +w ./RootFS/root.x86_64/sys/",
+    "mv ./RootFS/root.x86_64/* ./RootFS/",
+    "rmdir ./RootFS/root.x86_64/",
+    "export ROOTFS=./RootFS",
+    "mount -t proc /proc $ROOTFS/proc/",
+    "mount --rbind --make-rslave /sys $ROOTFS/sys/",
+    "mount --rbind --make-rslave /dev $ROOTFS/dev/",
+    "mount --rbind --make-rslave /dev/pts $ROOTFS/dev/pts/"
+  ],
+
+  "Commands_InChroot_CMT": [
+    "Executes commands inside the rootfs prior to installing packages",
+    "!!! After this step, packages are installed !!!"
+  ],
+
+  "Commands_InChroot": [
+    "echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
+    "echo \"US/Eastern\" > /etc/timezone",
+    "ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime",
+    "chmod 1777 /tmp",
+    "pacman-key --init",
+    "pacman-key --populate",
+    "sed -i 's/#Server = https:\\/\\/geo.mirror.pkgbuild.com\\/$repo\\/os\\/$arch\/Server = https:\\/\\/geo.mirror.pkgbuild.com\\/$repo\\/os\\/$arch\/' /etc/pacman.d/mirrorlist",
+    "sed -i 's/CheckSpace/#CheckSpace/' /etc/pacman.conf",
+    "pacman --noconfirm -Syu",
+    "pacman --noconfirm -S perl",
+    "perl -0777 -pi -e 's/#\\[multilib\\]\\n#Include\/\\[multilib\\]\\nInclude\/igs' /etc/pacman.conf",
+    "pacman --noconfirm -Syu"
+  ],
+
+  "Commands_InChroot2_CMT": [
+    "Executes commands inside the rootfs immediately following package installation"
+  ],
+
+  "Commands_InChroot2": [
+    "killall -3 gpg-agent",
+    "sh /root/build_install_mesa.sh",
+    "rm -Rf /usr/local",
+    "rm -Rf /root/*",
+    "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
+    "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
+    "pacman --noconfirm -R rust-bindgen sudo clang gcc rust",
+    "pacman --noconfirm -Scc",
+    "sh ./break_chroot.sh"
+  ],
+
+  "Commands_Stage2_CMT": [
+    "Executes commands in the VM after rootfs setup",
+    "Required to tear down state inside the rootfs"
+  ],
+
+  "Commands_Stage2": [
+    "export ROOTFS=./RootFS",
+    "umount $ROOTFS/proc/",
+    "umount -R $ROOTFS/sys/",
+    "umount -R $ROOTFS/dev/pts/",
+    "umount -R $ROOTFS/dev/",
+    "rmdir $ROOTFS/proc",
+    "rmdir $ROOTFS/dev/pts",
+    "rmdir $ROOTFS/dev",
+    "rmdir $ROOTFS/sys"
+  ],
+
+  "RemoveFiles_Stage2_CMT": [
+    "Removes files from the rootfs post Stage2 teardown"
+  ],
+
+  "RemoveFiles_Stage2": [
+    "etc/pacman.d/gnupg/S*"
+  ],
+
+  "RemoveDirs_Stage2": [
+    "Whole folders to remove post Stage2 teardown.",
+    "Uses rm -Rf to remove"
+  ],
+
+  "RemoveDirs_Stage2": [
+    "etc/credstore",
+    "etc/credstore.encrypted",
+    "var/cache/"
+  ],
+
+  "Commands_Stage3": [
+  ],
+
+  "Commands_PreInstall": [
+  ],
+
+  "BinariesToInstall": [
+  ]
+}
