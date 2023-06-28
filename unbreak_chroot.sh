@@ -89,6 +89,24 @@ sudo mount --rbind /lib/aarch64-linux-gnu $SCRIPTPATH/lib/aarch64-linux-gnu
 # Overwrite the current rootfs because we're going in to a chroot
 export FEX_ROOTFS=""
 
+# Check if binfmt_misc is installed.
+CheckBinFmt () {
+  $($SCRIPTPATH/usr/bin/true > /dev/null 2>&1)
+  echo $?
+}
+
+BINFMT_INSTALLED=$(CheckBinFmt)
+
+if [ $BINFMT_INSTALLED -eq 0 ]; then
+  # Installed
+  echo "FEXInterpreter binfmt installed"
+else
+  # Not installed
+  echo "FEXInterpreter binfmt not installed. Wrapping chroot."
+  FEXINTERPRETER_HANDLE=/usr/bin/FEXInterpreter
+  cp $(which FEXInterpreter) $SCRIPTPATH/usr/bin/
+fi
+
 # Set the global config path to point to the explicit socket path
 # Ensures that if the user changes that FEXServer still operates
 export FEX_SERVERSOCKETPATH="/tmp/$(id -u)-$(basename $SCRIPTPATH).chroot"
@@ -96,16 +114,16 @@ mkdir -p $SCRIPTPATH/usr/share/fex-emu/Config/
 echo "{\"Config\": {\"ServerSocketPath\":\"$FEX_SERVERSOCKETPATH\"}}" > $SCRIPTPATH/usr/share/fex-emu/Config.json
 
 if command -v FEXServer>/dev/null; then
-	echo "Starting FEXServer"
-	# Start FEXServer with a 30 second timeout
-	sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH FEXServer -p 30
+  echo "Starting FEXServer"
+  # Start FEXServer with a 30 second timeout
+  sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH FEXServer -p 30
 
-	# Ensure it's writable to everyone
-	sudo chmod 0666 $FEX_SERVERSOCKETPATH
+  # Ensure it's writable to everyone
+  sudo chmod 0666 $FEX_SERVERSOCKETPATH
 fi
 
 echo "Chrooting into container"
-sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH chroot .
+sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH chroot . $FEXINTERPRETER_HANDLE $SHELL -i
 
 echo "Cleaning up chroot"
 $SCRIPTPATH/break_chroot.sh
