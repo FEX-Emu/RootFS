@@ -1,0 +1,270 @@
+{
+  "ImageName" : "Fedora_38",
+  "Guest_SHA256Sums" : "",
+  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/blob/master/x86_64/",
+  "Guest_Image"   : "fedora-38-x86_64.tar.xz",
+
+  "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
+  "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
+  "Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
+  "QEmu" : "qemu-system-x86_64",
+  "SkipPIGZ": "True",
+
+  "PKGInstallCMD_CMT": [
+    "The package command used to install packages"
+  ],
+
+  "PKGInstallCMD" : "/root/mega_install_packages.sh ",
+
+  "PackagesToAdd_CMT": [
+    "Which package names to install",
+    "Package installation happens just after the `Commands_InChroot` step",
+    "Package installation will install packages one by one",
+    "Uses the PKGInstallCMD and iterates over the list individually"
+  ],
+
+  "PackagesToAdd" : [
+    "dnf-utils",
+    "util-linux-core",
+    "sudo",
+    "rsync",
+    "glibc.x86_64",
+    "glibc.i686",
+    "dbus",
+    "systemd.x86_64",
+    "systemd.i686",
+    "pulseaudio.x86_64",
+    "mesa-libGL.x86_64",
+    "mesa-libGL.i686",
+    "mesa-libEGL.x86_64",
+    "mesa-libEGL.i686",
+    "mesa-libGLU.x86_64",
+    "mesa-libGLU.i686",
+    "mesa-dri-drivers.x86_64",
+    "mesa-dri-drivers.i686",
+    "mesa-vulkan-drivers.x86_64",
+    "mesa-vulkan-drivers.i686",
+    "mesa-va-drivers.x86_64",
+    "mesa-va-drivers.i686",
+    "mesa-demos.x86_64",
+    "libglvnd-opengl.x86_64",
+    "libglvnd-opengl.i686",
+    "libglvnd-egl.x86_64",
+    "libglvnd-egl.i686",
+    "libglvnd-gles.x86_64",
+    "libglvnd-gles.i686",
+    "libunwind.x86_64",
+    "libunwind.i686",
+    "SDL2.x86_64",
+    "SDL2.i686",
+    "sdl12-compat.x86_64",
+    "sdl12-compat.i686",
+    "protobuf-compiler.x86_64",
+    "protobuf-compiler.i686",
+    "protobuf-c.x86_64",
+    "protobuf-c.i686",
+    "openal-soft.x86_64",
+    "openal-soft.i686",
+    "speex.x86_64",
+    "speex.i686",
+    "libvorbis.x86_64",
+    "libvorbis.i686",
+    "usbutils",
+    "pciutils",
+    "libpciaccess.x86_64",
+    "libpciaccess.x86_64",
+    "glew-devel.x86_64",
+    "glew-devel.i686",
+    "libX11-xcb.x86_64",
+    "libX11-xcb.i686",
+    "xcb-util.x86_64",
+    "xcb-util.i686",
+    "xcb-util-cursor.x86_64",
+    "xcb-util-cursor.i686",
+    "xcb-util-image.x86_64",
+    "xcb-util-image.i686",
+    "xcb-util-keysyms.x86_64",
+    "xcb-util-keysyms.i686",
+    "xcb-util-xrm.x86_64",
+    "xcb-util-xrm.i686",
+    "libxkbcommon.x86_64",
+    "libxkbcommon.i686",
+    "libwayland-client.x86_64",
+    "libwayland-client.i686",
+    "libwayland-egl.x86_64",
+    "libwayland-egl.i686",
+    "libXext.x86_64",
+    "libXext.i686",
+    "libXdamage.x86_64",
+    "libXdamage.i686",
+    "libxshmfence.x86_64",
+    "libxshmfence.i686",
+    "libXxf86vm.x86_64",
+    "libXxf86vm.i686",
+    "libXrandr.x86_64",
+    "libXrandr.i686",
+    "llvm-libs.x86_64",
+    "llvm-libs.i686",
+    "llvm14-libs.x86_64",
+    "llvm14-libs.i686",
+    "llvm15-libs.x86_64",
+    "llvm15-libs.i686",
+    "spirv-llvm-translator.x86_64",
+    "spirv-llvm-translator.i686",
+    "harfbuzz.x86_64",
+    "harfbuzz.i686",
+    "libvdpau.x86_64",
+    "libvdpau.i686",
+    "fuse-libs.x86_64",
+    "fuse-libs.i686",
+    "fuse3-libs.x86_64",
+    "fuse3-libs.i686",
+    "ibus-libs.x86_64",
+    "ibus-libs.i686",
+    "mangohud.x86_64",
+    "mangohud.i686",
+    "nss.x86_64",
+    "nss.i686",
+    "nspr.x86_64",
+    "nspr.i686",
+    "python3.x86_64",
+    "python3.i686",
+    "openssl-libs.x86_64",
+    "openssl-libs.i686",
+    "curl",
+    "xterm",
+    "zenity",
+    "xz",
+    "xdg-desktop-portal.x86_64",
+    "xdg-desktop-portal.i686",
+    "xdg-desktop-portal-gtk",
+    "wine.x86_64",
+    "wine.i686",
+    "vulkan-tools",
+    "pkgconf.x86_64",
+    "pkgconf.i686",
+    "clinfo"
+  ],
+
+  "CopyFiles_Stage0_CMT": [
+    "This stage copies files in to a temporary mount directory",
+    "This ties in to the Stage1 to allow you to copy files from git repo to rootfs",
+    "The filename here is the path relative to git repo base",
+    "File is copied over to temp folder with same name"
+  ],
+  "CopyFiles_Stage0": [
+    "Scripts/Fedora/cross_x86",
+    "Scripts/Fedora/mega_install_packages.sh",
+    "Scripts/Fedora/build_install_mesa.sh",
+    "Scripts/Fedora/break_chroot.sh",
+    "Scripts/Fedora/unbreak_chroot.sh"
+  ],
+
+  "CopyFiles_Stage1_CMT": [
+    "This copies the files from the stage0 mount location with to a location in the rootfs",
+    "First argument is the filename to copy from the temp folder",
+    "Second argument is the location inside the rootfs where to copy to"
+  ],
+
+  "CopyFiles_Stage1": [
+    ["cross_x86", "root/"],
+    ["mega_install_packages.sh", "root/"],
+    ["build_install_mesa.sh", "root/"],
+    ["break_chroot.sh", "/"],
+    ["unbreak_chroot.sh", "/"]
+  ],
+
+  "Commands_Stage1_0_CMT": [
+    "This stage runs commands inside the qemu VM",
+    "Allows you to install packages that the VM requires and the rootfs doesn't"
+  ],
+  "Commands_Stage1_0": [
+    "export DEBIAN_FRONTEND=noninteractive",
+    "apt-get update",
+    "apt-get install -y coreutils pigz"
+  ],
+
+  "RemoveFiles_Stage1_CMT": [
+    "Removes files from the rootfs prior to chrooting",
+    "Some files are preconfiguring in the rootfs and need to be changed"
+  ],
+
+  "RemoveFiles_Stage1": [
+    "/etc/hosts",
+    "/etc/resolv.conf"
+  ],
+
+  "Commands_Stage1_CMT": [
+    "Executes commands in the VM prior to chrooting",
+    "Necessary to set up mounts that the rootfs needs"
+  ],
+
+  "Commands_Stage1": [
+    "export ROOTFS=./RootFS",
+    "mount -t proc /proc $ROOTFS/proc/",
+    "mount --rbind --make-rslave /sys $ROOTFS/sys/",
+    "mount --rbind --make-rslave /dev $ROOTFS/dev/",
+    "mount --rbind --make-rslave /dev/pts $ROOTFS/dev/pts/"
+  ],
+
+  "Commands_InChroot_CMT": [
+    "Executes commands inside the rootfs prior to installing packages",
+    "!!! After this step, packages are installed !!!"
+  ],
+
+  "Commands_InChroot": [
+    "echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
+    "chmod 1777 /tmp",
+    "yum update -y"
+  ],
+
+  "Commands_InChroot2_CMT": [
+    "Executes commands inside the rootfs immediately following package installation"
+  ],
+
+  "Commands_InChroot2": [
+    "sh /root/build_install_mesa.sh",
+    "yum remove -y openssh-clients",
+    "yum remove -y *-devel",
+    "yum clean -y all",
+    "rm -Rf /usr/local",
+    "rm -Rf /root/*",
+    "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
+    "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
+    "sh ./break_chroot.sh"
+  ],
+
+  "Commands_Stage2_CMT": [
+    "Executes commands in the VM after rootfs setup",
+    "Required to tear down state inside the rootfs"
+  ],
+
+  "Commands_Stage2": [
+    "export ROOTFS=./RootFS",
+    "umount $ROOTFS/proc/",
+    "umount -R $ROOTFS/sys/",
+    "umount -R $ROOTFS/dev/pts/",
+    "umount -R $ROOTFS/dev/",
+    "rmdir $ROOTFS/proc",
+    "rmdir $ROOTFS/dev/pts",
+    "rmdir $ROOTFS/dev",
+    "rmdir $ROOTFS/sys"
+  ],
+
+  "RemoveFiles_Stage2": [
+  ],
+
+  "RemoveDirs_Stage2": [
+  ],
+
+  "Commands_Stage3": [
+    "find . -type d -exec chmod 755 {} \\;",
+    "find . -type f -exec chmod +rw {} \\;"
+  ],
+
+  "Commands_PreInstall": [
+  ],
+
+  "BinariesToInstall": [
+  ]
+}
