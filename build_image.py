@@ -45,33 +45,36 @@ def GetGitRoot():
     return subprocess.run(["git" , "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE).stdout.decode().rstrip()
 
 def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
-    SHAURLSplit = SHA256Sums.split('/')
-    SHAFileName = SHAURLSplit[len(SHAURLSplit) - 1]
-    CacheSHAName = CacheDir + "/" + SHAFileName
-    with requests.get(SHA256Sums, stream = True) as r:
-        with open(CacheSHAName, "wb") as SHA256SumFile:
-            for chunk in r.iter_content():
-                SHA256SumFile.write(chunk)
-
-    # Open the SHA256Sum file we just downloaded
-    SHA256Sum_file = open(CacheSHAName, "r")
-    SHA256Sum = SHA256Sum_file.read()
-    SHA256Sum_file.close()
-
     FoundImage = False
     ExpectedSHA256Sum = ""
-    for line in SHA256Sum.splitlines():
-        Split = line.split(" ")
-        CurrentSHA256Sum = Split[0]
-        if line.endswith(Image):
-            FoundImage = True
-            ExpectedSHA256Sum = CurrentSHA256Sum
-            break
-
-    if FoundImage == False:
-        raise Exception("Couldn't find image sha256sum")
-
     CalculatedSHA256Sum = ""
+    HasSums = len(SHA256Sums) > 0
+
+    if HasSums:
+        SHAURLSplit = SHA256Sums.split('/')
+        SHAFileName = SHAURLSplit[len(SHAURLSplit) - 1]
+        CacheSHAName = CacheDir + "/" + SHAFileName
+        with requests.get(SHA256Sums, stream = True) as r:
+            with open(CacheSHAName, "wb") as SHA256SumFile:
+                for chunk in r.iter_content():
+                    SHA256SumFile.write(chunk)
+
+        # Open the SHA256Sum file we just downloaded
+        SHA256Sum_file = open(CacheSHAName, "r")
+        SHA256Sum = SHA256Sum_file.read()
+        SHA256Sum_file.close()
+
+        for line in SHA256Sum.splitlines():
+            Split = line.split(" ")
+            CurrentSHA256Sum = Split[0]
+            if line.endswith(Image):
+                FoundImage = True
+                ExpectedSHA256Sum = CurrentSHA256Sum
+                break
+
+        if FoundImage == False:
+            raise Exception("Couldn't find image sha256sum")
+
     # Found an image, if it exists then sha256sum it, else download it again
     if os.path.exists(CacheDir + "/" + Image):
         sha256Hash = hashlib.sha256()
@@ -80,6 +83,9 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
         Image_file.close()
         sha256Hash.update(Image_data)
         CalculatedSHA256Sum = sha256Hash.hexdigest()
+        if not HasSums:
+            print("Image doesn't have a SHA256Sum backing it. Skipping redownload.")
+            ExpectedSHA256Sum = CalculatedSHA256Sum
 
     if CalculatedSHA256Sum != ExpectedSHA256Sum:
         # Calculated SHA256Sum isn't the same as expected
@@ -313,7 +319,11 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     print("Output rootfs now")
     ExecuteCommandAndWait(tn, "mkdir RootFS")
-    ExecuteCommandAndWait(tn, "tar -I pigz -C RootFS -xf " + config_json["Guest_Image"])
+    PIGZPrompt = "-I pigz "
+    if not (config_json.get("SkipPIGZ") is None):
+        PIGZPrompt = ""
+
+    ExecuteCommandAndWait(tn, "tar {} -C RootFS -xf {}".format(PIGZPrompt, config_json["Guest_Image"]))
 
     print("RemoveFiles_Stage1")
     for file in config_json["RemoveFiles_Stage1"]:
@@ -377,7 +387,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
     ExecuteCommandAndWait(tn, "reset")
 
     ExecuteCommandAndWait(tn, "cd RootFS/")
-    ExecuteCommandAndWait(tn, "tar -I pigz -cf ../Stage1_" + config_json["Guest_Image"] + " *")
+    ExecuteCommandAndWait(tn, "tar {} -cf ../Stage1_{} *".format(PIGZPrompt, config_json["Guest_Image"]))
     ExecuteCommandAndWait(tn, "cd ..")
 
     ExecuteCommand(tn, "shutdown now")
@@ -408,11 +418,19 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     CreateDir(Stage1_RootFS)
 
-    print("Extracting Stage1 Image")
 
+    PIGZPrompt = "-I pigz "
+    if not (config_json.get("SkipPIGZ") is None):
+        PIGZPrompt = ""
+
+    print("Extracting Stage1 Image from {}/Stage1_{} to {}".format(VMMountDir, config_json["Guest_Image"], Stage1_RootFS))
     # Extract the stage1 rootfs
     # Copy the rootfs image over to the VM image
-    if os.system("tar -I pigz -xf " + VMMountDir + "/Stage1_" + config_json["Guest_Image"] + " -C " + Stage1_RootFS) != 0:
+    if os.system("tar {} -xf {}/Stage1_{} -C {}".format(PIGZPrompt, VMMountDir, config_json["Guest_Image"], Stage1_RootFS)) != 0:
+        # Ensure we unmount on tar failure
+        if os.system("guestunmount " + VMMountDir) != 0:
+            raise Exception("umount failure")
+        # Copy failed, raise assert.
         raise Exception("copy failed")
 
     if os.system("guestunmount " + VMMountDir) != 0:
@@ -438,7 +456,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
     print("Installing binaries")
     for Binary in config_json["BinariesToInstall"]:
         BinaryPath = GitRoot + "/" + Binary
-        if os.system("tar -h --overwrite -I pigz -xf " + BinaryPath + " -C " + Stage1_RootFS) != 0:
+        if os.system("tar -h --overwrite {} -xf {} -C {}".format(PIGZPrompt, BinaryPath, Stage1_RootFS)) != 0:
             raise Exception("Binary install failure")
 
     OldDir = os.getcwd()
@@ -447,10 +465,11 @@ def Stage2(CacheDir, RootFSDir, config_json):
     print("Commands_Stage3")
     for command in config_json["Commands_Stage3"]:
         os.chdir(Stage1_RootFS)
+        print ("Exec: '{}'".format(command))
         os.system(command)
 
     print("Repackaging image")
-    if os.system("tar -I pigz -cf ../Stage2_" + config_json["Guest_Image"] + " *") != 0:
+    if os.system("tar {} -cf ../Stage2_{} *".format(PIGZPrompt, config_json["Guest_Image"])) != 0:
         raise Exception("tar failure")
 
     os.chdir(OldDir)
@@ -488,7 +507,9 @@ config_file.close()
 
 config_json = json.loads(config_text)
 
+print("Moving on to Stage0 Image")
 Stage0(CacheDir, RootFSDir, config_json)
+print("Moving on to Stage1 Image")
 Stage1(CacheDir, RootFSDir, config_json)
 print("Moving on to Stage2 Image")
 Stage2(CacheDir, RootFSDir, config_json)
