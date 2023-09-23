@@ -109,17 +109,15 @@ fi
 
 # Set the global config path to point to the explicit socket path
 # Ensures that if the user changes that FEXServer still operates
-export FEX_SERVERSOCKETPATH="/tmp/$(id -u)-$(basename $SCRIPTPATH).chroot"
+export FEX_SERVERSOCKETPATH="$(id -u)-$(basename $SCRIPTPATH).chroot"
 mkdir -p $SCRIPTPATH/usr/share/fex-emu/Config/
 echo "{\"Config\": {\"ServerSocketPath\":\"$FEX_SERVERSOCKETPATH\"}}" > $SCRIPTPATH/usr/share/fex-emu/Config.json
+echo -n "$FEX_SERVERSOCKETPATH" > $SCRIPTPATH/FEX_Abstract_Socket
 
 if command -v FEXServer>/dev/null; then
   echo "Starting FEXServer"
   # Start FEXServer with a 30 second timeout
   sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH FEXServer -p 30
-
-  # Ensure it's writable to everyone
-  sudo chmod 0666 $FEX_SERVERSOCKETPATH
 fi
 
 echo "Chrooting into container"
