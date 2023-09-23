@@ -20,6 +20,8 @@ sudo umount -R "$SCRIPTPATH/lib/aarch64-linux-gnu"
 rmdir $SCRIPTPATH/lib/aarch64-linux-gnu
 rm $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 
+sed -i '/FEX_SERVERSOCKETPATH/d' $SCRIPTPATH/etc/environment
+
 # Unmount and delete mount points
 echo "Unmounting container mounts"
 

@@ -112,7 +112,7 @@ fi
 export FEX_SERVERSOCKETPATH="$(id -u)-$(basename $SCRIPTPATH).chroot"
 mkdir -p $SCRIPTPATH/usr/share/fex-emu/Config/
 echo "{\"Config\": {\"ServerSocketPath\":\"$FEX_SERVERSOCKETPATH\"}}" > $SCRIPTPATH/usr/share/fex-emu/Config.json
-echo -n "$FEX_SERVERSOCKETPATH" > $SCRIPTPATH/FEX_Abstract_Socket
+echo "FEX_SERVERSOCKETPATH=${FEX_SERVERSOCKETPATH}" >> $SCRIPTPATH/etc/environment
 
 if command -v FEXServer>/dev/null; then
   echo "Starting FEXServer"
