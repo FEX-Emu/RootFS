@@ -92,14 +92,12 @@ export FEX_ROOTFS=""
 export FEX_SERVERSOCKETPATH="/tmp/$(id -u)-$(basename $SCRIPTPATH).chroot"
 mkdir -p $SCRIPTPATH/usr/share/fex-emu/Config/
 echo "{\"Config\": {\"ServerSocketPath\":\"$FEX_SERVERSOCKETPATH\"}}" > $SCRIPTPATH/usr/share/fex-emu/Config.json
+echo "FEX_SERVERSOCKETPATH=${FEX_SERVERSOCKETPATH}" >> $SCRIPTPATH/etc/environment
 
 if command -v FEXServer>/dev/null; then
   echo "Starting FEXServer"
   # Start FEXServer with a 30 second timeout
   sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH FEXServer -p 30
-
-  # Ensure it's writable to everyone
-  sudo chmod 0666 $FEX_SERVERSOCKETPATH
 fi
 
 echo "Chrooting into container"
