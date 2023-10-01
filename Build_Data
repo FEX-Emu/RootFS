@@ -62,7 +62,6 @@ time ../build_image.py ../Configs/Ubuntu_20_04.json /mnt/Work/Projects/work/FEX-
 
 time ../build_image.py ../Configs/Ubuntu_22_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/
 time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
-time ../build_image.py ../Configs/Ubuntu_22_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/
 time ../build_image.py ../Configs/Ubuntu_23_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/
 time ../build_image.py ../Configs/Arch.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Arch/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/
 time ../build_image.py ../Configs/Fedora_38.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/
@@ -79,9 +78,6 @@ FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_2
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero
-
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_10/Ubuntu_22_10.ero
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/Ubuntu_23_04.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_04/Ubuntu_23_04.ero
