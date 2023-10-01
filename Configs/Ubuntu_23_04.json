@@ -181,8 +181,8 @@
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
 		"mega_install_packages.sh",
-		"break_chroot.sh",
-		"unbreak_chroot.sh"
+		"Scripts/Ubuntu/break_chroot.sh",
+		"Scripts/Ubuntu/unbreak_chroot.sh"
 	],
 
 	"CopyFiles_Stage1_CMT": [

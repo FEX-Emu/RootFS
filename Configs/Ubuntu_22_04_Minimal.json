@@ -161,8 +161,8 @@
 		"cross_x86",
 		"build_install_mesa.sh",
 		"mega_install_packages.sh",
-		"break_chroot.sh",
-		"unbreak_chroot.sh"
+		"Scripts/Ubuntu/break_chroot.sh",
+		"Scripts/Ubuntu/unbreak_chroot.sh"
 	],
 
 	"CopyFiles_Stage1_CMT": [
