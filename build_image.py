@@ -416,6 +416,10 @@ def Stage2(CacheDir, RootFSDir, config_json):
     SquashFSTarget = RootFSDir + "/" + config_json["ImageName"] + ".sqsh"
     EroFSTarget = RootFSDir + "/" + config_json["ImageName"] + ".ero"
 
+    # Make sure to erase any folders that might already exist.
+    # Arch has some files that are read-only so we need to first modify flags to add write permissions
+    os.system("chmod +w -R {}".format(Stage1_RootFS))
+    os.system("rm -Rf {}".format(Stage1_RootFS))
     CreateDir(Stage1_RootFS)
 
 
