@@ -172,8 +172,8 @@
 		"File is copied over to temp folder with same name"
 	],
 	"CopyFiles_Stage0": [
-		"cross_x86",
-		"Scripts/Ubuntu/build_install_mesa.sh",
+		"Scripts/Ubuntu_22_04/cross_x86",
+		"Scripts/Ubuntu_22_04/build_install_mesa.sh",
 		"build_libsegfault.sh",
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
