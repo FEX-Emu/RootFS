@@ -75,13 +75,13 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-23.1.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-23.2.1 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
-export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost,virtio-experimental"
+export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost,virtio"
 
 # llvmspirvlib-dev is llvm-13 while llvm-14 is used in Ubuntu 22.04. Two version need to match. Can't use rusticl because of this.
 cd Build
