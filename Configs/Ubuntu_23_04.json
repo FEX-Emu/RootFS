@@ -176,7 +176,7 @@
 	],
 	"CopyFiles_Stage0": [
 		"cross_x86",
-		"build_install_mesa_23_04.sh",
+		"Scripts/Ubuntu_23_04/build_install_mesa.sh",
 		"build_libsegfault.sh",
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
@@ -193,7 +193,7 @@
 
 	"CopyFiles_Stage1": [
 		["cross_x86", "root/"],
-		["build_install_mesa_23_04.sh", "root/"],
+		["build_install_mesa.sh", "root/"],
 		["build_libsegfault.sh", "root/"],
 		["build_install_renderdoc.sh", "root/"],
 		["build_install_gfxreconstruct.sh", "root/"],
@@ -258,7 +258,7 @@
 	],
 
 	"Commands_InChroot2": [
-		"sh /root/build_install_mesa_23_04.sh",
+		"sh /root/build_install_mesa.sh",
 		"sh /root/build_install_renderdoc.sh",
 		"sh /root/build_install_gfxreconstruct.sh",
 		"sh /root/build_libsegfault.sh",

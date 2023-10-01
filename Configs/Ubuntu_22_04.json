@@ -173,7 +173,7 @@
 	],
 	"CopyFiles_Stage0": [
 		"cross_x86",
-		"build_install_mesa.sh",
+		"Scripts/Ubuntu/build_install_mesa.sh",
 		"build_libsegfault.sh",
 		"build_install_renderdoc.sh",
 		"build_install_gfxreconstruct.sh",
