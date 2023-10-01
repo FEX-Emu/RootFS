@@ -13,11 +13,11 @@ add-apt-repository -y ppa:kisak/kisak-mesa
 
 apt-get upgrade -y
 apt-get install -y mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers libglx-mesa0 libgles2-mesa libgl1-mesa-glx libgl1-mesa-dri libegl1-mesa \
-	libegl-mesa0
+  libegl-mesa0
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
-	llvm-15-dev libvulkan-dev libpciaccess-dev libglvnd-dev
+  llvm-15-dev libvulkan-dev libpciaccess-dev libglvnd-dev
 
 apt-get build-dep -y mesa
 
@@ -36,12 +36,12 @@ mkdir Build_x86
 
 cd Build
 /root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
-	-Dbuildtype=release \
-	-Db_ndebug=true \
-	-Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
-	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	..
+  -Dbuildtype=release \
+  -Db_ndebug=true \
+  -Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
+  -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  ..
 
 ninja
 ninja install
@@ -62,39 +62,39 @@ export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost,virtio"
 # llvmspirvlib-dev is llvm-13 while llvm-14 is used in Ubuntu 22.04. Two version need to match. Can't use rusticl because of this.
 cd Build
 /root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
-	-Dbuildtype=release \
-	-Db_ndebug=true \
-	-Dgallium-drivers=$GALLIUM_DRIVERS \
-	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11 \
-	-Dglvnd=true \
-	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	..
+  -Dbuildtype=release \
+  -Db_ndebug=true \
+  -Dgallium-drivers=$GALLIUM_DRIVERS \
+  -Dvulkan-drivers=$VULKAN_DRIVERS \
+  -Dplatforms=x11 \
+  -Dglvnd=true \
+  -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  ..
 
 # Comment while waiting
 ninja
 ninja install
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
-	libpciaccess-dev:i386 \
-	libx11-dev:i386 \
-	libx11-xcb-dev:i386 \
-	libxcb-dri3-dev:i386 \
-	libxcb-dri2-0-dev:i386 \
-	libxcb-glx0-dev:i386 \
-	libxcb-present-dev:i386 \
-	libxcb-randr0-dev:i386 \
-	libxcb-shm0-dev:i386 \
-	libxcb-sync-dev:i386 \
-	libxcb-xfixes0-dev:i386 \
-	libxdamage-dev:i386 \
-	libxext-dev:i386 \
-	libxfixes-dev:i386 \
-	libxrandr-dev:i386 \
-	libxshmfence-dev:i386 \
-	libxxf86vm-dev:i386 \
-	libglvnd-dev:i386
+  libpciaccess-dev:i386 \
+  libx11-dev:i386 \
+  libx11-xcb-dev:i386 \
+  libxcb-dri3-dev:i386 \
+  libxcb-dri2-0-dev:i386 \
+  libxcb-glx0-dev:i386 \
+  libxcb-present-dev:i386 \
+  libxcb-randr0-dev:i386 \
+  libxcb-shm0-dev:i386 \
+  libxcb-sync-dev:i386 \
+  libxcb-xfixes0-dev:i386 \
+  libxdamage-dev:i386 \
+  libxext-dev:i386 \
+  libxfixes-dev:i386 \
+  libxrandr-dev:i386 \
+  libxshmfence-dev:i386 \
+  libxxf86vm-dev:i386 \
+  libglvnd-dev:i386
 
 
 dpkg --configure -a
@@ -111,13 +111,13 @@ cd /root/drm/
 cd Build_x86
 
 /root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
-	-Dbuildtype=release \
-	-Db_ndebug=true \
-	-Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
-	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	--cross-file /root/cross_x86 \
-	..
+  -Dbuildtype=release \
+  -Db_ndebug=true \
+  -Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
+  -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  --cross-file /root/cross_x86 \
+  ..
 
 ninja
 ninja install
@@ -127,16 +127,16 @@ cd Build_x86
 
 # llvmspirvlib-dev:i386 doesn't exist so rusticl can't be used on 32-bit
 /root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
-	-Dbuildtype=release \
-	-Db_ndebug=true \
-	-Dgallium-drivers=$GALLIUM_DRIVERS \
-	-Dvulkan-drivers=$VULKAN_DRIVERS \
-	-Dplatforms=x11 \
-	-Dglvnd=true \
-	-Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	-Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
-	--cross-file /root/cross_x86 \
-	..
+  -Dbuildtype=release \
+  -Db_ndebug=true \
+  -Dgallium-drivers=$GALLIUM_DRIVERS \
+  -Dvulkan-drivers=$VULKAN_DRIVERS \
+  -Dplatforms=x11 \
+  -Dglvnd=true \
+  -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
+  --cross-file /root/cross_x86 \
+  ..
 
 ninja
 ninja install
