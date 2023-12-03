@@ -7,7 +7,7 @@ apt-get update
 cd /root
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
-  llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev
+  llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev cargo
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
   libpciaccess-dev:i386 \
@@ -35,7 +35,7 @@ apt-get build-dep -y mesa
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.1.0 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.2.0 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
 git clone --depth=1 --branch libdrm-2.4.110 https://gitlab.freedesktop.org/mesa/drm.git
@@ -75,13 +75,18 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-23.2.1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-23.3.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost,virtio"
+
+# Needed for rusticl
+cargo install bindgen-cli
+
+export PATH=/root/.cargo/bin:$PATH
 
 cd Build
 /root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
@@ -119,3 +124,6 @@ ninja
 ninja install
 
 cd /
+
+cargo uninstall bindgen-cli
+apt-get remove -y cargo
