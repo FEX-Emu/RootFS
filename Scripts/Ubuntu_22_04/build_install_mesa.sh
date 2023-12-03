@@ -77,7 +77,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-23.2.1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-23.3.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
