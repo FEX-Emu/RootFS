@@ -97,7 +97,7 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
         print("\tFile hash matched. Skipping Download");
 
 def CreateGuestVMImage(RootFSDir, LinuxImage, config_json):
-    if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 30G") != 0:
+    if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 64G") != 0:
         raise Exception("qemu-img create failure")
 
     if os.system("virt-format --filesystem=ext3 --format=qcow2 -a " + RootFSDir + "/VMData.img") != 0:
@@ -149,7 +149,7 @@ def CreateHostVMImage(RootFSDir, LinuxImage):
     if os.system("cp " + LinuxImage + " " + RootFSDir + "/Host.img") != 0:
         raise Exception("copy host image failed")
 
-    if os.system("qemu-img resize " + RootFSDir + "/Host.img +10G") != 0:
+    if os.system("qemu-img resize " + RootFSDir + "/Host.img +32G") != 0:
         raise Exception("Couldn't resize host image")
 
     cloud_config_file = open(RootFSDir + "/cloud_config.txt", "w")
