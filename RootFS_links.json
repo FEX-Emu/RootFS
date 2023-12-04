@@ -30,14 +30,14 @@
     },
     "Ubuntu 23.10 (EroFS)": {
       "DistroMatch": "ubuntu",
-      "DistroVersion": "23.04",
+      "DistroVersion": "23.10",
       "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2023-12-03/Ubuntu_23_10.ero",
       "Hash": "8cf12f6a705f1088",
       "Type": "erofs"
     },
     "Ubuntu 23.10 (SquashFS)": {
       "DistroMatch": "ubuntu",
-      "DistroVersion": "23.04",
+      "DistroVersion": "23.10",
       "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2023-12-03/Ubuntu_23_10.sqsh",
       "Hash": "59fa22a2de665a4d",
       "Type": "squashfs"
