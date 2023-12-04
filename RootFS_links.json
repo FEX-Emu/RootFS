@@ -3,43 +3,57 @@
     "Fedora 38 (EroFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "38",
-      "URL": "https://rootfs.fex-emu.gg/Fedora_38/2023-10-01/Fedora_38.ero",
-      "Hash": "6a579088d8a25921",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_38/2023-12-03/Fedora_38.ero",
+      "Hash": "d23b16a932c2e198",
       "Type": "erofs"
     },
     "Fedora 38 (SquashFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "38",
-      "URL": "https://rootfs.fex-emu.gg/Fedora_38/2023-10-01/Fedora_38.sqsh",
-      "Hash": "bf05cf886d3e1aef",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_38/2023-12-03/Fedora_38.sqsh",
+      "Hash": "9a320d9a23d1e59c",
       "Type": "squashfs"
     },
     "ArchLinux (EroFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-10-01/ArchLinux.ero",
-      "Hash": "5ce2068c7bd26d53",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-12-03/ArchLinux.ero",
+      "Hash": "61371156f65c0c07",
       "Type": "erofs"
     },
     "ArchLinux (SquashFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-10-01/ArchLinux.sqsh",
-      "Hash": "9ec2d68e0d336665",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2023-12-03/ArchLinux.sqsh",
+      "Hash": "43d7f20d9a061fef",
+      "Type": "squashfs"
+    },
+    "Ubuntu 23.10 (EroFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "23.04",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2023-12-03/Ubuntu_23_10.ero",
+      "Hash": "8cf12f6a705f1088",
+      "Type": "erofs"
+    },
+    "Ubuntu 23.10 (SquashFS)": {
+      "DistroMatch": "ubuntu",
+      "DistroVersion": "23.04",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2023-12-03/Ubuntu_23_10.sqsh",
+      "Hash": "59fa22a2de665a4d",
       "Type": "squashfs"
     },
     "Ubuntu 23.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "23.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_04/2023-10-01/Ubuntu_23_04.ero",
-      "Hash": "9e25fae3d963ad26",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_04/2023-12-03/Ubuntu_23_04.ero",
+      "Hash": "d0145705a6037e3e",
       "Type": "erofs"
     },
     "Ubuntu 23.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "23.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_04/2023-10-01/Ubuntu_23_04.sqsh",
-      "Hash": "21d0e6ef50b60d8",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_04/2023-12-03/Ubuntu_23_04.sqsh",
+      "Hash": "b5b368b5612ae55c",
       "Type": "squashfs"
     },
     "Ubuntu 22.10 (EroFS)": {
@@ -59,15 +73,15 @@
     "Ubuntu 22.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2023-10-01/Ubuntu_22_04.ero",
-      "Hash": "a62e4f87fe222586",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2023-12-03/Ubuntu_22_04.ero",
+      "Hash": "aab02900118a171f",
       "Type": "erofs"
     },
     "Ubuntu 22.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2023-10-01/Ubuntu_22_04.sqsh",
-      "Hash": "34a12d4063132253",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2023-12-03/Ubuntu_22_04.sqsh",
+      "Hash": "4aa504cc2b050b80",
       "Type": "squashfs"
     },
     "Ubuntu 20.04 (EroFS)": {
