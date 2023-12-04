@@ -22,7 +22,7 @@ pacman --noconfirm -S \
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.1.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.2.0 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
 git clone --depth=1 --branch libdrm-2.4.110 https://gitlab.freedesktop.org/mesa/drm.git
@@ -62,7 +62,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-23.2.1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-23.3.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
