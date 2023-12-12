@@ -86,9 +86,6 @@ touch $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 sudo mount --rbind /lib/ld-linux-aarch64.so.1 $SCRIPTPATH/lib/ld-linux-aarch64.so.1
 sudo mount --rbind /lib/aarch64-linux-gnu $SCRIPTPATH/lib/aarch64-linux-gnu
 
-# Overwrite the current rootfs because we're going in to a chroot
-export FEX_ROOTFS=""
-
 # Check if binfmt_misc is installed.
 CheckBinFmt () {
   $($SCRIPTPATH/usr/bin/true > /dev/null 2>&1)
@@ -106,6 +103,9 @@ else
   FEXINTERPRETER_HANDLE=/usr/bin/FEXInterpreter
   cp $(which FEXInterpreter) $SCRIPTPATH/usr/bin/
 fi
+
+# Overwrite the current rootfs because we're going in to a chroot
+export FEX_ROOTFS=""
 
 # Set the global config path to point to the explicit socket path
 # Ensures that if the user changes that FEXServer still operates
