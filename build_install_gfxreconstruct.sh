@@ -14,7 +14,6 @@ apt-get install -y \
 	zlib1g-dev \
 	liblz4-dev \
 	libzstd-dev \
-	g++-multilib \
 	libx11-xcb-dev:i386 \
 	libxcb-keysyms1-dev:i386 \
 	libwayland-dev:i386 \
@@ -24,14 +23,16 @@ apt-get install -y \
 	libzstd-dev:i386 \
 	g++ \
 	libvulkan-dev \
+  libstdc++-13-dev-i386-cross \
+  libgcc-13-dev-i386-cross \
 	cmake
 
-git clone https://github.com/LunarG/gfxreconstruct.git
+apt-get install -y g++-multilib gcc-multilib
+
+git clone --depth=1 --branch v1.0.2 --recurse-submodules https://github.com/LunarG/gfxreconstruct.git
 
 cd gfxreconstruct
 
-# v0.9.11 has compile errors
-git checkout a9a593f0072b3e7703c0802f6e1e19da6e3cf52f
 git submodule update --init
 
 mkdir Build
