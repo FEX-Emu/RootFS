@@ -29,7 +29,7 @@ apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
 # Just in case we missed some
 apt-get build-dep -y renderdoc
 
-git clone --depth=1 --branch v1.26 https://github.com/baldurk/renderdoc.git
+git clone --depth=1 --branch v1.31 https://github.com/baldurk/renderdoc.git
 cd renderdoc
 
 mkdir Build
