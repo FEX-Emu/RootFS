@@ -97,10 +97,10 @@ dnf builddep -y mesa-libGL
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.2.0 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.3.1 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.110 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.119 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -110,7 +110,7 @@ cd Build
 /root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib64 \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
+  -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   ..
@@ -124,7 +124,7 @@ cd Build_x86
 /root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dvc4=true -Dtegra=true -Dfreedreno=true -Dexynos=true -Detnaviv=true \
+  -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
   --cross-file /root/cross_x86 \
   ..
 
@@ -135,7 +135,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-23.3.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.0.2 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
@@ -162,7 +162,9 @@ ninja install
 cd ../
 cd Build_x86
 
-# Cross compiling rusticl on 32-bit doesn't work. Disable it.
+# No rusticl for 32-bit
+# No asahi for 32-bit since asahi_clc can't cross-compile
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
