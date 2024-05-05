@@ -2,7 +2,7 @@
   "ImageName" : "ArchLinux",
   "Guest_SHA256Sums" : "https://geo.mirror.pkgbuild.com/iso/latest/sha256sums.txt",
   "Guest_BaseURL" : "https://geo.mirror.pkgbuild.com/iso/latest/",
-  "Guest_Image"   : "archlinux-bootstrap-x86_64.tar.gz",
+  "Guest_Image"   : "archlinux-bootstrap-x86_64.tar.zst",
 
   "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
   "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
