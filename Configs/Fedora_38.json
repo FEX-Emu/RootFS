@@ -1,7 +1,7 @@
 {
   "ImageName" : "Fedora_38",
   "Guest_SHA256Sums" : "",
-  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/blob/master/x86_64/",
+  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/blob/38/x86_64/",
   "Guest_Image"   : "fedora-38-x86_64.tar.xz",
 
   "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
