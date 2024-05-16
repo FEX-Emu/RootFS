@@ -1,5 +1,5 @@
 #!/bin/sh
-yum install -y git ninja-build \
+dnf install -y git ninja-build \
   lld \
   rustfmt \
   glibc-devel.x86_64 \
