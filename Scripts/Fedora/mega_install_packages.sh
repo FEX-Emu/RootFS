@@ -1,7 +1,7 @@
 #!/bin/sh
 # Check if package is available
 CheckPackage() {
-  $(yum info $1 > /dev/null 2>&1)
+  $(dnf info $1 > /dev/null 2>&1)
   echo $?
 }
 
@@ -20,4 +20,4 @@ done
 
 echo "$packages" #you could comment this.
 cat /Unknown_Packages
-yum install -y $packages
+dnf install -y $packages

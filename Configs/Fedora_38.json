@@ -219,7 +219,7 @@
   "Commands_InChroot": [
     "echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
     "chmod 1777 /tmp",
-    "yum update -y"
+    "dnf upgrade -y"
   ],
 
   "Commands_InChroot2_CMT": [
@@ -228,9 +228,9 @@
 
   "Commands_InChroot2": [
     "sh /root/build_install_mesa.sh",
-    "yum remove -y openssh-clients",
-    "yum remove -y *-devel",
-    "yum clean -y all",
+    "dnf remove -y openssh-clients",
+    "dnf remove -y *-devel",
+    "dnf clean -y all",
     "rm -Rf /usr/local",
     "rm -Rf /root/*",
     "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
