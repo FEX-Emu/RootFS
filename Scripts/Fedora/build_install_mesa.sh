@@ -89,7 +89,8 @@ dnf install -y git ninja-build \
   pkgconf-pkg-config.i686 pkgconf-pkg-config.x86_64 \
   libffi-devel.i686 libffi-devel.x86_64 \
   readline-devel.i686 readline-devel.x86_64 \
-  gettext
+  gettext \
+  python3-pycparser
 
 dnf builddep -y mesa-libGL
 

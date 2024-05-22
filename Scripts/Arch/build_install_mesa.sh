@@ -16,7 +16,8 @@ pacman --noconfirm -S \
   libxrandr lib32-libxrandr \
   rust rust-bindgen \
   spirv-llvm-translator libclc spirv-tools \
-  pkgconf
+  pkgconf \
+  python-pycparser
 
 # Move to /root/
 cd /root

@@ -14,7 +14,8 @@ apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   clang-15 \
   clang++-15 \
   spirv-tools \
-  cargo
+  cargo \
+  python3-pycparser
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
   libpciaccess-dev:i386 \
