@@ -162,7 +162,8 @@
 		"wine64",
 		"wine32",
 		"glibc-tools",
-		"vulkan-tools"
+		"vulkan-tools",
+    "gir1.2-gtk-3.0"
 	],
 
 	"CopyFiles_Stage0_CMT": [

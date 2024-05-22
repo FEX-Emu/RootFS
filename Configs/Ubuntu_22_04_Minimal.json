@@ -148,7 +148,8 @@
 		"zenity",
 		"xz-utils",
 		"xdg-desktop-portal",
-		"xdg-desktop-portal-gtk"
+		"xdg-desktop-portal-gtk",
+    "gir1.2-gtk-3.0"
 	],
 
 	"CopyFiles_Stage0_CMT": [

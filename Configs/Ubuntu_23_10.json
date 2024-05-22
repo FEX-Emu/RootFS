@@ -167,7 +167,8 @@
 		"vulkan-tools",
 		"pkgconf",
 		"pkgconf:i386",
-		"clinfo"
+		"clinfo",
+    "gir1.2-gtk-3.0"
 	],
 
 	"CopyFiles_Stage0_CMT": [
