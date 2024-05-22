@@ -152,7 +152,7 @@ cd Build
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
   -Dfreedreno-kmds=msm,virtio \
-  -Dglvnd=true \
+  -Dglvnd=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   ..
@@ -174,7 +174,7 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
   -Dfreedreno-kmds=msm,virtio \
-  -Dglvnd=true \
+  -Dglvnd=enabled \
   --cross-file /root/cross_x86 \
   ..
 

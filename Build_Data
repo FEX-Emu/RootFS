@@ -31,7 +31,7 @@ export DESTDIR=$(pwd)/install
 meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
--Dglvnd=true \
+-Dglvnd=enabled \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,panfrost,swrast,broadcom,virtio,nouveau \
 -Dfreedreno-kmds=msm,virtio \
@@ -47,7 +47,7 @@ export DESTDIR=$(pwd)/install
 meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
--Dglvnd=true \
+-Dglvnd=enabled \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=amd,intel,freedreno,panfrost,swrast,broadcom,virtio,nouveau \
 -Dfreedreno-kmds=msm,virtio \
@@ -100,7 +100,7 @@ cd install; tar -czf ../mesa_main_`git describe --dirty`_x86.tar.gz *; cd ..
 CC=clang CXX=clang++ meson -Dprefix=/usr  -Dlibdir=/usr/lib/aarch64-linux-gnu \
 -Dbuildtype=release \
 -Db_ndebug=true \
--Dglvnd=true \
+-Dglvnd=enabled \
 -Dgallium-drivers=swrast,kmsro,v3d,vc4,freedreno,virgl,lima,panfrost,swrast,zink \
 -Dvulkan-drivers=freedreno,broadcom \
 -Dfreedreno-kmds=msm,virtio \
