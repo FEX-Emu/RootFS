@@ -108,6 +108,7 @@ cd Build
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
+  -Dfreedreno-kmds=msm,virtio \
   -Dglvnd=true \
   -Dopencl-external-clang-headers=disabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
@@ -131,6 +132,7 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
+  -Dfreedreno-kmds=msm,virtio \
   -Dglvnd=true \
   -Dopencl-external-clang-headers=disabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
