@@ -147,7 +147,8 @@
     "vulkan-tools",
     "pkgconf.x86_64",
     "pkgconf.i686",
-    "clinfo"
+    "clinfo",
+    "gobject-introspection"
   ],
 
   "CopyFiles_Stage0_CMT": [
