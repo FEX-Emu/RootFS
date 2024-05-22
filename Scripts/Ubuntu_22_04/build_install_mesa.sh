@@ -94,7 +94,7 @@ mkdir Build
 mkdir Build_x86
 
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
-export VULKAN_DRIVERS="amd,intel,freedreno,swrast,broadcom,panfrost,virtio"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
 cargo install bindgen-cli

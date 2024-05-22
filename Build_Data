@@ -33,7 +33,7 @@ meson -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
 -Db_ndebug=true \
 -Dglvnd=true \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
--Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
+-Dvulkan-drivers=amd,intel,freedreno,panfrost,swrast,broadcom,virtio,nouveau \
 -Dfreedreno-kmds=msm,virtio \
 -Dplatforms=x11,wayland \
 ..
@@ -49,7 +49,7 @@ meson -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
 -Db_ndebug=true \
 -Dglvnd=true \
 -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,nouveau,tegra,virgl,lima,panfrost,swrast,zink \
--Dvulkan-drivers=amd,intel,freedreno,swrast,broadcom \
+-Dvulkan-drivers=amd,intel,freedreno,panfrost,swrast,broadcom,virtio,nouveau \
 -Dfreedreno-kmds=msm,virtio \
 -Dplatforms=x11,wayland \
 --cross-file cross_x86 \

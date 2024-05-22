@@ -69,7 +69,7 @@ mkdir Build_x86
 
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 # Intel removed because it had compile errors and kernel driver doesn't work on AArch64 anyway.
-export VULKAN_DRIVERS="amd,freedreno,swrast,broadcom,panfrost,virtio"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib \
