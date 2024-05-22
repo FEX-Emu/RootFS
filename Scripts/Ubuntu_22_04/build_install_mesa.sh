@@ -59,7 +59,7 @@ mkdir Build
 mkdir Build_x86
 
 cd Build
-/root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
+/root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
@@ -73,7 +73,7 @@ ninja install
 cd ../
 cd Build_x86
 
-/root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
+/root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
@@ -102,7 +102,7 @@ cargo install bindgen-cli cbindgen
 export PATH=/root/.cargo/bin:$PATH
 
 cd Build
-/root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
+/root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dgallium-rusticl=true \
@@ -126,7 +126,7 @@ apt-get install -y spirv-tools:i386 glslang-tools:i386
 # No rusticl for 32-bit
 # No asahi for 32-bit since asahi_clc can't cross-compile
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
-/root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
+/root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dgallium-drivers=$GALLIUM_DRIVERS \

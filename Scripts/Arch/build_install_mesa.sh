@@ -34,7 +34,7 @@ mkdir Build
 mkdir Build_x86
 
 cd Build
-/root/meson/meson.py -Dprefix=/usr  -Dlibdir=/usr/lib \
+/root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
@@ -48,7 +48,7 @@ ninja install
 cd ../
 cd Build_x86
 
-/root/meson/meson.py -Dprefix=/usr -Dlibdir=/usr/lib32 \
+/root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib32 \
   -Dbuildtype=release \
   -Db_ndebug=true \
   -Dvc4=enabled -Dtegra=enabled -Dfreedreno=enabled -Dexynos=enabled -Detnaviv=enabled \
