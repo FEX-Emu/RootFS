@@ -17,7 +17,8 @@ pacman --noconfirm -S \
   rust rust-bindgen \
   spirv-llvm-translator libclc spirv-tools \
   pkgconf \
-  python-pycparser
+  python-pycparser \
+  cbindgen
 
 # Move to /root/
 cd /root
@@ -72,6 +73,10 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,
 # Intel removed because it had compile errors and kernel driver doesn't work on AArch64 anyway.
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
+# Needed for rusticl
+cargo install bindgen-cli cbindgen
+export PATH=/root/.cargo/bin:$PATH
+
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib \
   -Dbuildtype=release \
@@ -113,3 +118,5 @@ ninja
 ninja install
 
 cd /
+
+cargo uninstall bindgen-cli cbindgen

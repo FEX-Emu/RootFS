@@ -90,7 +90,8 @@ dnf install -y git ninja-build \
   libffi-devel.i686 libffi-devel.x86_64 \
   readline-devel.i686 readline-devel.x86_64 \
   gettext \
-  python3-pycparser
+  python3-pycparser \
+  cargo
 
 dnf builddep -y mesa-libGL
 
@@ -144,6 +145,10 @@ mkdir Build_x86
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
+# Needed for rusticl
+cargo install bindgen-cli cbindgen
+export PATH=/root/.cargo/bin:$PATH
+
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib64 \
   -Dbuildtype=release \
@@ -183,3 +188,6 @@ ninja
 ninja install
 
 cd /
+
+cargo uninstall bindgen-cli cbindgen
+dnf uninstall cargo

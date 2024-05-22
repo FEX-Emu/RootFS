@@ -10,7 +10,8 @@ apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev cargo libclang-dev \
   spirv-tools \
   cargo \
-  python3-pycparser
+  python3-pycparser \
+  cbindgen
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
   libpciaccess-dev:i386 \
@@ -91,7 +92,7 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
-cargo install bindgen-cli
+cargo install bindgen-cli cbindgen
 export PATH=/root/.cargo/bin:$PATH
 
 cd Build
@@ -137,7 +138,7 @@ ninja install
 
 cd /
 
-cargo uninstall bindgen-cli
+cargo uninstall bindgen-cli cbindgen
 apt-get remove -y cargo
 apt-get remove -y spirv-tools:i386 glslang-tools:i386
 apt-get install -y spirv-tools glslang-tools
