@@ -129,7 +129,11 @@ apt-get install -y spirv-tools:i386 glslang-tools:i386
 
 # No rusticl for 32-bit
 # No asahi for 32-bit since asahi_clc can't cross-compile
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+# No Iris for 32-bit since libllvmspirvlib-15-dev:i386 doesn't exist on Ubuntu 22.04
+# No NVK for 32-bit until rustc cross compiling is sorted out
+# `Rust compiler rustc -C linker=/usr/bin/i686-linux-gnu-gcc cannot compile programs.`
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
