@@ -92,7 +92,7 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
-cargo install bindgen-cli cbindgen
+cargo install bindgen-cli cbindgen rustfmt
 export PATH=/root/.cargo/bin:$PATH
 
 cd Build
@@ -138,7 +138,7 @@ ninja install
 
 cd /
 
-cargo uninstall bindgen-cli cbindgen
+cargo uninstall bindgen-cli cbindgen rustfmt
 apt-get remove -y cargo
 apt-get remove -y spirv-tools:i386 glslang-tools:i386
 apt-get install -y spirv-tools glslang-tools
