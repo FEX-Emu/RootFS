@@ -6,6 +6,9 @@ apt-get update
 
 cd /root
 export DEBIAN_FRONTEND=noninteractive
+dpkg --add-architecture i386
+apt-get update
+apt-get upgrade -y
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   llvm-dev libvulkan-dev libpciaccess-dev libglvnd-dev cargo libclang-dev \
   spirv-tools \

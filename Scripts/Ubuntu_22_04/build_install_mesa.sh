@@ -6,6 +6,9 @@ apt-get update
 
 cd /root
 export DEBIAN_FRONTEND=noninteractive
+dpkg --add-architecture i386
+apt-get update
+apt-get upgrade -y
 apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   libvulkan-dev libpciaccess-dev libglvnd-dev cargo libclang-dev \
   llvm-15 \
@@ -15,7 +18,8 @@ apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   clang++-15 \
   spirv-tools \
   cargo \
-  python3-pycparser
+  python3-pycparser \
+  pkgconf
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
   libpciaccess-dev:i386 \
