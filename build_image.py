@@ -87,7 +87,7 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
             print("Image doesn't have a SHA256Sum backing it. Skipping redownload.")
             ExpectedSHA256Sum = CalculatedSHA256Sum
 
-    if CalculatedSHA256Sum != ExpectedSHA256Sum:
+    if CalculatedSHA256Sum != ExpectedSHA256Sum or not HasSums:
         # Calculated SHA256Sum isn't the same as expected
         # Download the new image
         with requests.get(BaseURL + Image, stream = True) as r:
