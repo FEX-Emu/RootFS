@@ -26,8 +26,8 @@ dnf install -y git ninja-build \
   xorg-x11-proto-devel \
   llvm-devel.x86_64 \
   llvm-devel.i686 \
-  zlib-devel.x86_64 \
-  zlib-devel.i686 \
+  zlib-ng-devel.x86_64 \
+  zlib-ng-devel.i686 \
   libxshmfence-devel.x86_64 \
   libxshmfence-devel.i686 \
   valgrind-devel.x86_64 \
