@@ -66,7 +66,6 @@ dnf install -y git ninja-build \
   libzstd-devel.i686 \
   kernel-headers.x86_64 \
   clang-devel.x86_64 \
-  clang-devel.i686 \
   libatomic.x86_64 \
   libatomic.i686 \
   libatomic_ops.x86_64 \
@@ -84,7 +83,7 @@ dnf install -y git ninja-build \
   cmake.i686 cmake.x86_64 \
   vulkan*.x86_64 vulkan*.i686 \
   libomxil-bellagio-devel.x86_64 libomxil-bellagio-devel.i686 \
-  wayland*-devel.x86_64 wayland*-devel.i686 \
+  wayland*-devel.x86_64  \
   libX*-devel.x86_64 libX*-devel.i686 \
   pkgconf-pkg-config.i686 pkgconf-pkg-config.x86_64 \
   libffi-devel.i686 libffi-devel.x86_64 \
@@ -166,12 +165,24 @@ cd Build
 ninja
 ninja install
 
+
+# i686 stuff
+# Fedora 40 has devel package conflicts with clang x86-64 and i686
+dnf remove -y clang
+
+dnf install -y \
+  clang.i686 \
+  clang-devel.i686 \
+  wayland-devel.i686
+
 cd ../
 cd Build_x86
 
 # No rusticl for 32-bit
 # No asahi for 32-bit since asahi_clc can't cross-compile
+# No Nouveau because rust
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
