@@ -5,7 +5,8 @@ ar = '/usr/bin/i686-linux-gnu-gcc-ar'
 strip = '/usr/bin/i686-linux-gnu-strip'
 pkgconfig = '/usr/bin/i686-linux-gnu-pkg-config'
 llvm-config = '/usr/bin/llvm-config'
-rust = 'rustc'
+rust = ['rustc', '--target', 'i686-unknown-linux-gnu']
+rust_ld = 'clang'
 
 [properties]
 c_args = ['-m32']
