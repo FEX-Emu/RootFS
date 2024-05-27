@@ -45,15 +45,15 @@
     "Ubuntu 23.10 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "23.10",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2024-03-02/Ubuntu_23_10.ero",
-      "Hash": "e7ba9ab01dcc2ff0",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2024-05-27/Ubuntu_23_10.ero",
+      "Hash": "5f3f9cb92798f652",
       "Type": "erofs"
     },
     "Ubuntu 23.10 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "23.10",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2024-03-02/Ubuntu_23_10.sqsh",
-      "Hash": "2d8eac0a490216e0",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_23_10/2024-05-27/Ubuntu_23_10.sqsh",
+      "Hash": "1138721d391fa266",
       "Type": "squashfs"
     },
     "Ubuntu 23.04 (EroFS)": {
