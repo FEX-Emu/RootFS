@@ -4,14 +4,14 @@
       "DistroMatch": "fedora",
       "DistroVersion": "40",
       "URL": "https://rootfs.fex-emu.gg/Fedora_40/2024-05-26/Fedora_40.ero",
-      "Hash": "93daabb7d9ea0c57",
+      "Hash": "71035933cbe2a02d",
       "Type": "erofs"
     },
     "Fedora 40 (SquashFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "40",
       "URL": "https://rootfs.fex-emu.gg/Fedora_40/2024-05-26/Fedora_40.sqsh",
-      "Hash": "71035933cbe2a02d",
+      "Hash": "93daabb7d9ea0c57",
       "Type": "squashfs"
     },
     "Fedora 38 (EroFS)": {
