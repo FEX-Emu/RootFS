@@ -59,6 +59,26 @@ rmdir "$BACKUPPATH/var"
 
 rmdir "$BACKUPPATH"
 
+echo "Copying FEXInterpreter in to chroot"
+mkdir "$SCRIPTPATH/fex/"
+mkdir "$SCRIPTPATH/fex/bin/"
+mkdir "$SCRIPTPATH/fex/lib/"
+
+cp $(which FEXInterpreter) "$SCRIPTPATH/fex/bin/"
+
+# Could probably make this dynamic based on ldd output. My bash scripting isn't good enough for that.
+cp /lib/libstdc++.so.6 "$SCRIPTPATH/fex/lib/"
+cp /lib/libm.so.6 "$SCRIPTPATH/fex/lib/"
+cp /lib/libgcc_s.so.1 "$SCRIPTPATH/fex/lib/"
+cp /lib/libc.so.6 "$SCRIPTPATH/fex/lib/"
+cp /lib/ld-linux-aarch64.so.1 "$SCRIPTPATH/fex/lib/"
+
+# Change interpreter path and add an rpath to search for the binaries.
+patchelf --set-interpreter /fex/lib/ld-linux-aarch64.so.1 "$SCRIPTPATH/fex/bin/FEXInterpreter"
+patchelf --add-rpath /fex/lib/ "$SCRIPTPATH/fex/bin/FEXInterpreter"
+
+FEXINTERPRETER_HANDLE=/fex/bin/FEXInterpreter
+
 echo "Changing rootfs permissions on /tmp"
 # For some reason /tmp ends up being 0664
 chmod 1777 "$SCRIPTPATH/tmp"
@@ -101,7 +121,7 @@ if command -v FEXServer>/dev/null; then
 fi
 
 echo "Chrooting into container"
-sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH chroot .
+sudo --preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH chroot . $FEXINTERPRETER_HANDLE $SHELL -i
 
 echo "Cleaning up chroot"
 $SCRIPTPATH/break_chroot.sh

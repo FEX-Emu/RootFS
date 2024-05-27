@@ -71,6 +71,9 @@ mv "$SCRIPTPATH/srv" "$BACKUPPATH"
 mv "$SCRIPTPATH/tmp" "$BACKUPPATH"
 mv "$SCRIPTPATH/run" "$BACKUPPATH"
 
+echo "Removing FEX copy from rootfs"
+rm -Rf "$SCRIPTPATH/fex/"
+
 # Only move opt if it is empty
 [ "$(ls -A $SCRIPTPATH/opt)" ] && true || mv "$SCRIPTPATH/opt" "$BACKUPPATH"
 
