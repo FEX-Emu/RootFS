@@ -8,6 +8,7 @@
   "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
   "Host_Image"   : "ubuntu-20.04-server-cloudimg-amd64.img",
   "QEmu" : "qemu-system-x86_64",
+  "SkipPIGZ": "True",
 
   "PKGInstallCMD_CMT": [
     "The package command used to install packages"
@@ -143,7 +144,7 @@
   "Commands_Stage1_0": [
     "export DEBIAN_FRONTEND=noninteractive",
     "apt-get update",
-    "apt-get install -y coreutils pigz"
+    "apt-get install -y coreutils pigz zstd"
   ],
 
   "RemoveFiles_Stage1_CMT": [
