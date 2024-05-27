@@ -3,9 +3,10 @@ c = 'clang'
 cpp = 'clang++'
 ar = 'llvm-ar'
 strip = 'llvm-strip'
-rust = '/usr/bin/rustc'
 pkgconfig = '/usr/bin/i686-pc-linux-gnu-pkg-config'
 llvm-config = '/usr/bin/llvm-config'
+rust = ['rustc', '--target', 'i686-unknown-linux-gnu']
+rust_ld = 'clang'
 
 [properties]
 c_args = ['-m32']

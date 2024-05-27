@@ -203,6 +203,7 @@
     "sh /root/build_install_mesa.sh",
     "rm -Rf /usr/local",
     "rm -Rf /root/*",
+    "rm -Rf /root/.*",
     "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
     "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
     "pacman --noconfirm -R rust-bindgen sudo clang gcc rust",
