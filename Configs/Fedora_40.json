@@ -234,6 +234,7 @@
     "dnf clean -y all",
     "rm -Rf /usr/local",
     "rm -Rf /root/*",
+    "rm -Rf /root/.*",
     "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
     "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
     "sh ./break_chroot.sh"
