@@ -17,8 +17,8 @@ apt-get install -y git ninja-build clang gcc-i686-linux-gnu g++-i686-linux-gnu \
   clang-15 \
   clang++-15 \
   spirv-tools \
-  cargo \
   python3-pycparser \
+  libclc-dev \
   pkgconf
 
 apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libwayland-egl-backend-dev:i386 \
@@ -43,6 +43,17 @@ apt-get install -y libvulkan-dev:i386 libelf-dev:i386 libwayland-dev:i386 libway
 
 # llvm-14 causes bindgen to break
 apt-get remove -y llvm-14 llvm-14-runtime llvm-runtime clang-14
+
+# Remove rust, overwriting with rustup toolchain.
+apt-get remove -y rustc cargo
+
+# Install rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+. "$HOME/.cargo/env"
+
+# Needed for rusticl
+rustup target add i686-unknown-linux-gnu
+cargo install bindgen-cli cbindgen
 
 apt-get build-dep -y mesa
 
@@ -98,12 +109,11 @@ cd mesa
 mkdir Build
 mkdir Build_x86
 
+# Update asahi
+sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
+
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
-
-# Needed for rusticl
-cargo install bindgen-cli cbindgen rustfmt
-export PATH=/root/.cargo/bin:$PATH
 
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
@@ -127,16 +137,13 @@ cd Build_x86
 
 apt-get install -y spirv-tools:i386 glslang-tools:i386
 
-# No rusticl for 32-bit
-# No asahi for 32-bit since asahi_clc can't cross-compile
-# No Iris for 32-bit since libllvmspirvlib-15-dev:i386 doesn't exist on Ubuntu 22.04
-# No NVK for 32-bit until rustc cross compiling is sorted out
-# `Rust compiler rustc -C linker=/usr/bin/i686-linux-gnu-gcc cannot compile programs.`
+# Iris and Asahi use libclc. 32-bit doesn't exist on Ubuntu 22.04.
+# Rusticl disabled for the same reason
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
-export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
+  -Dgallium-rusticl=false \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -153,6 +160,5 @@ ninja install
 cd /
 
 cargo uninstall bindgen-cli cbindgen rustfmt
-apt-get remove -y cargo
 apt-get remove -y spirv-tools:i386 glslang-tools:i386
 apt-get install -y spirv-tools glslang-tools
