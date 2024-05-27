@@ -63,6 +63,7 @@ cd install; tar -czf ../mesa_21_1_x86.tar.gz *; cd ..
 time ../build_image.py ../Configs/Ubuntu_22_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/
 time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
 time ../build_image.py ../Configs/Ubuntu_23_10.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_10/
+time ../build_image.py ../Configs/Ubuntu_24_04.json /mnt/Work/Projects/work/FEX-rootfs/Cache/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_24_04/
 time ../build_image.py ../Configs/Arch.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Arch/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/
 time ../build_image.py ../Configs/Fedora_38.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/
 time ../build_image.py ../Configs/Fedora_40.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora_40/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/
@@ -79,6 +80,9 @@ FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.ero
+
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.sqsh
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.ero
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/ArchLinux.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/ArchLinux.ero
