@@ -10,6 +10,28 @@
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 BACKUPPATH="$SCRIPTPATH/chroot/"
 
+# Check if patchelf is installed.
+Checkpatchelf () {
+  $(patchelf > /dev/null 2>&1)
+  if [ $? -eq 1 ]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
+
+PATCHELF_INSTALLED=$(Checkpatchelf)
+echo $PATCHELF_INSTALLED
+
+if [ $PATCHELF_INSTALLED -eq 0 ]; then
+  # Installed
+  echo "patchelf is installed"
+else
+  # Not installed
+  echo "patchelf isn't installed. Please install before executing."
+  exit 1
+fi
+
 echo "Moving rootfs files back to original location"
 # Move back files that we removed
 mv "$BACKUPPATH/etc/hosts" "$SCRIPTPATH/etc/"
@@ -59,6 +81,26 @@ rmdir "$BACKUPPATH/var"
 
 rmdir "$BACKUPPATH"
 
+echo "Copying FEXInterpreter in to chroot"
+mkdir "$SCRIPTPATH/fex/"
+mkdir "$SCRIPTPATH/fex/bin/"
+mkdir "$SCRIPTPATH/fex/lib64/"
+
+cp $(which FEXInterpreter) "$SCRIPTPATH/fex/bin/"
+
+# Could probably make this dynamic based on ldd output. My bash scripting isn't good enough for that.
+cp /lib64/libstdc++.so.6 "$SCRIPTPATH/fex/lib64/"
+cp /lib64/libm.so.6 "$SCRIPTPATH/fex/lib64/"
+cp /lib64/libgcc_s.so.1 "$SCRIPTPATH/fex/lib64/"
+cp /lib64/libc.so.6 "$SCRIPTPATH/fex/lib64/"
+cp /lib/ld-linux-aarch64.so.1 "$SCRIPTPATH/fex/lib64/"
+
+# Change interpreter path and add an rpath to search for the binaries.
+patchelf --set-interpreter /fex/lib64/ld-linux-aarch64.so.1 "$SCRIPTPATH/fex/bin/FEXInterpreter"
+patchelf --add-rpath /fex/lib64/ "$SCRIPTPATH/fex/bin/FEXInterpreter"
+
+FEXINTERPRETER_HANDLE=/fex/bin/FEXInterpreter
+
 echo "Changing rootfs permissions on /tmp"
 # For some reason /tmp ends up being 0664
 chmod 1777 "$SCRIPTPATH/tmp"
@@ -77,8 +119,24 @@ mount -t devtmpfs udev $SCRIPTPATH/dev/
 mount -t devpts devpts $SCRIPTPATH/dev/pts/
 mount --rbind /tmp $SCRIPTPATH/tmp
 
+# Overwrite the current rootfs because we're going in to a chroot
+export FEX_ROOTFS=""
+
+# Set the global config path to point to the explicit socket path
+# Ensures that if the user changes that FEXServer still operates
+export FEX_SERVERSOCKETPATH="$(id -u)-$(basename $SCRIPTPATH).chroot"
+mkdir -p $SCRIPTPATH/usr/share/fex-emu/Config/
+echo "{\"Config\": {\"ServerSocketPath\":\"$FEX_SERVERSOCKETPATH\"}}" > $SCRIPTPATH/usr/share/fex-emu/Config.json
+echo "FEX_SERVERSOCKETPATH=${FEX_SERVERSOCKETPATH}" >> $SCRIPTPATH/etc/environment
+
+if command -v FEXServer>/dev/null; then
+  echo "Starting FEXServer"
+  # Start FEXServer with a 30 second timeout
+  FEXServer -p 30
+fi
+
 echo "Chrooting into container"
-chroot .
+chroot . $FEXINTERPRETER_HANDLE $SHELL -i
 
 echo "Cleaning up chroot"
 $SCRIPTPATH/break_chroot.sh
