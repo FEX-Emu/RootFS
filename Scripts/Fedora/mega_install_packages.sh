@@ -1,7 +1,7 @@
 #!/bin/sh
 # Check if package is available
 CheckPackage() {
-  $(dnf info $1 > /dev/null 2>&1)
+  $(dnf5 info $1 > /dev/null 2>&1)
   echo $?
 }
 
@@ -20,4 +20,4 @@ done
 
 echo "$packages" #you could comment this.
 cat /Unknown_Packages
-dnf install -y $packages
+dnf5 install -y $packages

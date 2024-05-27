@@ -220,7 +220,8 @@
   "Commands_InChroot": [
     "echo \"nameserver 8.8.8.8\" > /etc/resolv.conf",
     "chmod 1777 /tmp",
-    "dnf upgrade -y"
+    "dnf upgrade -y",
+    "dnf install -y dnf5"
   ],
 
   "Commands_InChroot2_CMT": [
