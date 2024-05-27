@@ -1,7 +1,6 @@
 #!/bin/sh
-dnf install -y git ninja-build \
+dnf5 install -y git ninja-build \
   lld \
-  rustfmt \
   glibc-devel.x86_64 \
   glibc-devel.i686 \
   python3-devel.x86_64 \
@@ -90,9 +89,9 @@ dnf install -y git ninja-build \
   readline-devel.i686 readline-devel.x86_64 \
   gettext \
   python3-pycparser \
-  cargo
+  rustup
 
-dnf builddep -y mesa-libGL
+dnf5 builddep -y mesa-libGL
 
 # Move to /root/
 cd /root
@@ -141,12 +140,17 @@ cd mesa
 mkdir Build
 mkdir Build_x86
 
+# Update asahi
+sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
+
 export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
-cargo install bindgen-cli cbindgen rustfmt
-export PATH=/root/.cargo/bin:$PATH
+rustup-init --default-host x86_64-unknown-linux-gnu --default-toolchain stable -y
+source "$HOME/.cargo/env"
+rustup target add i686-unknown-linux-gnu
+cargo install bindgen-cli cbindgen
 
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib64 \
@@ -165,12 +169,11 @@ cd Build
 ninja
 ninja install
 
-
 # i686 stuff
 # Fedora 40 has devel package conflicts with clang x86-64 and i686
-dnf remove -y clang
+dnf5 remove -y clang
 
-dnf install -y \
+dnf5 install -y \
   clang.i686 \
   clang-devel.i686 \
   wayland-devel.i686
@@ -178,15 +181,10 @@ dnf install -y \
 cd ../
 cd Build_x86
 
-# No rusticl for 32-bit
-# No asahi for 32-bit since asahi_clc can't cross-compile
-# No Nouveau because rust
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
-export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=true -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -200,5 +198,5 @@ ninja install
 
 cd /
 
-cargo uninstall bindgen-cli cbindgen rustfmt
-dnf uninstall cargo
+cargo uninstall bindgen-cli cbindgen
+dnf5 remove rustup
