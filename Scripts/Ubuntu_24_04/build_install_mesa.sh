@@ -153,7 +153,7 @@ mkdir Build_x86
 sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
 
 # Iris, anv, and Asahi disabled because it fails to find opencl-c-base.h for some reason.
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
@@ -214,9 +214,22 @@ cd /
 
 cargo uninstall bindgen-cli cbindgen
 apt-get remove -y rustup
+# Work around canonical failing to package libllvm18 correctly.
+mkdir /root/libllvm_i386/
+cp /usr/lib/llvm-18/lib/libLLVM.so.1 /root/libllvm_i386/
+
 apt-get remove -y spirv-tools:i386 glslang-tools:i386 libllvm18:i386
 
 # Reinstall libllvm18 once libllvm18:i386 is removed
 # This fixes the deleted libLLVM.so.1 from earlier
 apt-get install -y --reinstall libllvm18
 apt-get install -y spirv-tools glslang-tools
+
+# Mark libllvm18 as manual so it doesn't get autoremoved.
+apt-mark manual libllvm18
+
+# Copy back over the i386 llvm library that we saved
+cp /root/libllvm_i386/libLLVM.so.1 /usr/lib/i386-linux-gnu/libLLVM-18.so.1
+ln -s libLLVM-18.so.1 /usr/lib/i386-linux-gnu/libLLVM-18.so
+ln -s libLLVM-18.so.1 /usr/lib/i386-linux-gnu/libLLVM.so.18.1
+rm -Rf /root/libllvm_i386
