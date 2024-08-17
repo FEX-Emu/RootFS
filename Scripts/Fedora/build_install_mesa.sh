@@ -44,6 +44,7 @@ dnf5 install -y git ninja-build \
   elfutils-libelf-devel.i686 \
   python3-mako \
   python3-ply \
+  python3-yaml \
   libXxf86vm-devel.x86_64 \
   libXxf86vm-devel.i686 \
   libX11-devel.x86_64 \
@@ -97,10 +98,10 @@ dnf5 builddep -y mesa-libGL
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.3.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.5.1 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.119 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -135,18 +136,15 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-24.1.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.2.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
-# Update asahi
-sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
-
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
-# Needed for rusticl
+# Rusticl has `evaluation of constant value failed` errors, so disabled.
 rustup-init --default-host x86_64-unknown-linux-gnu --default-toolchain stable -y
 source "$HOME/.cargo/env"
 rustup target add i686-unknown-linux-gnu
@@ -156,7 +154,7 @@ cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib64 \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=true -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=false -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -181,10 +179,13 @@ dnf5 install -y \
 cd ../
 cd Build_x86
 
+# nouveau disabled because of `evaluation of constant value failed` errors on 32-bit.
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
+
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=true -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=false -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -199,4 +200,4 @@ ninja install
 cd /
 
 cargo uninstall bindgen-cli cbindgen
-dnf5 remove rustup
+dnf5 remove -y rustup
