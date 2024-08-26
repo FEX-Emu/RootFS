@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Add source packages
-sed -i -e "s/^# deb/deb/g" /etc/apt/sources.list
+sed -i -e "s/^Types: deb/Types: deb deb-src/g" /etc/apt/sources.list.d/ubuntu.sources
 apt-get update
 
 cd /root
@@ -104,10 +104,10 @@ export CC=clang
 export CXX=clang++
 
 # Clone meson
-git clone --depth=1 --branch 1.3.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.5.1 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.119 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -144,27 +144,25 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-24.1.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.2.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
-# Update asahi
-sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
-
 # Iris, anv, and Asahi disabled because it fails to find opencl-c-base.h for some reason.
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Needed for rusticl
 rustup target add i686-unknown-linux-gnu
 cargo install bindgen-cli cbindgen
 
+# Rusticl disabled due to compile failure
 cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib/x86_64-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=true \
+  -Dgallium-rusticl=false \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
