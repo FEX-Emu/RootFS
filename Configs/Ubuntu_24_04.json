@@ -2,7 +2,7 @@
 	"ImageName" : "Ubuntu_24_04",
 	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/SHA256SUMS",
 	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/",
-	"Guest_Image"   : "ubuntu-base-24.04-base-amd64.tar.gz",
+	"Guest_Image"   : "ubuntu-base-24.04.1-base-amd64.tar.gz",
 
 	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -184,8 +184,7 @@
 		"build_install_renderdoc.sh",
 		"Scripts/Ubuntu_24_04/build_install_gfxreconstruct.sh",
 		"mega_install_packages.sh",
-		"Scripts/Ubuntu/break_chroot.sh",
-		"Scripts/Ubuntu/unbreak_chroot.sh"
+		"Scripts/chroot.py"
 	],
 
 	"CopyFiles_Stage1_CMT": [
@@ -201,8 +200,7 @@
 		["build_install_renderdoc.sh", "root/"],
 		["build_install_gfxreconstruct.sh", "root/"],
 		["mega_install_packages.sh", "root/"],
-		["break_chroot.sh", "/"],
-		["unbreak_chroot.sh", "/"]
+		["chroot.py", "/"]
 	],
 
 	"Commands_Stage1_0_CMT": [
@@ -212,7 +210,7 @@
 	"Commands_Stage1_0": [
 		"export DEBIAN_FRONTEND=noninteractive",
 		"apt-get update",
-		"apt-get install -y coreutils pigz"
+		"apt-get install -y coreutils pigz python3 sudo patchelf binutils"
 	],
 
 	"RemoveFiles_Stage1_CMT": [
@@ -285,8 +283,7 @@
 		"rm -Rf /root/.*",
 		"find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
 		"find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
-    "chmod +rwx /etc/credstore*",
-		"sh ./break_chroot.sh"
+    "chmod +rwx /etc/credstore*"
 	],
 
 	"Commands_Stage2_CMT": [
@@ -296,6 +293,11 @@
 
 	"Commands_Stage2": [
 		"export ROOTFS=./RootFS",
+    "reset",
+    "rm -Rf $ROOTFS/tmp/*",
+    "echo 'Breaking'",
+    "python3 $ROOTFS/chroot.py break",
+    "echo 'Did it'",
 		"umount $ROOTFS/proc/",
 		"umount -R $ROOTFS/sys/",
 		"umount -R $ROOTFS/dev/pts/",
