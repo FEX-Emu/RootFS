@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/python3
 
 # Usage:
 # cd in to the rootfs directory
@@ -27,15 +27,19 @@ class Command(Enum):
 @dataclass
 class HostApplicationsClass:
     RequiredHostApplications = [
-        "FEXInterpreter",
-        "FEXServer",
-        "chroot",
         "sudo",
         "patchelf",
         "readelf",
         "ldd",
         "mount",
+        "umount",
         "mountpoint",
+    ]
+
+    RequireProgramsForChrooting = [
+        "FEXInterpreter",
+        "FEXServer",
+        "chroot",
     ]
 
     def CheckIfProgramWorks(self, Program):
@@ -44,9 +48,13 @@ class HostApplicationsClass:
             logging.critical("Host program '{}' isn't available and is required!".format(Program))
             sys.exit(1)
 
-    def CheckProgramsExist(self):
+    def CheckProgramsExist(self, ExecutionCommand):
         for Program in self.RequiredHostApplications:
             self.CheckIfProgramWorks(Program)
+
+        if ExecutionCommand == Command.CHROOT:
+            for Program in self.RequireProgramsForChrooting:
+                self.CheckIfProgramWorks(Program)
 
 @dataclass
 class FEXInterpreterDependenciesClass:
@@ -132,58 +140,58 @@ class FEXInterpreterDependenciesClass:
 class BackupPathsClass:
     # Recursively create these folders
     CreateBackupFolders = [
-        "etc/"
-        "var/cache/"
-        "var/lib/"
-        "var/lib/dbus/"
+        "etc/",
+        "var/cache/",
+        "var/lib/",
+        "var/lib/dbus/",
     ]
 
     # Entire folders to move
     BackupFoldersToMove = [
-        "boot"
-        "home"
-        "media"
-        "mnt"
-        "root"
-        "srv"
-        "tmp"
-        "run"
+        "boot",
+        "home",
+        "media",
+        "mnt",
+        "root",
+        "srv",
+        "tmp",
+        "run",
         # Var folders to move
-        "var/tmp"
-        "var/run"
-        "var/lock"
+        "var/tmp",
+        "var/run",
+        "var/lock",
     ]
 
     # Folders to move only if they are empty
     BackupFoldersToMoveIfEmpty = [
         # Specifically works around wine installing things in to /opt
-        "opt"
+        "opt",
     ]
 
     # Files to move out of folders
     BackupFilesToMove = [
         # Bunch of etc files to move
-        "etc/hosts"
-        "etc/resolv.conf"
-        "etc/timezone"
-        "etc/localtime"
-        "etc/passwd"
-        "etc/passwd-"
-        "etc/group"
-        "etc/group-"
-        "etc/shadow"
-        "etc/shadow-"
-        "etc/gshadow"
-        "etc/gshadow-"
-        "etc/fstab"
-        "etc/hostname"
-        "etc/mtab"
-        "etc/subuid"
-        "etc/subgid"
-        "etc/machine-id"
+        "etc/hosts",
+        "etc/resolv.conf",
+        "etc/timezone",
+        "etc/localtime",
+        "etc/passwd",
+        "etc/passwd-",
+        "etc/group",
+        "etc/group-",
+        "etc/shadow",
+        "etc/shadow-",
+        "etc/gshadow",
+        "etc/gshadow-",
+        "etc/fstab",
+        "etc/hostname",
+        "etc/mtab",
+        "etc/subuid",
+        "etc/subgid",
+        "etc/machine-id",
 
         # Var files to move
-        "var/lib/dbus/machine-id"
+        "var/lib/dbus/machine-id",
     ]
 
     def __init__(self):
@@ -371,20 +379,26 @@ def DoBreak():
 
     logging.info("Unmount rootfs paths")
 
-    Result = subprocess.run(["sudo", "umount", "{}/proc".format(ScriptPath)])
-    assert Result.returncode == 0
+    Result = subprocess.run(["sudo", "umount", "-l", "{}/proc".format(ScriptPath)])
 
-    Result = subprocess.run(["sudo", "umount", "{}/sys".format(ScriptPath)])
-    assert Result.returncode == 0
+    if Result.returncode != 0:
+        logging.info("Failed to umount {}/proc. Might have dangling mount!".format(ScriptPath))
 
-    Result = subprocess.run(["sudo", "umount", "{}/dev/pts".format(ScriptPath)])
-    assert Result.returncode == 0
+    Result = subprocess.run(["sudo", "umount", "-l", "{}/sys".format(ScriptPath)])
+    if Result.returncode != 0:
+        logging.info("Failed to umount {}/sys. Might have dangling mount!".format(ScriptPath))
 
-    Result = subprocess.run(["sudo", "umount", "{}/dev".format(ScriptPath)])
-    assert Result.returncode == 0
+    Result = subprocess.run(["sudo", "umount", "-l", "{}/dev/pts".format(ScriptPath)])
+    if Result.returncode != 0:
+        logging.info("Failed to umount {}/dev/pts. Might have dangling mount!".format(ScriptPath))
 
-    Result = subprocess.run(["sudo", "umount", "{}/tmp".format(ScriptPath)])
-    assert Result.returncode == 0
+    Result = subprocess.run(["sudo", "umount", "-l", "{}/dev".format(ScriptPath)])
+    if Result.returncode != 0:
+        logging.info("Failed to umount {}/dev. Might have dangling mount!".format(ScriptPath))
+
+    Result = subprocess.run(["sudo", "umount", "-l", "{}/tmp".format(ScriptPath)])
+    if Result.returncode != 0:
+        logging.info("Failed to umount {}/tmp. Might have dangling mount!".format(ScriptPath))
 
     # Break the rootfs image
     BackupPathsClass().BackupBreak(BackupPath, ScriptPath)
@@ -474,7 +488,7 @@ def main():
         return 1
 
     GetScriptPath()
-    HostApplicationsClass().CheckProgramsExist()
+    HostApplicationsClass().CheckProgramsExist(ExecutionCommand)
 
     IsArm = platform.processor() == "aarch64" or "arm" in platform.processor()
     logging.debug("Platform: {}".format(platform.processor()))
@@ -499,6 +513,7 @@ def main():
             os.environ["FEX_SERVERSOCKETPATH"] = SocketPath
 
             # Set FEX config for server socket path
+            os.makedirs("{}/usr/share/fex-emu/".format(ScriptPath), exist_ok=True)
             Config = open("{}/usr/share/fex-emu/Config.json".format(ScriptPath), "w")
             ConfigText = "{{\"Config\": {{\"ServerSocketPath\":\"{}\"}}".format(SocketPath)
             Config.write(ConfigText)
