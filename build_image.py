@@ -223,6 +223,9 @@ def Stage1(CacheDir, RootFSDir, config_json):
         # Made a temporary file
         break;
 
+    print("Waiting for lock to leave on VMData")
+    os.system("sh -c 'while fuser {}/VMData.img >/dev/null 2>&1 ; do sleep 1; done'".format(RootFSDir))
+
     print("Telnet port {}".format(TelnetPort))
     QEmuCommand = [
         config_json["QEmu"],
