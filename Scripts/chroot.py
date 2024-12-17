@@ -509,7 +509,7 @@ def main():
             # Set up the server socketpath
             ScriptDir = os.path.dirname(ScriptPath)
             uid = os.getuid()
-            SocketPath = "{}-{}.chroot".format(uid, ScriptDir)
+            SocketPath = "{}-{}.chroot".format(ScriptDir, uid)
             os.environ["FEX_SERVERSOCKETPATH"] = SocketPath
 
             # Set FEX config for server socket path
