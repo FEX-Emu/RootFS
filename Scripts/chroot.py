@@ -424,6 +424,26 @@ def DoBreak():
     for Dir in FoldersToFix:
         Result = subprocess.run(["sudo", "chown", "-R", "{}:{}".format(User, User), "{}/{}".format(ScriptPath, Dir)])
 
+    FoldersToDelete = [
+        "dev/pts",
+        "dev/",
+        "proc/",
+        "sys/",
+        "usr/share/fex-emu/",
+    ]
+    for Dir in FoldersToDelete:
+        ScriptDir = "{}/{}".format(ScriptPath, Dir)
+        if MountManagerClass().CheckIfMountpath(ScriptDir):
+            logging.info("{} is still a mount path! Dangling folder can break rootfs image!".format(Dir))
+            continue
+
+        try:
+            shutil.rmtree(ScriptDir)
+        except:
+            # Non-fatal, but fatal to run rootfs with FEX later
+            logging.info("{} couldn't be removed! Dangling folder can break rootfs image!".format(Dir))
+            pass
+
     return 0
 
 def DoUnbreak():
