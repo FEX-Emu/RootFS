@@ -61,20 +61,29 @@ class FEXInterpreterDependenciesClass:
     Path: str
     Depends: list
     Interpreter: str
+    FEXInstalled: bool
 
     def __init__(self):
         from shutil import which
         self.Path = which("FEXInterpreter")
         self.Depends = []
         self.Interpreter = None
-        assert self.Path is not None
+        self.FEXInstalled = self.Path is not None
+        if not self.FEXInstalled:
+            return
 
         logging.debug("FEXInterpreter at: '{}'".format(self.Path))
         self.GetDepends()
         self.GetProgramInterpreter()
 
+    def GetFEXInstalled(self):
+        return self.FEXInstalled
+
     # Extracts shared library dependencies from FEXInterpreter
     def GetDepends(self):
+        if not self.FEXInstalled:
+            return
+
         Output = subprocess.check_output(["ldd", self.Path])
         # Convert byte object to string
         Output = Output.decode('ascii')
@@ -104,6 +113,9 @@ class FEXInterpreterDependenciesClass:
 
     # Gets the interpreter path for FEXInterpreter .
     def GetProgramInterpreter(self):
+        if not self.FEXInstalled:
+            return
+
         Output = subprocess.check_output(["readelf", "-l", self.Path])
         # Convert byte object to string
         Output = Output.decode('ascii')
@@ -128,12 +140,18 @@ class FEXInterpreterDependenciesClass:
                 self.Depends.remove(self.Interpreter)
 
     def CopyDependsTo(self, Path):
+        if not self.FEXInstalled:
+            return
+
         for File in self.Depends:
             shutil.copy(File, Path)
 
         shutil.copy(self.Interpreter, Path)
 
     def CopyFEXInterpreterTo(self, Path):
+        if not self.FEXInstalled:
+            return
+
         shutil.copy(self.Path, Path)
 
 @dataclass
@@ -437,12 +455,13 @@ def DoBreak():
             logging.info("{} is still a mount path! Dangling folder can break rootfs image!".format(Dir))
             continue
 
-        try:
-            shutil.rmtree(ScriptDir)
-        except:
-            # Non-fatal, but fatal to run rootfs with FEX later
-            logging.info("{} couldn't be removed! Dangling folder can break rootfs image!".format(Dir))
-            pass
+        if os.path.exists(ScriptDir):
+            try:
+                shutil.rmtree(ScriptDir)
+            except:
+                # Non-fatal, but fatal to run rootfs with FEX later
+                logging.info("{} couldn't be removed! Dangling folder can break rootfs image!".format(Dir))
+                pass
 
     return 0
 
@@ -454,36 +473,37 @@ def DoUnbreak():
     BinPath = "{}/fex/bin/".format(ScriptPath)
     BackupPath = "{}/chroot/".format(ScriptPath)
 
-    # Create directories that FEXInterpreter needs.
-    # Continue on error, probably already existed.
-    try:
-        os.mkdir("{}/fex/".format(ScriptPath))
-    except:
-        pass
+    if FEXInterpreterDependencies.GetFEXInstalled():
+        # Create directories that FEXInterpreter needs.
+        # Continue on error, probably already existed.
+        try:
+            os.mkdir("{}/fex/".format(ScriptPath))
+        except:
+            pass
 
-    try:
-        os.mkdir(BinPath)
-    except:
-        pass
+        try:
+            os.mkdir(BinPath)
+        except:
+            pass
 
-    try:
-        os.mkdir(LibPath)
-    except:
-        pass
+        try:
+            os.mkdir(LibPath)
+        except:
+            pass
 
-    # Copy necessary dependencies over to directories
-    logging.info("Copying FEXInterpreter depends")
-    FEXInterpreterDependencies.CopyDependsTo(LibPath)
-    FEXInterpreterDependencies.CopyFEXInterpreterTo(BinPath)
-    logging.info("Patching FEXInterpreter")
+        # Copy necessary dependencies over to directories
+        logging.info("Copying FEXInterpreter depends")
+        FEXInterpreterDependencies.CopyDependsTo(LibPath)
+        FEXInterpreterDependencies.CopyFEXInterpreterTo(BinPath)
+        logging.info("Patching FEXInterpreter")
 
-    # Change interpreter path and add an rpath to search for the binaries.
-    Result = subprocess.run(["patchelf", "--set-interpreter", "/fex/lib64/{}".format(os.path.basename(FEXInterpreterDependencies.Interpreter)), "{}/FEXInterpreter".format(BinPath)])
-    assert Result.returncode == 0
+        # Change interpreter path and add an rpath to search for the binaries.
+        Result = subprocess.run(["patchelf", "--set-interpreter", "/fex/lib64/{}".format(os.path.basename(FEXInterpreterDependencies.Interpreter)), "{}/FEXInterpreter".format(BinPath)])
+        assert Result.returncode == 0
 
-    # Add the new RPATH to the FEXInterpreter
-    Result = subprocess.run(["patchelf", "--add-rpath", "/fex/lib64/", "{}/FEXInterpreter".format(BinPath)])
-    assert Result.returncode == 0
+        # Add the new RPATH to the FEXInterpreter
+        Result = subprocess.run(["patchelf", "--add-rpath", "/fex/lib64/", "{}/FEXInterpreter".format(BinPath)])
+        assert Result.returncode == 0
 
     # Unbreak the rootfs image
     BackupPathsClass().BackupUnbreak(BackupPath, ScriptPath)
