@@ -69,7 +69,14 @@ class FEXInterpreterDependenciesClass:
         self.Depends = []
         self.Interpreter = None
         self.FEXInstalled = self.Path is not None
+
+        if platform.processor() == "x86_64":
+            self.FEXInstalled = False
+            logging.info("Skipping FEXInterpreter dependencies because host is x86_64")
+            return
+
         if not self.FEXInstalled:
+            logging.info("FEXInterpreter not installed. This chroot may not work!")
             return
 
         logging.debug("FEXInterpreter at: '{}'".format(self.Path))
