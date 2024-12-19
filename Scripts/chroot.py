@@ -28,18 +28,24 @@ class Command(Enum):
 class HostApplicationsClass:
     RequiredHostApplications = [
         "sudo",
-        "patchelf",
-        "readelf",
-        "ldd",
         "mount",
         "umount",
         "mountpoint",
     ]
 
+    RequiredHostApplications_Arm64 = [
+        "patchelf",
+        "readelf",
+        "ldd",
+    ]
+
     RequireProgramsForChrooting = [
+        "chroot",
+    ]
+
+    RequireProgramsForChrooting_Arm64 = [
         "FEXInterpreter",
         "FEXServer",
-        "chroot",
     ]
 
     def CheckIfProgramWorks(self, Program):
@@ -52,8 +58,16 @@ class HostApplicationsClass:
         for Program in self.RequiredHostApplications:
             self.CheckIfProgramWorks(Program)
 
+        if not platform.processor() == "x86_64":
+            for Program in self.RequiredHostApplications_Arm64:
+                self.CheckIfProgramWorks(Program)
+
         if ExecutionCommand == Command.CHROOT:
             for Program in self.RequireProgramsForChrooting:
+                self.CheckIfProgramWorks(Program)
+
+        if not platform.processor() == "x86_64":
+            for Program in self.RequireProgramsForChrooting_Arm64:
                 self.CheckIfProgramWorks(Program)
 
 @dataclass
