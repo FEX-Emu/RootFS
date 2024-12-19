@@ -58,7 +58,7 @@ class HostApplicationsClass:
         for Program in self.RequiredHostApplications:
             self.CheckIfProgramWorks(Program)
 
-        if not platform.processor() == "x86_64":
+        if not platform.machine() == "x86_64":
             for Program in self.RequiredHostApplications_Arm64:
                 self.CheckIfProgramWorks(Program)
 
@@ -66,7 +66,7 @@ class HostApplicationsClass:
             for Program in self.RequireProgramsForChrooting:
                 self.CheckIfProgramWorks(Program)
 
-        if not platform.processor() == "x86_64":
+        if not platform.machine() == "x86_64":
             for Program in self.RequireProgramsForChrooting_Arm64:
                 self.CheckIfProgramWorks(Program)
 
@@ -84,7 +84,7 @@ class FEXInterpreterDependenciesClass:
         self.Interpreter = None
         self.FEXInstalled = self.Path is not None
 
-        if platform.processor() == "x86_64":
+        if platform.machine() == "x86_64":
             self.FEXInstalled = False
             logging.info("Skipping FEXInterpreter dependencies because host is x86_64")
             return
@@ -551,8 +551,8 @@ def main():
     GetScriptPath()
     HostApplicationsClass().CheckProgramsExist(ExecutionCommand)
 
-    IsArm = platform.processor() == "aarch64" or "arm" in platform.processor()
-    logging.debug("Platform: {}".format(platform.processor()))
+    IsArm = platform.machine() == "aarch64" or "arm" in platform.machine()
+    logging.debug("Platform: {}".format(platform.machine()))
 
     if ExecutionCommand == Command.UNBREAK:
         return DoUnbreak()
