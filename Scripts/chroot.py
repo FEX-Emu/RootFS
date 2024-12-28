@@ -506,6 +506,9 @@ def DoBreak():
         "proc/",
         "sys/",
         "usr/share/fex-emu/",
+
+        # Ubuntu/Debian specific folder. Causes Steam some non-fatal error logs if exists
+        "var/cache/apt/",
     ]
     for Dir in FoldersToDelete:
         ScriptDir = "{}/{}".format(ScriptPath, Dir)
