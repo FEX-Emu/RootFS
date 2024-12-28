@@ -600,7 +600,7 @@ def main():
             # Set up the server socketpath
             ScriptDir = os.path.dirname(ScriptPath)
             uid = os.getuid()
-            SocketPath = "{}-{}.chroot".format(ScriptDir, uid)
+            SocketPath = "/usr/share/fex-emu/{}.chroot".format(uid)
 
             # Set FEX config for server socket path
             os.makedirs("{}/usr/share/fex-emu/".format(ScriptPath), exist_ok=True)
