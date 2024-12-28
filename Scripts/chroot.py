@@ -24,6 +24,11 @@ class Command(Enum):
     BREAK = 1
     CHROOT = 2
 
+RequireProgramsForChrooting_Arm64 = [
+    "FEXInterpreter",
+    "FEXServer",
+]
+
 @dataclass
 class HostApplicationsClass:
     RequiredHostApplications = [
@@ -41,11 +46,6 @@ class HostApplicationsClass:
 
     RequireProgramsForChrooting = [
         "chroot",
-    ]
-
-    RequireProgramsForChrooting_Arm64 = [
-        "FEXInterpreter",
-        "FEXServer",
     ]
 
     def CheckIfProgramWorks(self, Program):
@@ -67,22 +67,30 @@ class HostApplicationsClass:
                 self.CheckIfProgramWorks(Program)
 
         if not platform.machine() == "x86_64":
-            for Program in self.RequireProgramsForChrooting_Arm64:
+            for Program in RequireProgramsForChrooting_Arm64:
                 self.CheckIfProgramWorks(Program)
 
 @dataclass
 class FEXInterpreterDependenciesClass:
-    Path: str
-    Depends: list
+    ProgramPaths: list
+    Depends: set
     Interpreter: str
     FEXInstalled: bool
 
     def __init__(self):
         from shutil import which
-        self.Path = which("FEXInterpreter")
-        self.Depends = []
+        self.ProgramPaths = []
+        self.FEXInstalled = True
+
+        for Program in RequireProgramsForChrooting_Arm64:
+            AbsPath = which(Program)
+            if AbsPath is not None:
+                self.ProgramPaths.append(AbsPath)
+            else:
+                self.FEXInstalled = False
+
+        self.Depends = set()
         self.Interpreter = None
-        self.FEXInstalled = self.Path is not None
 
         if platform.machine() == "x86_64":
             self.FEXInstalled = False
@@ -93,7 +101,6 @@ class FEXInterpreterDependenciesClass:
             logging.info("FEXInterpreter not installed. This chroot may not work!")
             return
 
-        logging.debug("FEXInterpreter at: '{}'".format(self.Path))
         self.GetDepends()
         self.GetProgramInterpreter()
 
@@ -105,75 +112,105 @@ class FEXInterpreterDependenciesClass:
         if not self.FEXInstalled:
             return
 
-        Output = subprocess.check_output(["ldd", self.Path])
-        # Convert byte object to string
-        Output = Output.decode('ascii')
+        for Path in self.ProgramPaths:
+            Output = subprocess.check_output(["ldd", Path])
+            # Convert byte object to string
+            Output = Output.decode('ascii')
 
-        for Line in Output.split('\n'):
-            Line = Line.strip()
+            for Line in Output.split('\n'):
+                Line = Line.strip()
 
-            # Skip vdso dependency
-            if "vdso" in Line or len(Line) == 0:
-                continue
+                # Skip vdso dependency
+                if "vdso" in Line or len(Line) == 0:
+                    continue
 
-            if " => " in Line:
-                # Split paths to get filesystem path if exists.
-                Split = Line.split(" => ")
+                if " => " in Line:
+                    # Split paths to get filesystem path if exists.
+                    Split = Line.split(" => ")
+                    assert len(Split) == 2
+                    Line = Split[1]
+
+                # Line is now in the format of `<Path> (Address)`
+                # Split again to get only the library path.
+                Split = Line.split(" (0x")
                 assert len(Split) == 2
-                Line = Split[1]
 
-            # Line is now in the format of `<Path> (Address)`
-            # Split again to get only the library path.
-            Split = Line.split(" (0x")
-            assert len(Split) == 2
+                Depend = Split[0]
 
-            Depend = Split[0]
-
-            logging.debug("Depends: '{}' -> '{}'".format(Line, Depend))
-            self.Depends.append(Depend)
+                logging.debug("Depends: '{}' -> '{}'".format(Line, Depend))
+                self.Depends.add(Depend)
 
     # Gets the interpreter path for FEXInterpreter .
     def GetProgramInterpreter(self):
         if not self.FEXInstalled:
             return
 
-        Output = subprocess.check_output(["readelf", "-l", self.Path])
-        # Convert byte object to string
-        Output = Output.decode('ascii')
+        for Path in self.ProgramPaths:
+            Output = subprocess.check_output(["readelf", "-l", Path])
+            # Convert byte object to string
+            Output = Output.decode('ascii')
 
-        for Line in Output.split('\n'):
-            Line = Line.strip()
-            if "Requesting program interpreter" not in Line:
-                continue
-            Split = Line.split("[Requesting program interpreter: ")
-            assert len(Split) == 2
+            for Line in Output.split('\n'):
+                Line = Line.strip()
+                if "Requesting program interpreter" not in Line:
+                    continue
+                Split = Line.split("[Requesting program interpreter: ")
+                assert len(Split) == 2
 
-            Line = Split[1]
+                Line = Split[1]
 
-            # Strip off the final ']'
-            Line = Line[0:(len(Line)-1)]
-            logging.debug("PT_INTERP: '{}'".format(Line))
-            self.Interpreter = Line
+                # Strip off the final ']'
+                Line = Line[0:(len(Line)-1)]
+                logging.debug("PT_INTERP: '{}'".format(Line))
+                self.Interpreter = Line
 
-            # Remove interpreter from list of depends
-            # We'll handle that manually
-            while self.Interpreter in self.Depends:
-                self.Depends.remove(self.Interpreter)
+                # Remove interpreter from list of depends
+                # We'll handle that manually
+                self.Depends.discard(self.Interpreter)
 
     def CopyDependsTo(self, Path):
         if not self.FEXInstalled:
             return
 
         for File in self.Depends:
+            logging.debug("Copying '{}' -> '{}'".format(File, Path))
             shutil.copy(File, Path)
 
         shutil.copy(self.Interpreter, Path)
 
-    def CopyFEXInterpreterTo(self, Path):
+    def CopyFEXInterpreterTo(self, DestPath):
         if not self.FEXInstalled:
             return
 
-        shutil.copy(self.Path, Path)
+        for Path in self.ProgramPaths:
+            shutil.copy(Path, DestPath)
+
+    def PatchDependencies(self, ScriptPath, BinPath, LibPath):
+        logging.info("Patching FEX dependencies")
+
+        for Program in RequireProgramsForChrooting_Arm64:
+            logger.debug("Patching paths for: '{}'".format(Program))
+
+            AbsPath = "{}/{}/{}".format(ScriptPath, BinPath, Program)
+
+            # Change interpreter path and add an rpath to search for the binaries.
+            Result = subprocess.run(["patchelf", "--set-interpreter",
+                                     "{}/{}".format(LibPath, os.path.basename(self.Interpreter)), AbsPath])
+            assert Result.returncode == 0
+
+            # Add the new RPATH to the FEXInterpreter
+            Result = subprocess.run(["patchelf", "--add-rpath", LibPath, AbsPath])
+            assert Result.returncode == 0
+
+        logging.debug("Patching dependencies")
+
+        for Depend in self.Depends:
+            logger.debug("Patching paths for: '{}'".format(Depend))
+
+            AbsPath = "{}/{}/{}".format(ScriptPath, LibPath, os.path.basename(Depend))
+
+            Result = subprocess.run(["patchelf", "--add-rpath", LibPath, AbsPath])
+            assert Result.returncode == 0
 
 @dataclass
 class BackupPathsClass:
@@ -516,15 +553,7 @@ def DoUnbreak():
         logging.info("Copying FEXInterpreter depends")
         FEXInterpreterDependencies.CopyDependsTo(LibPath)
         FEXInterpreterDependencies.CopyFEXInterpreterTo(BinPath)
-        logging.info("Patching FEXInterpreter")
-
-        # Change interpreter path and add an rpath to search for the binaries.
-        Result = subprocess.run(["patchelf", "--set-interpreter", "/fex/lib64/{}".format(os.path.basename(FEXInterpreterDependencies.Interpreter)), "{}/FEXInterpreter".format(BinPath)])
-        assert Result.returncode == 0
-
-        # Add the new RPATH to the FEXInterpreter
-        Result = subprocess.run(["patchelf", "--add-rpath", "/fex/lib64/", "{}/FEXInterpreter".format(BinPath)])
-        assert Result.returncode == 0
+        FEXInterpreterDependencies.PatchDependencies(ScriptPath, "/fex/bin", "/fex/lib64")
 
     # Unbreak the rootfs image
     BackupPathsClass().BackupUnbreak(BackupPath, ScriptPath)
@@ -562,34 +591,28 @@ def main():
         DoUnbreak()
 
         if IsArm:
-            logging.info("Starting FEXServer")
+            logging.info("Setting up FEXServer config")
 
             # We need to setup FEXServer to work correctly.
-            # Unset FEX rootfs specifically
-            os.environ["FEX_ROOTFS"] = ""
             # Set up the server socketpath
             ScriptDir = os.path.dirname(ScriptPath)
             uid = os.getuid()
             SocketPath = "{}-{}.chroot".format(ScriptDir, uid)
-            os.environ["FEX_SERVERSOCKETPATH"] = SocketPath
 
             # Set FEX config for server socket path
             os.makedirs("{}/usr/share/fex-emu/".format(ScriptPath), exist_ok=True)
             Config = open("{}/usr/share/fex-emu/Config.json".format(ScriptPath), "w")
-            ConfigText = "{{\"Config\": {{\"ServerSocketPath\":\"{}\"}}".format(SocketPath)
+            ConfigText = "{{\"Config\": {{\"ServerSocketPath\":\"{}\"}} }}".format(SocketPath)
             Config.write(ConfigText)
             Config.close()
 
             # Set environment file for fex server path
             Config = open("{}/etc/environment".format(ScriptPath), "a")
-            Config.write("FEX_SERVERSOCKETPATH={}\n".format(SocketPath))
             Config.close()
-
-            subprocess.Popen(["FEXServer", "-p", "30"], start_new_session=True)
 
         logging.info("Chrooting in to {}".format(ScriptPath))
 
-        ChrootArgs = ["sudo", "--preserve-env=FEX_ROOTFS,FEX_SERVERSOCKETPATH", "chroot", ScriptPath]
+        ChrootArgs = ["sudo", "chroot", ScriptPath]
 
         if IsArm:
             ChrootArgs.append("/fex/bin/FEXInterpreter")
