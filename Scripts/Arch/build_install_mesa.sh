@@ -10,6 +10,8 @@ pacman --noconfirm -S \
   libpciaccess lib32-libpciaccess \
   glslang \
   python-mako \
+  python-yaml \
+  python-ply \
   libglvnd lib32-libglvnd \
   byacc flex bison \
   wayland-protocols \
@@ -29,10 +31,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.3.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.5.1 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.119 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -69,16 +71,13 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-24.1.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.3.3 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
-# Update asahi
-sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
-
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
-export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12,asahi,iris"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau,intel,asahi"
 
 # Needed for rusticl
 rustup target add i686-unknown-linux-gnu
@@ -92,7 +91,7 @@ cd Build
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
@@ -106,7 +105,8 @@ cd Build_x86
 
 # Asahi and Iris disabled because {asahi,intel}_clc fail to link to the correct libclang-cpp
 # Same issue with rusticl
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib32 \
   -Dbuildtype=release \
   -Db_ndebug=true \
@@ -114,7 +114,7 @@ export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,v
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   -Dc_args="-m32 -mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-m32 -mfpmath=sse -msse -msse2 -mstackrealign" \
