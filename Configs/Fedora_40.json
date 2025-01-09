@@ -1,8 +1,8 @@
 {
   "ImageName" : "Fedora_40",
   "Guest_SHA256Sums" : "",
-  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/raw/40/x86_64/",
-  "Guest_Image"   : "layer.tar",
+  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/raw/9f37c48d34da8d068958b19859fcdbebc69906d7/x86_64/",
+  "Guest_Image"   : "fedora-20250105.tar",
 
   "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
   "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
