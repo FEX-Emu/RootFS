@@ -101,15 +101,15 @@
     "Ubuntu 22.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2024-05-27/Ubuntu_22_04.ero",
-      "Hash": "ff74a1c4da907bb5",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2025-01-08/Ubuntu_22_04.ero",
+      "Hash": "b02ee3a21ec0624e",
       "Type": "erofs"
     },
     "Ubuntu 22.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "22.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2024-05-27/Ubuntu_22_04.sqsh",
-      "Hash": "e3a49a375d10dc59",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_22_04/2025-01-08/Ubuntu_22_04.sqsh",
+      "Hash": "73c9269e4c4ca172",
       "Type": "squashfs"
     },
     "Ubuntu 20.04 (EroFS)": {

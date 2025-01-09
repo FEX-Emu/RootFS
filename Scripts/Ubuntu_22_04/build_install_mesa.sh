@@ -64,10 +64,10 @@ export CC=clang-15
 export CXX=clang++-15
 
 # Clone meson
-git clone --depth=1 --branch 1.3.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.5.1 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.119 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -104,15 +104,13 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-24.1.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.3.3 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
-# Update asahi
-sed -i 's/native : true/native : not meson.can_run_host_binaries()/g' src/asahi/clc/meson.build
-
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
+# Iris, anv, and Asahi disabled because it fails to find opencl-c-base.h for some reason.
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 cd Build
@@ -137,9 +135,9 @@ cd Build_x86
 
 apt-get install -y spirv-tools:i386 glslang-tools:i386
 
-# Iris and Asahi use libclc. 32-bit doesn't exist on Ubuntu 22.04.
-# Rusticl disabled for the same reason
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,kmsro,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,d3d12"
+# Rusticl disabled because of libclang conflict.
+# Same with NVK
+export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib/i386-linux-gnu \
   -Dbuildtype=release \
   -Db_ndebug=true \
