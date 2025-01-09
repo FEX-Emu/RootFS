@@ -144,7 +144,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-24.2.0 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-24.3.3 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
@@ -166,7 +166,7 @@ cd Build
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
@@ -198,7 +198,7 @@ export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
