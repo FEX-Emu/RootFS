@@ -31,29 +31,29 @@
     "ArchLinux (EroFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2024-05-27/ArchLinux.ero",
-      "Hash": "827e9eadaa7fe224",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2025-01-08/ArchLinux.ero",
+      "Hash": "7f0f84476ae1414c",
       "Type": "erofs"
     },
     "ArchLinux (SquashFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2024-05-27/ArchLinux.sqsh",
-      "Hash": "8ae6ef745a295b9e",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2025-01-08/ArchLinux.sqsh",
+      "Hash": "1e44c5d1278fce72",
       "Type": "squashfs"
     },
     "Ubuntu 24.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "24.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2024-08-26/Ubuntu_24_04.ero",
-      "Hash": "2d7e3a3285b63f73",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-01-08/Ubuntu_24_04.ero",
+      "Hash": "7fcaa85bedffcf9f",
       "Type": "erofs"
     },
     "Ubuntu 24.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "24.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2024-08-26/Ubuntu_24_04.sqsh",
-      "Hash": "5d3d6f938b7ae7fa",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-01-08/Ubuntu_24_04.sqsh",
+      "Hash": "74aa81fd08fa7480",
       "Type": "squashfs"
     },
     "Ubuntu 23.10 (EroFS)": {
