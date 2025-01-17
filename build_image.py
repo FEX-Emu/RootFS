@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import errno
 import hashlib
 import git
@@ -13,6 +14,9 @@ import time
 import json
 from pathlib import Path
 from shutil import which
+
+if sys.version_info[0] < 3:
+    raise Exception("Python 3 or a more recent version is required.")
 
 NeededApplications = [
         "git",
@@ -165,12 +169,6 @@ def CreateHostVMImage(RootFSDir, LinuxImage):
 def Cleanup(RootFSDir):
     shutil.rmtree(RootFSDir, ignore_errors=True)
 
-if sys.version_info[0] < 3:
-    raise Exception("Python 3 or a more recent version is required.")
-
-if (len(sys.argv) < 4):
-    sys.exit("usage: %s <Config.json> <Cache directory> <RootFS Dir>" % (sys.argv[0]))
-
 def Stage0(CacheDir, RootFSDir, config_json):
     Guest_CacheDir = CacheDir + "/Guest"
     Host_CacheDir = CacheDir + "/Host"
@@ -236,16 +234,18 @@ def Stage1(CacheDir, RootFSDir, config_json):
         '-drive',
         'file=' + RootFSDir + '/VMData.img' + ',format=qcow2',
         '-m',
-        '32G',
+        memory,
         '-smp',
         NumCores,
-        '-enable-kvm',
         '-nographic',
         '-nic',
         'user,model=virtio-net-pci',
         '-serial',
         'telnet:localhost:{},server'.format(TelnetPort)
     ]
+    # Add -enable-kvm unless -disable-kvm is passed
+    if not disable_kvm:
+        QEmuCommand.append('-enable-kvm')
 
     process = subprocess.Popen(QEmuCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin = subprocess.PIPE)
     for line in process.stderr:
@@ -501,14 +501,31 @@ def CheckPrograms():
             Missing = True
     return not Missing
 
+# Argument parser setup
+parser = argparse.ArgumentParser(
+    description="Script to configure and build a RootFS using QEMU with specified settings.",
+    usage="%(prog)s [-m <memory>] [-disable-kvm] <Config.json> <Cache directory> <RootFS Dir>"
+)
+parser.add_argument("config", type=str, help="Path to a RootFS config .json file")
+parser.add_argument("cache_dir", type=str, help="Cache directory")
+parser.add_argument("rootfs_dir", type=str, help="RootFS directory")
+parser.add_argument("-m", type=str, help="Memory size for QEMU (e.g., 2G, 512M, etc.)", default="32G")
+parser.add_argument("-disable-kvm", action="store_true", help="Disable KVM in QEMU")
+
+args = parser.parse_args()
+
+# Only after parsing the args we check the programs, so that users are able to call -h to get help
 if CheckPrograms() == False:
     sys.exit(1)
 
-CacheDir = sys.argv[2]
-RootFSDir = sys.argv[3]
+# Extracting arguments
+CacheDir = args.cache_dir
+RootFSDir = args.rootfs_dir
+memory = args.m
+disable_kvm = args.disable_kvm
 
 # Load our json file
-config_file = open(sys.argv[1], "r")
+config_file = open(args.config, "r")
 config_text = config_file.read()
 config_file.close()
 
