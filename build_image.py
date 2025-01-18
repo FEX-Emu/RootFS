@@ -421,7 +421,7 @@ def Stage2(CacheDir, RootFSDir, config_json):
 
     # Make sure to erase any folders that might already exist.
     # Arch has some files that are read-only so we need to first modify flags to add write permissions
-    os.system("chmod +w -R {}".format(Stage1_RootFS))
+    os.system("chmod --silent +w -R {}".format(Stage1_RootFS))
     os.system("rm -Rf {}".format(Stage1_RootFS))
     CreateDir(Stage1_RootFS)
 
