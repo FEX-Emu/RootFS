@@ -475,23 +475,29 @@ def Stage2(CacheDir, RootFSDir, config_json):
         print ("Exec: '{}'".format(command))
         os.system(command)
 
-    print("Repackaging image")
-    if os.system("tar {} -cf ../Stage2_{} *".format(PIGZPrompt, config_json["Guest_Image"])) != 0:
-        raise Exception("tar failure")
+    if not args.no_repack_tar:
+        print("Repackaging image")
+        if os.system("tar {} -cf ../Stage2_{} *".format(PIGZPrompt, config_json["Guest_Image"])) != 0:
+            raise Exception("tar failure")
 
     os.chdir(OldDir)
 
-    print("Repackaging image to SquashsFS")
-    if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd -no-xattrs") != 0:
-        raise Exception("mksquashfs failure")
+    if not args.no_repack_squashfs:
+        print("Repackaging image to SquashsFS")
+        if os.system("mksquashfs " + Stage1_RootFS + " " + SquashFSTarget + " -comp zstd -no-xattrs") != 0:
+            raise Exception("mksquashfs failure")
 
-    print("Repackaging image to EroFS. Using LZ4HC compression level 12. Might take a while!")
-    if os.system("mkfs.erofs -x-1 -zlz4hc,12 " + EroFSTarget + " " + Stage1_RootFS) != 0:
-        raise Exception("mkfs.erofs failure")
+    if not args.no_repack_erofs:
+        print("Repackaging image to EroFS. Using LZ4HC compression level 12. Might take a while!")
+        if os.system("mkfs.erofs -x-1 -zlz4hc,12 " + EroFSTarget + " " + Stage1_RootFS) != 0:
+            raise Exception("mkfs.erofs failure")
 
-    print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
-    print("Completed squashfs image now at %s" % (config_json["ImageName"] + ".sqsh"))
-    print("Completed EroFS image now at %s" % (config_json["ImageName"] + ".ero"))
+    if not args.no_repack_tar:
+        print("Completed image now at %s" % ("Stage2_" + config_json["Guest_Image"]))
+    if not args.no_repack_squashfs:
+        print("Completed squashfs image now at %s" % (config_json["ImageName"] + ".sqsh"))
+    if not args.no_repack_erofs:
+        print("Completed EroFS image now at %s" % (config_json["ImageName"] + ".ero"))
 
 def CheckPrograms():
     Missing = False
@@ -504,13 +510,16 @@ def CheckPrograms():
 # Argument parser setup
 parser = argparse.ArgumentParser(
     description="Script to configure and build a RootFS using QEMU with specified settings.",
-    usage="%(prog)s [-m <memory>] [-disable-kvm] <Config.json> <Cache directory> <RootFS Dir>"
+    usage="%(prog)s [-m <memory>] [-disable-kvm] [-no-repack-tar] [-no-repack-squashfs] [-no-repack-erofs] <Config.json> <Cache directory> <RootFS Dir>"
 )
 parser.add_argument("config", type=str, help="Path to a RootFS config .json file")
 parser.add_argument("cache_dir", type=str, help="Cache directory")
 parser.add_argument("rootfs_dir", type=str, help="RootFS directory")
 parser.add_argument("-m", type=str, help="Memory size for QEMU (e.g., 2G, 512M, etc.)", default="32G")
 parser.add_argument("-disable-kvm", action="store_true", help="Disable KVM in QEMU")
+parser.add_argument("-no-repack-tar", action="store_true", help="Do not repackage into a tar archive")
+parser.add_argument("-no-repack-squashfs", action="store_true", help="Do not repackage into a SquashFS image")
+parser.add_argument("-no-repack-erofs", action="store_true", help="Do not repackage into a EroFS image")
 
 args = parser.parse_args()
 
