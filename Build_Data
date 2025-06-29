@@ -67,6 +67,7 @@ time ../build_image.py ../Configs/Ubuntu_24_04.json /mnt/Work/Projects/work/FEX-
 time ../build_image.py ../Configs/Arch.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Arch/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/
 time ../build_image.py ../Configs/Fedora_38.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/
 time ../build_image.py ../Configs/Fedora_40.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora_40/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/
+time ../build_image.py ../Configs/Fedora_42.json /mnt/Work/Projects/work/FEX-rootfs/Cache_Fedora_42/ /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_42/
 
 # Upload to CDN
 # WebGUI atm
@@ -92,6 +93,9 @@ FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/Fedora_38.e
 
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/Fedora_40.sqsh
 FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/Fedora_40.ero
+
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_42/Fedora_42.sqsh
+FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_42/Fedora_42.ero
 
 # Modify RootFS_links.txt and upload to CDN
 # WebGUI atm
