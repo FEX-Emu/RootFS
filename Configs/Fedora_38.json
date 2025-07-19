@@ -142,8 +142,6 @@
     "xdg-desktop-portal.x86_64",
     "xdg-desktop-portal.i686",
     "xdg-desktop-portal-gtk",
-    "wine.x86_64",
-    "wine.i686",
     "vulkan-tools",
     "pkgconf.x86_64",
     "pkgconf.i686",

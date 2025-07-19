@@ -1,5 +1,5 @@
 #!/bin/sh
-dnf5 install -y git ninja-build \
+dnf5 install --skip-unavailable -y git ninja-build \
   lld \
   glibc-devel.x86_64 \
   glibc-devel.i686 \
@@ -82,7 +82,6 @@ dnf5 install -y git ninja-build \
   gcc gcc-c++ \
   cmake.i686 cmake.x86_64 \
   vulkan*.x86_64 vulkan*.i686 \
-  libomxil-bellagio-devel.x86_64 libomxil-bellagio-devel.i686 \
   wayland*-devel.x86_64  \
   libX*-devel.x86_64 libX*-devel.i686 \
   pkgconf-pkg-config.i686 pkgconf-pkg-config.x86_64 \
@@ -98,7 +97,7 @@ dnf5 builddep -y mesa-libGL
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.5.1 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.8.2 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
 git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
@@ -136,12 +135,12 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-25.1.4 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-25.2.0-rc1 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
 
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
+export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,softpipe,iris,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
 export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
 
 # Rusticl has `evaluation of constant value failed` errors, so disabled.
@@ -154,7 +153,7 @@ cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib64 \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=false -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=false -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -185,7 +184,7 @@ export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=false -Dopencl-spirv=true -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=false -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
