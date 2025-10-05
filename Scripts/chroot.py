@@ -412,7 +412,10 @@ class MountManagerClass:
     def Unbreak(self, ScriptPath):
         for Dir in self.MountPaths:
             MountPath = "{}/{}".format(ScriptPath, Dir[0])
-            assert self.CheckIfMountpath(MountPath) == False
+            if self.CheckIfMountpath(MountPath):
+                # Critical failure, stale mount encountered.
+                logging.critical("Stale mount found at '{}'! Can't continue, early exiting".format(MountPath))
+                sys.exit(1)
 
         # First create folders required.
         for Dir in self.MountPaths:
