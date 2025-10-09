@@ -25,7 +25,7 @@ class Command(Enum):
     CHROOT = 2
 
 RequireProgramsForChrooting_Arm64 = [
-    "FEXInterpreter",
+    "FEX",
     "FEXServer",
 ]
 
@@ -98,7 +98,7 @@ class FEXInterpreterDependenciesClass:
             return
 
         if not self.FEXInstalled:
-            logging.info("FEXInterpreter not installed. This chroot may not work!")
+            logging.info("FEX not installed. This chroot may not work!")
             return
 
         self.GetDepends()
@@ -621,7 +621,7 @@ def main():
         ChrootArgs = ["sudo", "chroot", ScriptPath]
 
         if IsArm:
-            ChrootArgs.append("/fex/bin/FEXInterpreter")
+            ChrootArgs.append("/fex/bin/FEX")
 
         ChrootArgs.append(os.environ['SHELL'])
         ChrootArgs.append("-i")
