@@ -45,15 +45,15 @@
     "Ubuntu 24.04 (EroFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "24.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-03-04/Ubuntu_24_04.ero",
-      "Hash": "c0e47c787cb7d6ef",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-12-27/Ubuntu_24_04.ero",
+      "Hash": "78d0d2d661cb9737",
       "Type": "erofs"
     },
     "Ubuntu 24.04 (SquashFS)": {
       "DistroMatch": "ubuntu",
       "DistroVersion": "24.04",
-      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-03-04/Ubuntu_24_04.sqsh",
-      "Hash": "6d469a5d2bb838ac",
+      "URL": "https://rootfs.fex-emu.gg/Ubuntu_24_04/2025-12-27/Ubuntu_24_04.sqsh",
+      "Hash": "f1aafb8234af1ac5",
       "Type": "squashfs"
     },
     "Ubuntu 23.10 (EroFS)": {

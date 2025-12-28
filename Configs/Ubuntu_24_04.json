@@ -2,7 +2,7 @@
 	"ImageName" : "Ubuntu_24_04",
 	"Guest_SHA256Sums" : "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/SHA256SUMS",
 	"Guest_BaseURL" : "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/",
-	"Guest_Image"   : "ubuntu-base-24.04.1-base-amd64.tar.gz",
+	"Guest_Image"   : "ubuntu-base-24.04.3-base-amd64.tar.gz",
 
 	"Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
 	"Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -161,8 +161,6 @@
 		"xz-utils",
 		"xdg-desktop-portal",
 		"xdg-desktop-portal-gtk",
-		"wine64",
-		"wine32",
 		"glibc-tools",
 		"vulkan-tools",
 		"pkgconf",
