@@ -9,10 +9,10 @@ rust = ['rustc', '--target', 'i686-unknown-linux-gnu']
 rust_ld = 'clang'
 
 [properties]
-c_args = ['-m32']
-c_link_args = ['-m32']
-cpp_args = ['-m32']
-cpp_link_args = ['-m32']
+c_args = ['-m32', '-mfpmath=sse', '-msse', '-msse2', '-mstackrealign']
+c_link_args = ['-m32', '-mfpmath=sse', '-msse', '-msse2', '-mstackrealign']
+cpp_args = ['-m32', '-mfpmath=sse', '-msse', '-msse2', '-mstackrealign']
+cpp_link_args = ['-m32', '-mfpmath=sse', '-msse', '-msse2', '-mstackrealign']
 
 [host_machine]
 system = 'linux'
