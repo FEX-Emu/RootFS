@@ -1,8 +1,8 @@
 {
-  "ImageName" : "Fedora_42",
+  "ImageName" : "Fedora_43",
   "Guest_SHA256Sums" : "",
-  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/raw/95e62950ae33a4d99d2c16347c4250fbc6ed6677/x86_64/",
-  "Guest_Image"   : "fedora-20250629.tar",
+  "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/raw/refs/heads/43/x86_64/",
+  "Guest_Image"   : "fedora-20260111.tar",
 
   "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
   "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -159,8 +159,7 @@
     "Scripts/Fedora/cross_x86",
     "Scripts/Fedora/mega_install_packages.sh",
     "Scripts/Fedora/build_install_mesa.sh",
-    "Scripts/Fedora/break_chroot.sh",
-    "Scripts/Fedora/unbreak_chroot.sh"
+    "Scripts/chroot.py"
   ],
 
   "CopyFiles_Stage1_CMT": [
@@ -173,8 +172,7 @@
     ["cross_x86", "root/"],
     ["mega_install_packages.sh", "root/"],
     ["build_install_mesa.sh", "root/"],
-    ["break_chroot.sh", "/"],
-    ["unbreak_chroot.sh", "/"]
+    ["chroot.py", "/"]
   ],
 
   "Commands_Stage1_0_CMT": [
@@ -235,8 +233,7 @@
     "rm -Rf /root/*",
     "rm -Rf /root/.*",
     "find /sbin/ /bin/ /usr/bin/ -perm /4000 -delete",
-    "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete",
-    "sh ./break_chroot.sh"
+    "find /sbin/ /bin/ /usr/bin/ -perm /2000 -delete"
   ],
 
   "Commands_Stage2_CMT": [
@@ -246,6 +243,9 @@
 
   "Commands_Stage2": [
     "export ROOTFS=./RootFS",
+    "echo 'Breaking'",
+    "python3 $ROOTFS/chroot.py break",
+    "echo 'Did it'",
     "umount $ROOTFS/proc/",
     "umount -R $ROOTFS/sys/",
     "umount -R $ROOTFS/dev/pts/",

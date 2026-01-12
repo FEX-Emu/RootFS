@@ -97,7 +97,7 @@ dnf5 builddep -y mesa-libGL
 cd /root
 
 # Clone meson
-git clone --depth=1 --branch 1.8.2 https://github.com/mesonbuild/meson.git
+git clone --depth=1 --branch 1.10.0 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
 git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
@@ -135,7 +135,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-25.2.0-rc1 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-25.3.3 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
@@ -153,7 +153,7 @@ cd Build
 /root/meson/meson.py setup -Dprefix=/usr  -Dlibdir=/usr/lib64 \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=false -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=true -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
@@ -178,13 +178,13 @@ dnf5 install -y \
 cd ../
 cd Build_x86
 
-# nouveau disabled because of `evaluation of constant value failed` errors on 32-bit.
-export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio"
+# Apparently meson doesn't know how to pass arguments to bindgen. Good job.
+export BINDGEN_EXTRA_CLANG_ARGS="--target=i686-unknown-linux-gnu"
 
 /root/meson/meson.py setup -Dprefix=/usr -Dlibdir=/usr/lib \
   -Dbuildtype=release \
   -Db_ndebug=true \
-  -Dgallium-rusticl=false -Dshader-cache=enabled -Dllvm=enabled \
+  -Dgallium-rusticl=true -Dshader-cache=enabled -Dllvm=enabled \
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
