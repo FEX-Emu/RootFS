@@ -66,6 +66,7 @@ dnf5 install --skip-unavailable -y git ninja-build \
   libzstd-devel.i686 \
   kernel-headers.x86_64 \
   clang-devel.x86_64 \
+  clang-devel.i686 \
   libatomic.x86_64 \
   libatomic.i686 \
   libatomic_ops.x86_64 \
@@ -89,6 +90,7 @@ dnf5 install --skip-unavailable -y git ninja-build \
   readline-devel.i686 readline-devel.x86_64 \
   gettext \
   python3-pycparser \
+  rustfmt \
   rustup
 
 dnf5 builddep -y mesa-libGL
@@ -140,8 +142,8 @@ cd mesa
 mkdir Build
 mkdir Build_x86
 
-export GALLIUM_DRIVERS="r300,r600,radeonsi,nouveau,virgl,svga,softpipe,iris,v3d,vc4,freedreno,etnaviv,tegra,lima,panfrost,zink,asahi,d3d12"
-export VULKAN_DRIVERS="amd,broadcom,freedreno,panfrost,swrast,virtio,nouveau"
+export GALLIUM_DRIVERS="asahi,d3d12,etnaviv,freedreno,iris,lima,llvmpipe,nouveau,panfrost,r300,r600,radeonsi,svga,tegra,v3d,vc4,virgl,zink"
+export VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio,nouveau,asahi"
 
 # Rusticl has `evaluation of constant value failed` errors, so disabled.
 rustup-init --default-host x86_64-unknown-linux-gnu --default-toolchain stable -y
@@ -157,7 +159,7 @@ cd Build
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   -Dc_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
   -Dcpp_args="-mfpmath=sse -msse -msse2 -mstackrealign" \
@@ -165,15 +167,6 @@ cd Build
 
 ninja
 ninja install
-
-# i686 stuff
-# Fedora 40 has devel package conflicts with clang x86-64 and i686
-dnf5 remove -y clang
-
-dnf5 install -y \
-  clang.i686 \
-  clang-devel.i686 \
-  wayland-devel.i686
 
 cd ../
 cd Build_x86
@@ -188,7 +181,7 @@ export BINDGEN_EXTRA_CLANG_ARGS="--target=i686-unknown-linux-gnu"
   -Dgallium-drivers=$GALLIUM_DRIVERS \
   -Dvulkan-drivers=$VULKAN_DRIVERS \
   -Dplatforms=x11,wayland \
-  -Dfreedreno-kmds=msm,virtio \
+  -Dfreedreno-kmds=msm,virtio,kgsl \
   -Dglvnd=enabled \
   --cross-file /root/cross_x86 \
   ..
@@ -199,4 +192,4 @@ ninja install
 cd /
 
 cargo uninstall bindgen-cli cbindgen
-dnf5 remove -y rustup
+dnf5 remove -y rustup rustfmt

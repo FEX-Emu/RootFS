@@ -109,10 +109,6 @@
     "libXrandr.i686",
     "llvm-libs.x86_64",
     "llvm-libs.i686",
-    "llvm14-libs.x86_64",
-    "llvm14-libs.i686",
-    "llvm15-libs.x86_64",
-    "llvm15-libs.i686",
     "spirv-llvm-translator.x86_64",
     "spirv-llvm-translator.i686",
     "harfbuzz.x86_64",
@@ -226,9 +222,9 @@
 
   "Commands_InChroot2": [
     "sh /root/build_install_mesa.sh",
-    "dnf remove -y openssh-clients",
-    "dnf remove -y *-devel",
-    "dnf clean -y all",
+    "dnf remove -y openssh-clients --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
+    "dnf remove -y *-devel --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
+    "dnf clean -y all --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
     "rm -Rf /usr/local",
     "rm -Rf /root/*",
     "rm -Rf /root/.*",
