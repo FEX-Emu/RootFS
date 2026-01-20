@@ -2,7 +2,7 @@
   "ImageName" : "Fedora_43",
   "Guest_SHA256Sums" : "",
   "Guest_BaseURL" : "https://github.com/fedora-cloud/docker-brew-fedora/raw/refs/heads/43/x86_64/",
-  "Guest_Image"   : "fedora-20260111.tar",
+  "Guest_Image"   : "fedora-20260118.tar",
 
   "Host_SHA256Sums" : "https://cloud-images.ubuntu.com/releases/focal/release/SHA256SUMS",
   "Host_BaseURL" : "https://cloud-images.ubuntu.com/releases/focal/release/",
@@ -222,9 +222,11 @@
 
   "Commands_InChroot2": [
     "sh /root/build_install_mesa.sh",
-    "dnf remove -y openssh-clients --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
-    "dnf remove -y *-devel --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
-    "dnf clean -y all --exclude=mesa* --exclude=libglvnd-opengl* --exclude=libglvnd-egl* --exclude libglvnd-gles*",
+    "/root/mega_install_packages.sh libnsl.x86_64 libnsl.i686",
+    "dnf -y mark user mesa* libglvnd-opengl* libglvnd-egl* libglvnd-gles* libnsl*",
+    "dnf remove -y openssh-clients",
+    "dnf remove -y *-devel",
+    "dnf clean -y all",
     "rm -Rf /usr/local",
     "rm -Rf /root/*",
     "rm -Rf /root/.*",

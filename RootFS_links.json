@@ -3,15 +3,15 @@
     "Fedora 43 (EroFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "43",
-      "URL": "https://rootfs.fex-emu.gg/Fedora_43/2026-01-12/Fedora_43.ero",
-      "Hash": "7475ae890ec9841",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_43/2026-01-20/Fedora_43.ero",
+      "Hash": "517285e33bcfee49",
       "Type": "erofs"
     },
     "Fedora 43 (SquashFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "43",
-      "URL": "https://rootfs.fex-emu.gg/Fedora_43/2026-01-12/Fedora_43.sqsh",
-      "Hash": "f0ae27311dbd802",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_43/2026-01-20/Fedora_43.sqsh",
+      "Hash": "bc29ed2df78cca25",
       "Type": "squashfs"
     },
     "Fedora 40 (EroFS)": {
