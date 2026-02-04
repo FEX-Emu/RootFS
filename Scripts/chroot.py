@@ -623,8 +623,11 @@ def main():
         if IsArm:
             ChrootArgs.append("/fex/bin/FEX")
 
-        ChrootArgs.append(os.environ['SHELL'])
-        ChrootArgs.append("-i")
+        if len(sys.argv) > 2: 
+            ChrootArgs.extend(sys.argv[2:])
+        else:
+            ChrootArgs.append(os.environ['SHELL'])
+            ChrootArgs.append("-i")
         Result = subprocess.run(ChrootArgs)
 
         logging.info("Returning from chroot")
