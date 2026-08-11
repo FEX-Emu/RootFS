@@ -182,7 +182,8 @@
 		"build_install_renderdoc.sh",
 		"Scripts/Ubuntu_24_04/build_install_gfxreconstruct.sh",
 		"mega_install_packages.sh",
-		"Scripts/chroot.py"
+		"Scripts/chroot.py",
+		"Scripts/Ubuntu_24_04/graphics_provider.json"
 	],
 
 	"CopyFiles_Stage1_CMT": [
@@ -198,7 +199,8 @@
 		["build_install_renderdoc.sh", "root/"],
 		["build_install_gfxreconstruct.sh", "root/"],
 		["mega_install_packages.sh", "root/"],
-		["chroot.py", "/"]
+		["chroot.py", "/"],
+		["graphics_provider.json", "/"]
 	],
 
 	"Commands_Stage1_0_CMT": [

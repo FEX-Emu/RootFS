@@ -1,0 +1,20 @@
+{
+  "graphics_provider_v0": {
+    "root": "./",
+    "locales": false,
+    "va_api": false,
+    "vdpau": false,
+    "architectures": {
+      "x86_64-linux-gnu": {
+        "dri": "/usr/lib/x86_64-linux-gnu/dri",
+        "fallback_library_paths": ["/usr/lib64/"],
+        "gconv": "/usr/lib/x86_64-linux-gnu/gconv"
+      },
+      "i386-linux-gnu": {
+        "dri": "/usr/lib/i386-linux-gnu/dri",
+        "fallback_library_paths": ["/usr/lib"],
+        "gconv": "/usr/lib/i386-linux-gnu/gconv"
+      }
+    }
+  }
+}
