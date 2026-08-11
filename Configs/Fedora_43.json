@@ -155,7 +155,8 @@
     "Scripts/Fedora/cross_x86",
     "Scripts/Fedora/mega_install_packages.sh",
     "Scripts/Fedora/build_install_mesa.sh",
-    "Scripts/chroot.py"
+    "Scripts/chroot.py",
+    "Scripts/Fedora/graphics_provider.json"
   ],
 
   "CopyFiles_Stage1_CMT": [
@@ -168,7 +169,8 @@
     ["cross_x86", "root/"],
     ["mega_install_packages.sh", "root/"],
     ["build_install_mesa.sh", "root/"],
-    ["chroot.py", "/"]
+    ["chroot.py", "/"],
+    ["graphics_provider.json", "/"]
   ],
 
   "Commands_Stage1_0_CMT": [
