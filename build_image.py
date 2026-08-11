@@ -15,6 +15,9 @@ import json
 from pathlib import Path
 from shutil import which
 
+# virt-format seems broken in Ubuntu 26.04 for some reason. Complains about missing libzstd.
+UseVirtFormat = False
+
 if sys.version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required.")
 
@@ -101,20 +104,40 @@ def DownloadImage(CacheDir, SHA256Sums, BaseURL, Image):
         print("\tFile hash matched. Skipping Download");
 
 def CreateGuestVMImage(RootFSDir, LinuxImage, config_json):
-    if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 64G") != 0:
-        raise Exception("qemu-img create failure")
-
-    if os.system("virt-format --filesystem=ext3 --format=qcow2 -a " + RootFSDir + "/VMData.img") != 0:
-        raise Exception("virt-format failure")
-
+    print("Stage0/Guest: Create qcow")
     VMMountDir = RootFSDir + "/VMMount"
     CreateDir(VMMountDir)
 
-    if os.system("guestmount -a " + RootFSDir + "/VMData.img -m /dev/sda1 " + VMMountDir) != 0:
-        raise Exception("guestmount failure")
+    if UseVirtFormat:
+        if os.system("qemu-img create -f qcow2 " + RootFSDir + "/VMData.img 64G") != 0:
+            raise Exception("qemu-img create failure")
 
-    # We need to sleep for a bit because guestmount turns in to a daemon
-    time.sleep(5)
+        print("Stage0/Guest: format ext3")
+        if os.system("virt-format --filesystem=ext3 --format=qcow2 -a " + RootFSDir + "/VMData.img") != 0:
+            raise Exception("virt-format failure")
+
+        print("Stage0/Guest: Mounting VM")
+        if os.system("guestmount -a " + RootFSDir + "/VMData.img -m /dev/sda1 " + VMMountDir) != 0:
+            raise Exception("guestmount failure")
+
+        # We need to sleep for a bit because guestmount turns in to a daemon
+        time.sleep(5)
+    else:
+        try:
+            os.unlink("{}/VMData.img".format(RootFSDir))
+        except FileNotFoundError:
+            pass
+
+        if os.system("fallocate -l 64G " + RootFSDir + "/VMData.img") != 0:
+            raise Exception("qemu-img create failure")
+
+        print("Stage0/Guest: format ext3")
+        if os.system("mkfs.ext4 -E root_owner={}:{} {}/VMData.img".format(os.getuid(), os.getgid(), RootFSDir)) != 0:
+            raise Exception("virt-format failure")
+
+        print("Stage0/Guest: Mounting VM")
+        if os.system("fuse2fs " + RootFSDir + "/VMData.img " + VMMountDir + " -o rw") != 0:
+            raise Exception("guestmount failure")
 
     if os.system("sync") != 0:
         raise Exception("sync failure")
@@ -143,11 +166,18 @@ def CreateGuestVMImage(RootFSDir, LinuxImage, config_json):
     if os.system("sync") != 0:
         raise Exception("sync failure")
 
-    if os.system("guestunmount " + VMMountDir) != 0:
-        raise Exception("umount failure")
+
+    if UseVirtFormat:
+        if os.system("guestunmount " + VMMountDir) != 0:
+            raise Exception("umount failure")
+    else:
+        if os.system("umount " + VMMountDir) != 0:
+            raise Exception("umount failure")
 
     if os.system("sync") != 0:
         raise Exception("sync failure")
+
+    print("Stage0/Guest: Done creating guest VM")
 
 def CreateHostVMImage(RootFSDir, LinuxImage):
     if os.system("cp " + LinuxImage + " " + RootFSDir + "/Host.img") != 0:
@@ -225,6 +255,12 @@ def Stage1(CacheDir, RootFSDir, config_json):
     os.system("sh -c 'while fuser {}/VMData.img >/dev/null 2>&1 ; do sleep 1; done'".format(RootFSDir))
 
     print("Telnet port {}".format(TelnetPort))
+
+    if UseVirtFormat:
+        MountVMData = 'file={}/VMData.img,format={}'.format(RootFSDir, 'qcow2')
+    else:
+        MountVMData = 'file={}/VMData.img,format={}'.format(RootFSDir, 'raw')
+
     QEmuCommand = [
         config_json["QEmu"],
         '-drive',
@@ -232,7 +268,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
         '-drive',
         'file=' + RootFSDir + '/cloud_config.img' + ',format=raw',
         '-drive',
-        'file=' + RootFSDir + '/VMData.img' + ',format=qcow2',
+        MountVMData,
         '-m',
         memory,
         '-smp',
@@ -313,7 +349,12 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     ExecuteCommandAndWait(tn, "ls /dev/sd*")
     ExecuteCommandAndWait(tn, "mkdir Mount")
-    ExecuteCommandAndWait(tn, "mount /dev/sdc1 Mount")
+
+    if UseVirtFormat:
+        ExecuteCommandAndWait(tn, "mount /dev/sdc1 Mount")
+    else:
+        ExecuteCommandAndWait(tn, "mount /dev/sdc Mount")
+
     ExecuteCommandAndWait(tn, "cd Mount")
 
     print("Commands_Stage1_0")
@@ -406,11 +447,16 @@ def Stage2(CacheDir, RootFSDir, config_json):
     VMMountDir = RootFSDir + "/VMMount"
 
     print("Mounting VM image")
-    if os.system("guestmount -a " + RootFSDir + "/VMData.img -m /dev/sda1 " + VMMountDir) != 0:
-        raise Exception("guestmount failure")
+    if UseVirtFormat:
+        if os.system("guestmount -a " + RootFSDir + "/VMData.img -m /dev/sda1 " + VMMountDir) != 0:
+            raise Exception("guestmount failure")
 
-    # We need to sleep for a bit because guestmount turns in to a daemon
-    time.sleep(5)
+        # We need to sleep for a bit because guestmount turns in to a daemon
+        time.sleep(5)
+    else:
+        print("Stage0/Guest: Mounting VM")
+        if os.system("fuse2fs " + RootFSDir + "/VMData.img " + VMMountDir + " -o rw") != 0:
+            raise Exception("guestmount failure")
 
     if os.system("sync") != 0:
         raise Exception("sync failure")
@@ -440,11 +486,14 @@ def Stage2(CacheDir, RootFSDir, config_json):
         # Copy failed, raise assert.
         raise Exception("copy failed")
 
-    if os.system("guestunmount " + VMMountDir) != 0:
-        raise Exception("umount failure")
-
-    # We need to sleep for a bit because guestmount turns in to a daemon
-    time.sleep(5)
+    if UseVirtFormat:
+        if os.system("guestunmount " + VMMountDir) != 0:
+            raise Exception("umount failure")
+        # We need to sleep for a bit because guestmount turns in to a daemon
+        time.sleep(5)
+    else:
+        if os.system("umount " + VMMountDir) != 0:
+            raise Exception("umount failure")
 
     if os.system("sync") != 0:
         raise Exception("sync failure")
@@ -546,4 +595,3 @@ print("Moving on to Stage1 Image")
 Stage1(CacheDir, RootFSDir, config_json)
 print("Moving on to Stage2 Image")
 Stage2(CacheDir, RootFSDir, config_json)
-
