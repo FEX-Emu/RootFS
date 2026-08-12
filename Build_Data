@@ -65,7 +65,7 @@ time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json $(readlink -f ../Cac
 time ../build_image.py ../Configs/Ubuntu_23_10.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_23_10/)
 time ../build_image.py ../Configs/Ubuntu_24_04.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_24_04/)
 time ../build_image.py ../Configs/Arch.json $(readlink -f ../Cache/Arch/) $(readlink -f ../FEX-rootfs/RootFS_Arch/)
-time ../build_image.py ../Configs/Fedora_43.json $(readlink -f ../Cache/Fedora_43/) $(readlink -f ../FEX-rootfs/RootFS_Fedora_43/)
+time ../build_image.py ../Configs/Fedora_44.json $(readlink -f ../Cache/Fedora_44/) $(readlink -f ../FEX-rootfs/RootFS_Fedora_44/)
 
 
 # Upload to CDN
@@ -93,8 +93,8 @@ FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_38/Fedora_38.ero
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_40/Fedora_40.sqsh
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_40/Fedora_40.ero
 
-FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_43/Fedora_43.sqsh
-FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_43/Fedora_43.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_44/Fedora_44.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_44/Fedora_44.ero
 
 # Modify RootFS_links.txt and upload to CDN
 # WebGUI atm
