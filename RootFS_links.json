@@ -59,15 +59,15 @@
     "ArchLinux (EroFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2026-01-08/ArchLinux.ero",
-      "Hash": "cbd174c0356e8a8",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2026-08-11/ArchLinux.ero",
+      "Hash": "82c0c5f15edf59d2",
       "Type": "erofs"
     },
     "ArchLinux (SquashFS)": {
       "DistroMatch": "arch",
       "DistroVersion": "rolling",
-      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2026-01-08/ArchLinux.sqsh",
-      "Hash": "c456356f870fe98f",
+      "URL": "https://rootfs.fex-emu.gg/ArchLinux/2026-08-11/ArchLinux.sqsh",
+      "Hash": "23350f949fc1413d",
       "Type": "squashfs"
     },
     "Ubuntu 24.04 (EroFS)": {

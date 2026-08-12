@@ -36,7 +36,7 @@ cd /root
 git clone --depth=1 --branch 1.10.0 https://github.com/mesonbuild/meson.git
 
 # Build and install DRM
-git clone --depth=1 --branch libdrm-2.4.122 https://gitlab.freedesktop.org/mesa/drm.git
+git clone --depth=1 --branch libdrm-2.4.133 https://gitlab.freedesktop.org/mesa/drm.git
 cd drm
 
 mkdir Build
@@ -71,7 +71,7 @@ ninja install
 cd /root
 
 # Build and install mesa
-git clone --depth=1 --branch mesa-25.3.3 https://gitlab.freedesktop.org/mesa/mesa.git
+git clone --depth=1 --branch mesa-26.2.0 https://gitlab.freedesktop.org/mesa/mesa.git
 cd mesa
 mkdir Build
 mkdir Build_x86
