@@ -72,29 +72,29 @@ time ../build_image.py ../Configs/Fedora_43.json $(readlink -f ../Cache/Fedora_4
 # WebGUI atm
 
 # Hashes
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_22_04/Ubuntu_22_04.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/Ubuntu_22_04_Minimal.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/ArchLinux.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Arch/ArchLinux.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Arch/ArchLinux.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Arch/ArchLinux.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/Fedora_38.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_38/Fedora_38.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_38/Fedora_38.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_38/Fedora_38.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/Fedora_40.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_40/Fedora_40.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_40/Fedora_40.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_40/Fedora_40.ero
 
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_43/Fedora_43.sqsh
-FEXRootFSFetcher /mnt/Work/Projects/work/FEX-rootfs/RootFS_Fedora_43/Fedora_43.ero
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_43/Fedora_43.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Fedora_43/Fedora_43.ero
 
 # Modify RootFS_links.txt and upload to CDN
 # WebGUI atm
