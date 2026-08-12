@@ -1,5 +1,19 @@
 {
   "v1": {
+    "Fedora 44 (EroFS)": {
+      "DistroMatch": "fedora",
+      "DistroVersion": "44",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_44/2026-08-11/Fedora_44.ero",
+      "Hash": "cee02b6ea44829d",
+      "Type": "erofs"
+    },
+    "Fedora 44 (SquashFS)": {
+      "DistroMatch": "fedora",
+      "DistroVersion": "44",
+      "URL": "https://rootfs.fex-emu.gg/Fedora_44/2026-08-11/Fedora_44.sqsh",
+      "Hash": "fda4aaeab0fa69ba",
+      "Type": "squashfs"
+    },
     "Fedora 43 (EroFS)": {
       "DistroMatch": "fedora",
       "DistroVersion": "43",
