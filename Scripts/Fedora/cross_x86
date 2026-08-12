@@ -4,7 +4,7 @@ cpp = 'clang++'
 ar = 'llvm-ar'
 strip = 'llvm-strip'
 pkgconfig = '/usr/bin/i686-redhat-linux-gnu-pkg-config'
-llvm-config = '/usr/lib/llvm21/bin/llvm-config'
+llvm-config = '/usr/lib/llvm22/bin/llvm-config'
 rust = ['rustc', '--target', 'i686-unknown-linux-gnu']
 rust_ld = 'clang'
 
