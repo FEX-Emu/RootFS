@@ -12,6 +12,7 @@ import tarfile
 import telnetlib
 import time
 import json
+import re
 from pathlib import Path
 from shutil import which
 
@@ -32,6 +33,18 @@ NeededApplications = [
         "mksquashfs",
         "mkfs.erofs",
     ]
+
+# Terminal control sequences from the VM get relayed over the serial console. 
+# When these appear in the host terminal, they can corrupt the output, and 
+# make it hard for a human user to read.
+ANSI_ESCAPE_RE = re.compile(rb'\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07\x1b]*(?:\x07|\x1b\\)|[ -/]*[0-~])')
+def Sanitize(data):
+    return ANSI_ESCAPE_RE.sub(b'', data).decode(errors='replace').rstrip()
+
+# Allow overriding the default nameserver, which is needed on some corporate networks.
+DEFAULT_NAMESERVER = "8.8.8.8"
+def SubstituteNameserver(Command):
+    return Command.replace("nameserver " + DEFAULT_NAMESERVER, "nameserver " + nameserver)
 
 def CreateDir(Dir):
     try:
@@ -285,7 +298,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     process = subprocess.Popen(QEmuCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin = subprocess.PIPE)
     for line in process.stderr:
-        print(line.decode().rstrip())
+        print(Sanitize(line))
         if line.decode().find("QEMU waiting for connection") != -1:
             break
 
@@ -297,7 +310,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
         line = tn.read_until(b"\n")
         # Sometimes the line splits badly ?
         TestLine = PrevLine + line.rstrip()
-        print(line.decode().rstrip())
+        print(Sanitize(line))
         # After this point the username and password will be set and we can login
         if b"running 'modules:final'" in TestLine:
             break;
@@ -322,7 +335,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     while True:
         line = tn.read_until(b"\n")
-        print(line.decode().rstrip())
+        print(Sanitize(line))
         if b"Password:" in line:
             tn.write(Username.encode('ascii') + b"\n")
             break
@@ -333,12 +346,12 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     def ExecuteCommandAndWait(tn, Command):
         eager = tn.read_very_eager()
-        print(eager.decode().rstrip())
+        print(Sanitize(eager))
 
         tn.write(str.encode(Command + ' ; echo -e "\\x44\\x4f\\x4e\\x45" ;\n'))
         while True:
             line = tn.read_until(b"\n")
-            print(line.decode().rstrip())
+            print(Sanitize(line))
             if b"DONE" in line:
                 break;
 
@@ -359,7 +372,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     print("Commands_Stage1_0")
     for command in config_json["Commands_Stage1_0"]:
-        ExecuteCommandAndWait(tn, command)
+        ExecuteCommandAndWait(tn, SubstituteNameserver(command))
 
     print("Output rootfs now")
     ExecuteCommandAndWait(tn, "mkdir RootFS")
@@ -377,7 +390,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     print("Commands_Stage1")
     for command in config_json["Commands_Stage1"]:
-        ExecuteCommandAndWait(tn, command)
+        ExecuteCommandAndWait(tn, SubstituteNameserver(command))
 
     # Copy over things from the git root when specified
     print("CopyFiles_Stage1")
@@ -393,7 +406,7 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     print("Commands_InChroot")
     for command in config_json["Commands_InChroot"]:
-        ExecuteCommandAndWait(tn, command)
+        ExecuteCommandAndWait(tn, SubstituteNameserver(command))
 
     Command = config_json["PKGInstallCMD"]
     Send = False
@@ -411,13 +424,13 @@ def Stage1(CacheDir, RootFSDir, config_json):
 
     print("Commands_InChroot2")
     for command in config_json["Commands_InChroot2"]:
-        ExecuteCommandAndWait(tn, command)
+        ExecuteCommandAndWait(tn, SubstituteNameserver(command))
 
     ExecuteCommand(tn, "exit")
 
     print("Commands_Stage2")
     for command in config_json["Commands_Stage2"]:
-        ExecuteCommandAndWait(tn, command)
+        ExecuteCommandAndWait(tn, SubstituteNameserver(command))
 
     print("RemoveFiles_Stage2")
     for file in config_json["RemoveFiles_Stage2"]:
@@ -559,13 +572,14 @@ def CheckPrograms():
 # Argument parser setup
 parser = argparse.ArgumentParser(
     description="Script to configure and build a RootFS using QEMU with specified settings.",
-    usage="%(prog)s [-m <memory>] [-disable-kvm] [-no-repack-tar] [-no-repack-squashfs] [-no-repack-erofs] <Config.json> <Cache directory> <RootFS Dir>"
+    usage="%(prog)s [-m <memory>] [-disable-kvm] [-nameserver <ip>] [-no-repack-tar] [-no-repack-squashfs] [-no-repack-erofs] <Config.json> <Cache directory> <RootFS Dir>"
 )
 parser.add_argument("config", type=str, help="Path to a RootFS config .json file")
 parser.add_argument("cache_dir", type=str, help="Cache directory")
 parser.add_argument("rootfs_dir", type=str, help="RootFS directory")
 parser.add_argument("-m", type=str, help="Memory size for QEMU (e.g., 2G, 512M, etc.)", default="32G")
 parser.add_argument("-disable-kvm", action="store_true", help="Disable KVM in QEMU")
+parser.add_argument("-nameserver", type=str, default=DEFAULT_NAMESERVER, help="DNS server the rootfs uses while installing packages (default: %(default)s). Use 10.0.2.3 to go through QEMU's DNS proxy on networks that block public resolvers")
 parser.add_argument("-no-repack-tar", action="store_true", help="Do not repackage into a tar archive")
 parser.add_argument("-no-repack-squashfs", action="store_true", help="Do not repackage into a SquashFS image")
 parser.add_argument("-no-repack-erofs", action="store_true", help="Do not repackage into a EroFS image")
@@ -581,6 +595,7 @@ CacheDir = args.cache_dir
 RootFSDir = args.rootfs_dir
 memory = args.m
 disable_kvm = args.disable_kvm
+nameserver = args.nameserver
 
 # Load our json file
 config_file = open(args.config, "r")

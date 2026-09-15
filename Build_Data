@@ -64,6 +64,7 @@ time ../build_image.py ../Configs/Ubuntu_22_04.json $(readlink -f ../Cache/Ubunt
 time ../build_image.py ../Configs/Ubuntu_22_04_Minimal.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_22_04_Minimal/)
 time ../build_image.py ../Configs/Ubuntu_23_10.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_23_10/)
 time ../build_image.py ../Configs/Ubuntu_24_04.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_24_04/)
+time ../build_image.py ../Configs/Ubuntu_26_04.json $(readlink -f ../Cache/Ubuntu/) $(readlink -f ../FEX-rootfs/RootFS_Ubuntu_26_04/)
 time ../build_image.py ../Configs/Arch.json $(readlink -f ../Cache/Arch/) $(readlink -f ../FEX-rootfs/RootFS_Arch/)
 time ../build_image.py ../Configs/Fedora_44.json $(readlink -f ../Cache/Fedora_44/) $(readlink -f ../FEX-rootfs/RootFS_Fedora_44/)
 
@@ -83,6 +84,9 @@ FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_23_10/Ubuntu_23_10.ero
 
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.sqsh
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_24_04/Ubuntu_24_04.ero
+
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_26_04/Ubuntu_26_04.sqsh
+FEXRootFSFetcher ../FEX-rootfs/RootFS_Ubuntu_26_04/Ubuntu_26_04.ero
 
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Arch/ArchLinux.sqsh
 FEXRootFSFetcher ../FEX-rootfs/RootFS_Arch/ArchLinux.ero
